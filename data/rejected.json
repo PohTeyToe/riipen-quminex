@@ -82,13 +82,16 @@
     "aris": 40980,
     "page": 11
    },
-   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North \n(620) FSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-\ncentral part of the Property. The Boss Creek (620) FSR gives access to the northeast corner of \nthe Property.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks are best reached on foot or by ATV.",
+   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North \n(620) FSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-\ncentral part of the Property. The Boss Creek (620) FSR gives access to the northeast corner of \nthe Property.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks",
    "failure": "value_not_in_quote",
    "failure_label": "Value not in the quote",
    "reason": "Not in the quote: 'Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner'",
    "found_on": [],
    "retry": "fixed on retry",
-   "fixed_by": "c-0049"
+   "fixed_by": "c-0049",
+   "quote_cut": {
+    "chars": 433
+   }
   },
   {
    "attempt_id": "field-access-008",
@@ -104,13 +107,16 @@
     "aris": 41327,
     "page": 11
    },
-   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North (620) \nFSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-central \npart of the Property. The Boss Creek (620) FSR gives access to the northeast corner of the \nProperty.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks are best reached on foot or by ATV.",
+   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North (620) \nFSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-central \npart of the Property. The Boss Creek (620) FSR gives access to the northeast corner of the \nProperty.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks",
    "failure": "value_not_in_quote",
    "failure_label": "Value not in the quote",
    "reason": "Not in the quote: 'Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner'",
    "found_on": [],
    "retry": "fixed on retry",
-   "fixed_by": "c-0049"
+   "fixed_by": "c-0049",
+   "quote_cut": {
+    "chars": 433
+   }
   },
   {
    "attempt_id": "field-access-010",
@@ -126,13 +132,16 @@
     "aris": 41800,
     "page": 11
    },
-   "quote": "Further east, along the main Canim-Hendrix Lake \nRoad, the Lang North (620) FSR heads north from the Canim-Hendrix Lake Road, which allows \naccess to the north-central part of the Property. The Boss Creek (620) FSR gives access to the \nnortheast corner of the Property.  \n \nWithin the Property, logging roads, both active and de-activated, provide access to most areas. \nSome areas along cutblocks are best reached on foot or by ATV.",
+   "quote": "Further east, along the main Canim-Hendrix Lake \nRoad, the Lang North (620) FSR heads north from the Canim-Hendrix Lake Road, which allows \naccess to the north-central part of the Property. The Boss Creek (620) FSR gives access to the \nnortheast corner of the Property.  \n \nWithin the Property, logging roads, both active and de-activated, provide access to most areas. \nSome areas along cutblocks",
    "failure": "value_not_in_quote",
    "failure_label": "Value not in the quote",
    "reason": "Not in the quote: 'Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner'",
    "found_on": [],
    "retry": "fixed on retry",
-   "fixed_by": "c-0049"
+   "fixed_by": "c-0049",
+   "quote_cut": {
+    "chars": 433
+   }
   },
   {
    "attempt_id": "field-commodities-005",
@@ -177,13 +186,16 @@
     "aris": 41327,
     "page": 33
    },
-   "quote": "IL-22-006 was collared from the same pad as IL-22-001, but oriented northward to an azimuth \nof 310° to probe for the mineralized horizon between IL-22-001 and IL-22-002. The hole cut wide \nintervals of breccia, consisting of sub-angular clinopyroxenite fragments hosted in a matrix of \nepidote-altered gabbro. It intercepted the horizon between 124.96 to 136.98 m, which comprised \nseveral bands of semi-massive and brecciated to massive pyrrhotite, pyrite, chalcopyrite, \nmagnetite and hematite, up to 1.58 m wide, separated by weakly chlorite-epidote-carbonate \naltered pyroxenite with clots and gashes of pyrrhotite, pyrite and chalcopyrite. Rare, late stage, \ncolloform quartz-carbonate-pyrite veins were observed to cut sections of semi-massive sulphides. \nThe zone returned 0.18% copper and 0.027% nickel over 13.16 m, including 0.42% copper and \n0.042% nickel over 1.50 m.",
+   "quote": "IL-22-006 was collared from the same pad as IL-22-001, but oriented northward to an azimuth \nof 310° to probe for the mineralized horizon between IL-22-001 and IL-22-002. The hole cut wide \nintervals of breccia, consisting of sub-angular clinopyroxenite fragments hosted in a matrix of \nepidote-altered gabbro. It intercepted the horizon between 124.96 to 136.98 m, which comprised \nseveral bands of",
    "failure": "quote_too_long",
    "failure_label": "Quote over 600 characters",
    "reason": "Quote is 880 characters; the limit is 600",
    "found_on": [],
    "retry": "not retried",
-   "fixed_by": null
+   "fixed_by": null,
+   "quote_cut": {
+    "chars": 880
+   }
   },
   {
    "attempt_id": "field-drilling_2023-010",
@@ -239,13 +251,16 @@
     "aris": 41800,
     "page": 37
    },
-   "quote": "Hole IL-23-024 was drilled at the Discovery Zone to test a conductivity anomaly to a depth of \n570 m down-dip of sulphide intersections in holes IL-22-012 and IL-22-013, drilled in 2022.  \nThe hole was extended to 606 m after intersecting two narrow massive sulphide layers at 530 \nm and 537 m. These layers were 16 cm and 21 cm wide respectively. Two additional massive \nsulphide layers were intersected at 572.17 m and 576.94 m. These were a 1.8 m pyrrhotite-rich \ninterval and a 1.59 m wide pyrite-dominated interval, respectively. \n \nAssay results for a 9.46 m interval spanning across both of these massive sulphide intersections \ngraded 0.42% copper and 341 ppm nickel, from 569.00 m to 578.46 m.",
+   "quote": "Hole IL-23-024 was drilled at the Discovery Zone to test a conductivity anomaly to a depth of \n570 m down-dip of sulphide intersections in holes IL-22-012 and IL-22-013, drilled in 2022.  \nThe hole was extended to 606 m after intersecting two narrow massive sulphide layers at 530 \nm and 537 m. These layers were 16 cm and 21 cm wide respectively. Two additional massive \nsulphide layers were",
    "failure": "quote_too_long",
    "failure_label": "Quote over 600 characters",
    "reason": "Quote is 702 characters; the limit is 600",
    "found_on": [],
    "retry": "not retried",
-   "fixed_by": null
+   "fixed_by": null,
+   "quote_cut": {
+    "chars": 702
+   }
   },
   {
    "attempt_id": "field-geological_setting-007",
@@ -283,13 +298,16 @@
     "aris": 36430,
     "page": 15
    },
-   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of \nultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic \nsuccession and are in contact with the Schoolhouse Lake unit of the Takomkane \nBatholith across poorly exposed but probably intrusive contacts to the north and \nnorthwest.  The Iron Lake Complex is divided into ultramafic and mafic units. The \nultramafic unit consists mainly of clinopyroxenite and hornblende clinopyroxenite, but \nalso includes olivine clinopyroxenite, wehrlite, hornblendite, gabbro, diorite and \nintrusion breccia.",
+   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of \nultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic \nsuccession and are in contact with the Schoolhouse Lake unit of the Takomkane \nBatholith across poorly exposed but probably intrusive contacts to the north and \nnorthwest.  The Iron Lake Complex is divided into ultramafic and mafic",
    "failure": "quote_too_long",
    "failure_label": "Quote over 600 characters",
    "reason": "Quote is 601 characters; the limit is 600",
    "found_on": [],
    "retry": "fixed on retry",
-   "fixed_by": "c-0129"
+   "fixed_by": "c-0129",
+   "quote_cut": {
+    "chars": 601
+   }
   },
   {
    "attempt_id": "field-geophysical_surveys-001",
@@ -393,13 +411,16 @@
     "aris": 41800,
     "page": 9
    },
-   "quote": "Several styles of mineralization are found on the Property. The Iron Lake occurrence comprises \nmassive sulphide mineralization within ultramafic rocks of the Iron Lake complex, near Island \nLake. Semi-massive to massive sulphides were intersected in the 2005-6 drilling program, \nconsisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite. Significant, \ndisseminated magmatic Cu-Au-Pt-Pd mineralization has also been found within ultramafic float, \nwithin large, angular boulders. Shear-hosted Cu-Au mineralization within quartz-carbonate \nveins occurs at the Cate and Lisa showings, northeast of Succour Lake.",
+   "quote": "Several styles of mineralization are found on the Property. The Iron Lake occurrence comprises \nmassive sulphide mineralization within ultramafic rocks of the Iron Lake complex, near Island \nLake. Semi-massive to massive sulphides were intersected in the 2005-6 drilling program, \nconsisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite. Significant, \ndisseminated",
    "failure": "quote_too_long",
    "failure_label": "Quote over 600 characters",
    "reason": "Quote is 637 characters; the limit is 600",
    "found_on": [],
    "retry": "not retried",
-   "fixed_by": null
+   "fixed_by": null,
+   "quote_cut": {
+    "chars": 637
+   }
   },
   {
    "attempt_id": "field-mineralization-056",

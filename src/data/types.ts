@@ -22,6 +22,7 @@ export interface Check {
   image_reads?: string
   checked_by?: string | null
   checked_on?: string | null
+  second_read_by?: string
   note?: string
 }
 
@@ -37,6 +38,8 @@ export interface Claim {
   unit: string | null
   source: Src
   quote: string
+  /** Set when the site ships only the part of a long quote around its value. */
+  quote_cut?: { chars: number }
   censored: boolean
   detection_limit?: string
   censored_grades?: Record<string, { detection_limit: string; unit: string | null }>
@@ -61,8 +64,9 @@ export interface Rejected {
   failure_label: string
   reason: string
   found_on: Src[] | number[]
-  retry: 'fixed on retry' | 'not retried'
+  retry: 'fixed on retry' | 'not retried' | 'retried, still rejected'
   fixed_by: string | null
+  quote_cut?: { chars: number }
 }
 
 export interface TraceStep {
@@ -134,11 +138,24 @@ export interface Group {
   points?: Point[]
   centre?: { lat: number; lon: number }
   values?: string[]
-  // interval groups
+  // interval groups: one interval as one or more sources give it
   hole?: string
+  hole_written?: string[]
+  row?: string
   disagree?: boolean
-  sides?: { width_m: string; claims: string[] }[]
+  disagree_on?: string[]
+  compared?: Compared[]
+  sides?: { claims: string[] }[]
   arithmetic?: Record<string, { ok: boolean; computed_m: string; stated_m: string; line: string }>
+  inside?: string
+  inside_word?: 'including' | 'within'
+}
+
+export interface Compared {
+  what: string
+  agree: boolean
+  line: string
+  values: { claim: string; written: string; value: string; allow: string }[]
 }
 
 export interface CrossCheck {
@@ -158,7 +175,7 @@ export interface FieldPart {
   groups: Group[]
 }
 
-export type State = 'settled' | 'disagree' | 'not_in_sources'
+export type State = 'settled' | 'disagree' | 'not_in_sources' | 'quotes'
 
 export interface Field {
   id: string
@@ -174,6 +191,7 @@ export interface Field {
   distance_km?: number
   code_line?: string
   eval_cross_check?: CrossCheck
+  from_eval?: string[]
   parts?: FieldPart[]
   other_claims?: string[]
   searches?: string[]
@@ -185,7 +203,8 @@ export interface Answer {
   id: string
   category: 'answerable' | 'unanswerable' | 'conflict'
   question: string
-  answer: string
+  answer: string | null
+  answer_missing: boolean
   refused: boolean
   claims: string[]
   rejected: string[]
@@ -241,4 +260,26 @@ export interface Change {
   what: string
   why: string
   files?: string[]
+}
+
+export interface SummarySentence {
+  id: string
+  text: string
+  cite: string[]
+}
+
+export interface Summary {
+  summary: string
+  date: string
+  model: string
+  effort: string
+  only_card_tools: boolean
+  model_turns: number
+  seconds: number
+  gold_unchanged_since_run: boolean
+  sentences: SummarySentence[]
+  thrown_out: (SummarySentence & { failure: string; failure_label: string; reason: string; fixed_by: string | null })[]
+  trace: { i: number; tool: string; field?: string; sentence?: string; result: string }[]
+  points: { about: string; label: string; met: boolean }[]
+  gold_written_by: string
 }

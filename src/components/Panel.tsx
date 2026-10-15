@@ -8,9 +8,13 @@ import { ClaimTrace } from './Trace'
 interface PanelState {
   id: string
   siblings?: string[]
+  /** What the siblings are to this claim: grouped by code, or cited by the same summary sentence. */
+  context?: string
 }
 
-const PanelContext = createContext<{ open: (id: string, siblings?: string[]) => void; current: string | null }>({
+type Open = (id: string, siblings?: string[], context?: string) => void
+
+const PanelContext = createContext<{ open: Open; current: string | null }>({
   open: () => {},
   current: null,
 })
@@ -19,33 +23,65 @@ export function usePanel() {
   return useContext(PanelContext)
 }
 
-function setClaimParam(id: string | null) {
+const PANEL_ENTRY = 'claim-panel'
+
+function claimUrl(id: string | null): URL {
   const url = new URL(window.location.href)
   if (id) url.searchParams.set('claim', id)
   else url.searchParams.delete('claim')
-  window.history.replaceState(null, '', url)
+  return url
 }
 
+function claimInUrl(): string | null {
+  const id = new URL(window.location.href).searchParams.get('claim')
+  return id && claim(id) ? id : null
+}
+
+/**
+ * The open claim lives in the URL (?claim=), so a value can be linked. Opening the panel adds a history
+ * entry, so Back closes it, as people expect of a sheet on a phone. Moving between claims in an open
+ * panel replaces that entry.
+ */
 export function PanelProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<PanelState | null>(() => {
-    const id = new URL(window.location.href).searchParams.get('claim')
-    return id && claim(id) ? { id } : null
+    const id = claimInUrl()
+    return id ? { id } : null
   })
   const opener = useRef<HTMLElement | null>(null)
+  const isOpen = useRef(Boolean(state))
 
-  const open = useCallback((id: string, siblings?: string[]) => {
+  const open = useCallback<Open>((id, siblings, context) => {
     if (!claim(id)) return
     if (document.activeElement instanceof HTMLElement && !document.activeElement.closest('.panel')) {
       opener.current = document.activeElement
     }
-    setState((prev) => ({ id, siblings: siblings ?? (prev?.siblings?.includes(id) ? prev.siblings : undefined) }))
-    setClaimParam(id)
+    setState((prev) => {
+      const keep = !siblings && prev?.siblings?.includes(id)
+      return { id, siblings: siblings ?? (keep ? prev?.siblings : undefined), context: siblings ? context : keep ? prev?.context : undefined }
+    })
+    if (isOpen.current) window.history.replaceState(window.history.state, '', claimUrl(id))
+    else window.history.pushState({ [PANEL_ENTRY]: true }, '', claimUrl(id))
+    isOpen.current = true
   }, [])
 
   const close = useCallback(() => {
+    isOpen.current = false
     setState(null)
-    setClaimParam(null)
+    // Leave the entry the panel added, so Back after closing goes where it went before opening.
+    if (window.history.state?.[PANEL_ENTRY]) window.history.back()
+    else window.history.replaceState(window.history.state, '', claimUrl(null))
     opener.current?.focus({ preventScroll: true })
+  }, [])
+
+  useEffect(() => {
+    const onPop = () => {
+      const id = claimInUrl()
+      isOpen.current = Boolean(id)
+      setState((prev) => (id ? (prev?.id === id ? prev : { id }) : null))
+      if (!id) opener.current?.focus({ preventScroll: true })
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
   }, [])
 
   const wasOpen = useRef(false)
@@ -73,7 +109,7 @@ export function PanelProvider({ children }: { children: ReactNode }) {
 }
 
 /** A report-and-page chip. Opens the claim behind it. */
-export function Chip({ id, src, siblings, scanned }: { id: string; src?: Src; siblings?: string[]; scanned?: boolean }) {
+export function Chip({ id, src, siblings, scanned, context }: { id: string; src?: Src; siblings?: string[]; scanned?: boolean; context?: string }) {
   const { open, current } = usePanel()
   const c = claim(id)
   const s = src ?? c?.source
@@ -83,7 +119,7 @@ export function Chip({ id, src, siblings, scanned }: { id: string; src?: Src; si
     <button
       type="button"
       className={`chip${isScanned ? ' is-scanned' : ''}${current === id ? ' is-current' : ''}`}
-      onClick={() => open(id, siblings)}
+      onClick={() => open(id, siblings, context)}
       aria-label={`Open the quote from report ${s.aris}, PDF page ${s.page}${isScanned ? ', a scanned page' : ''}`}
     >
       {srcLabel(s)}
@@ -127,7 +163,10 @@ function Excerpt({ c }: { c: Claim }) {
         <span className="ellipsis"> …</span>
       </blockquote>
       <figcaption className="small muted">
-        {scanned ? 'From the OCR text layer of a scanned page. ' : ''}The quote is highlighted inside a short excerpt of its page.
+        {scanned ? 'From the OCR text layer of a scanned page. ' : ''}
+        {c.quote_cut
+          ? `The agent quoted ${c.quote_cut.chars} characters here. The site shows the part around the value; the page link has the rest.`
+          : 'The quote is highlighted inside a short excerpt of its page.'}
       </figcaption>
     </figure>
   )
@@ -149,9 +188,23 @@ function Grades({ c }: { c: Claim }) {
   )
 }
 
-function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClose: () => void; onOpen: (id: string, siblings?: string[]) => void }) {
+/** True on phones, where the panel is a bottom sheet that covers the page. */
+function useSheet() {
+  const query = '(max-width: 760px)'
+  const [sheet, setSheet] = useState(() => window.matchMedia(query).matches)
+  useEffect(() => {
+    const m = window.matchMedia(query)
+    const on = () => setSheet(m.matches)
+    m.addEventListener('change', on)
+    return () => m.removeEventListener('change', on)
+  }, [])
+  return sheet
+}
+
+function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClose: () => void; onOpen: Open }) {
   const heading = useRef<HTMLHeadingElement>(null)
   const body = useRef<HTMLDivElement>(null)
+  const sheet = useSheet()
   const [shown, setShown] = useState<PanelState | null>(state)
   const [traceOpen, setTraceOpen] = useState(false)
 
@@ -173,17 +226,41 @@ function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClo
     return () => window.removeEventListener('keydown', onKey)
   }, [state, onClose])
 
+  // As a sheet the panel is modal: the page behind it can't be reached until it closes.
+  const modal = Boolean(state) && sheet
+  useEffect(() => {
+    if (!modal) return
+    const behind = [...document.querySelectorAll<HTMLElement>('.skip, .topbar, #main, .footer')]
+    behind.forEach((el) => (el.inert = true))
+    return () => behind.forEach((el) => (el.inert = false))
+  }, [modal])
+
   const c = shown ? claim(shown.id) : undefined
   const isOpen = Boolean(state)
   const r = c ? report(c.source.aris) : undefined
   const check = c ? checkWords(c) : undefined
-  const siblings = shown?.siblings?.filter((id) => id !== shown.id) ?? []
+  // One chip per page, as on the card: two claims from one page would otherwise show two identical chips.
+  const pagesSeen = new Set(c ? [srcLabel(c.source)] : [])
+  const siblings = (shown?.siblings ?? []).filter((id) => {
+    const s = claim(id)
+    const label = s ? srcLabel(s.source) : id
+    if (id === shown?.id || pagesSeen.has(label)) return false
+    pagesSeen.add(label)
+    return true
+  })
   const caveats = c?.caveats.map((id) => claim(id)).filter((x): x is Claim => Boolean(x)) ?? []
 
   return (
     <>
       <div className={`scrim${isOpen ? ' is-open' : ''}`} onClick={onClose} aria-hidden="true" />
-      <aside className={`panel${isOpen ? ' is-open' : ''}`} aria-label="Source for this value" aria-hidden={!isOpen} inert={!isOpen}>
+      <aside
+        className={`panel${isOpen ? ' is-open' : ''}`}
+        aria-label="Source for this value"
+        role={sheet ? 'dialog' : undefined}
+        aria-modal={modal || undefined}
+        aria-hidden={!isOpen}
+        inert={!isOpen}
+      >
         {c && r && check && (
           <>
             <header className="panel-head">
@@ -261,12 +338,17 @@ function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClo
 
               {siblings.length > 0 && (
                 <section className="panel-section">
-                  <h3 className="label">Grouped with this by code</h3>
+                  <h3 className="label">{shown?.context ?? 'Grouped with this by code'}</h3>
                   <div className="chips">
                     {siblings.map((id) => {
                       const s = claim(id)
                       return s ? (
-                        <button key={id} type="button" className={`chip${s.check.by === 'page image' ? ' is-scanned' : ''}`} onClick={() => onOpen(id, shown?.siblings)}>
+                        <button
+                          key={id}
+                          type="button"
+                          className={`chip${s.check.by === 'page image' ? ' is-scanned' : ''}`}
+                          onClick={() => onOpen(id, shown?.siblings, shown?.context)}
+                        >
                           {srcLabel(s.source)}
                         </button>
                       ) : null

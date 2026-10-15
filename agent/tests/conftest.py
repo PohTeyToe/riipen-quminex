@@ -53,11 +53,20 @@ PAGES = {
             "This zone returned 0.30% copper and 0.049% nickel over 2.36 m. \n")},
     ],
     41800: [
+        {"page": 10, "scanned": False, "text": (
+            "Within the northwest zone, hole IL-23-025 predominantly intersected magnetite-bearing \n"
+            "pyroxenite. No massive sulphide intervals were encountered. The strongest interval returned \n"
+            "24.04 m of 1,002 ppm nickel, with 6 ppm copper, from 318.3 m to 342.3 m. Elevated nickel \n")},
         {"page": 37, "scanned": False, "text": (
             "acid digestion method. All samples from Iron Lake in 2023 were analyzed using an aqua regia \n"
             "digestion and therefore may be expected to be lower than actual values. All of the standards \n"
             "showed consistent nickel values and within expected ranges considering an aqua regia \ndigestion. \n"
-            "IL-23-024 \n569.00 \n578.46 \n9.46 \n0.42 \n0.034 \n29 \n13 \n31 \n")},
+            "Table 4: Significant Intervals from the 2023 Drill Program \n \nHole \nFrom \n(m) \n"
+            "To (m) Interval (m) Cu (%) Ni (%) \nAu (ppb) \nPt \n(ppb) \nPd \n(ppb) \n"
+            "IL-23-024 \n569.00 \n578.46 \n9.46 \n0.42 \n0.034 \n29 \n13 \n31 \n"
+            "Including \n570.81 \n571.31 \n0.50 \n1.17 \n0.056 \n39 \n15 \n16 \n"
+            "IL-23-25 \n16.47 \n750.00 \n733.53 \n0.002 \n0.030 \n5 \n29 \n10 \n"
+            "Including \n318.25 \n342.29 \n24.04 \n0.002 \n0.100 \n7 \n21 \n<5 \n")},
         {"page": 38, "scanned": False, "text": (
             "In 2023, Tech-X completed a total of 1,680 m of diamond drilling in 3 holes. \n"
             "Hole IL-23-024 intersected a 9.46 m interval grading 0.42% copper and 341 ppm \n"

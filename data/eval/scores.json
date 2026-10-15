@@ -6,9 +6,9 @@
   "definition": "Cited quotes the checker confirmed on the cited page, out of every quote the agent cited while answering, including ones it later fixed. A quote on a scanned page counts only once it is confirmed against the page image."
  },
  "answer_accuracy": {
-  "n": 8,
+  "n": 7,
   "of": 8,
-  "definition": "Answerable questions whose answer has every expected value and every required caveat, out of 8."
+  "definition": "Answerable questions whose answer line states every expected value and every required caveat, with no number that its cited quotes don't contain, out of 8."
  },
  "correct_refusals": {
   "n": 4,
@@ -21,9 +21,9 @@
   "definition": "Answerable or conflict questions the agent refused anyway, out of 11."
  },
  "disagreements_flagged": {
-  "n": 3,
+  "n": 2,
   "of": 3,
-  "definition": "Conflict questions whose answer carries every stated value, out of 3."
+  "definition": "Conflict questions whose answer line states every side's value, with no number that its cited quotes don't contain, out of 3."
  },
  "failure_counts": [
   {
@@ -78,13 +78,27 @@
   {
    "code": "missed_disagreement",
    "label": "Missed a disagreement",
-   "count": 0,
-   "from_answers": 0,
+   "count": 1,
+   "from_answers": 1,
    "from_checker": 0
   },
   {
    "code": "missing_value",
    "label": "Answer missed an expected value",
+   "count": 1,
+   "from_answers": 1,
+   "from_checker": 0
+  },
+  {
+   "code": "answer_missing",
+   "label": "No answer line",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "grade_not_with_element",
+   "label": "Grade not with its element",
    "count": 0,
    "from_answers": 0,
    "from_checker": 0
@@ -112,6 +126,16 @@
   }
  ],
  "failure_counts_note": "Checker counts cover every rejected claim in the run, field sessions and eval sessions. Answer counts cover the 15 eval answers.",
+ "summary_points": {
+  "n": 17,
+  "of": 18,
+  "definition": "Points a short evaluation of Iron Lake should make, written before the summary session ran, that the summary's own text states."
+ },
+ "summary_sentences": {
+  "n": 10,
+  "of": 13,
+  "definition": "Sentences code kept, out of every sentence the summary session proposed. A sentence is kept only if every number in it is in what it cites and it cites every side of any disagreement it touches."
+ },
  "changes_after_first_eval": [
   {
    "what": "The checker ignores degree signs and private-use font glyphs, and the agent now reads page text with broken font glyphs mapped.",

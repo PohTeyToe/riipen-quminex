@@ -2,6 +2,11 @@ import { Link } from '../router'
 import { corpus, corpusPages, index, locationSummary, longDate, model, run } from '../data/core'
 import { LINKS } from '../links'
 import { ExternalIcon } from '../components/Icons'
+import scoresJson from '../../data/eval/scores.json'
+import summaryJson from '../../data/summary.json'
+
+const scores = scoresJson as unknown as Record<'answer_accuracy' | 'disagreements_flagged' | 'correct_refusals', { n: number; of: number }>
+const summaryRun = summaryJson as unknown as { date: string; model: string; sentences: unknown[] }
 
 const loc = locationSummary()
 const proposed = run.claims_accepted + run.claims_rejected
@@ -9,6 +14,17 @@ const words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'e
 const say = (n: number) => words[n] ?? String(n)
 
 const STEPS = [
+  {
+    to: '/demo',
+    shot: '/shots/summary.png',
+    alt: 'The agent\'s summary at the top of the property card: numbered sentences, each followed by the source chips it cites.',
+    body: (
+      <>
+        <strong>Read the summary at the top of the card.</strong> A second session wrote it from the card alone. Every number in it is in a claim it cites, and a
+        sentence that touches a disagreement has to cite every side. Click a source chip to see the quote.
+      </>
+    ),
+  },
   {
     to: '/demo#location',
     shot: '/shots/location.png',
@@ -31,28 +47,19 @@ const STEPS = [
     alt: 'The side panel for one value: the quote highlighted in its excerpt, the check result and a link to the page on ARIS.',
     body: (
       <>
-        <strong>Click any value.</strong> You get the exact quote and a link to that page on BC's ARIS archive.
-      </>
-    ),
-  },
-  {
-    to: '/demo#resource_estimate',
-    shot: '/shots/resource.png',
-    alt: 'The Resource estimate row, reading Not in these sources, with the searches the agent ran before it refused.',
-    body: (
-      <>
-        <strong>Look at Resource estimate.</strong> It's blank, because none of these reports has one.
+        <strong>Click any value.</strong> You get the exact quote, a link to that page on BC's ARIS archive and the tool calls that produced it.
       </>
     ),
   },
   {
     to: '/demo/eval',
     shot: '/shots/eval.png',
-    alt: 'The Eval tab: four scores as counts, then the questions, then every claim the checker threw out.',
+    alt: 'The Eval tab: the scores as counts, then the questions with the misses first.',
     body: (
       <>
-        <strong>Open the Eval tab.</strong> All 15 questions passed, which mostly says the set is too easy. Under them is every claim the checker threw out,{' '}
-        {run.claims_rejected} of {proposed}, with the reason.
+        <strong>Open the Eval tab.</strong> {scores.answer_accuracy.n} of {scores.answer_accuracy.of} answerable questions pass, {scores.disagreements_flagged.n} of{' '}
+        {scores.disagreements_flagged.of} disagreement questions and {scores.correct_refusals.n} of {scores.correct_refusals.of} refusals. The misses come first, with what
+        they show, and below them every claim the checker threw out, {run.claims_rejected} of {proposed}.
       </>
     ),
   },
@@ -75,23 +82,25 @@ export default function Walkthrough() {
             <Link to="/demo/brief" className="button">
               How it maps to your brief
             </Link>
-            <a href={LINKS.repo} className="button is-quiet" target="_blank" rel="noopener noreferrer">
-              Code on GitHub
-              <ExternalIcon />
-            </a>
+            {LINKS.repo && (
+              <a href={LINKS.repo} className="button is-quiet" target="_blank" rel="noopener noreferrer">
+                Code on GitHub
+                <ExternalIcon />
+              </a>
+            )}
           </div>
         </header>
 
         <div className="prose">
           <p>
-            Your Riipen brief asks for property evaluations built from technical reports, scored on accuracy and provenance. Summaries are the easy part. The hard part is the
-            line where two reports disagree, the assay that came back below detection, and the question no report answers. If a geologist can't check a line in a few seconds,
-            they won't trust the rest.
+            Your Riipen brief asks for property evaluations built from technical reports, scored on accuracy and provenance. This is a small track 1 version on public data: an
+            agent read {say(corpus.reports.length)} BC assessment reports on the Iron Lake property, {corpusPages} pages in all, and every line it wrote points back to a
+            quoted page.
           </p>
           <p>
-            So I pointed a small agent at {say(corpus.reports.length)} public reports on the Iron Lake property in BC, {corpusPages} pages in all. It has four tools: search the
-            pages, open a page, propose a claim with a quote, or say "Not in these sources". Code checks every quote against the page it cites, and code decides where reports
-            disagree. Then a 15-question eval scores the run and lists what it got wrong.
+            The agent has four tools: search the pages, open a page, propose a claim with a quote, or say "Not in these sources". Code checks every quote against the page it
+            cites and decides where reports disagree. A second session reads only the resulting card and writes a short evaluation, and code keeps a sentence only if its
+            numbers are in what it cites. A 15-question eval scores the run and lists what it got wrong.
           </p>
         </div>
 
@@ -128,19 +137,23 @@ export default function Walkthrough() {
               edited by hand. There were {say(run.full_runs)} full runs. {run.full_runs_note}
             </li>
             <li>
+              <strong>The summary.</strong> A second session (<span className="mono">{summaryRun.model}</span>) wrote it on {longDate(summaryRun.date)} from the card alone,
+              with three tools: read the card, read a field, propose a sentence. Nobody edited its {summaryRun.sentences.length} sentences.
+            </li>
+            <li>
               <strong>The eval numbers, from that same run.</strong> Claude drafted the 15 questions and answers from the pages before the run, and Codex (
-              <span className="mono">gpt-6.1-sol</span>) checked them against the pages. A geologist hasn't checked them yet.
+              <span className="mono">gpt-6.1-sol</span>) checked them against the pages. Claude also listed the points the summary should make before it ran. A geologist hasn't checked any of it yet.
             </li>
             <li>
               <strong>Not here:</strong> NI 43-101 or JORC reports, which your brief names. I used BC assessment reports because they're public and I can link every page.
-              There's no geological interpretation either. Every line is quoted.
+              There's no geological interpretation either. Every value on the card is a quote, and the summary only restates the claims it cites.
             </li>
           </ul>
 
           <h2>Why Iron Lake</h2>
           <p>
-            It has {index.count} reports from {say(index.operators)} operators since {index.years[0]}, recent drilling, and a few places where the reports disagree. That's where a
-            property synthesis gets hard. The same pipeline can point at any property you pick.
+            It has a long public record: {index.count} reports from {say(index.operators)} operators since {index.years[0]}, with drilling in 2022 and 2023. The same pipeline
+            can point at any property you pick.
           </p>
 
           <p className="byline">

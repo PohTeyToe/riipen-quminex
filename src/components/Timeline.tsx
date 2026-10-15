@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState, type PointerEvent } from 'react'
 import { index } from '../data/core'
 import type { IndexRecord } from '../data/types'
 import { ChevronIcon, ExternalIcon } from './Icons'
@@ -23,8 +23,18 @@ function Mark({ status }: { status: IndexRecord['status'] }) {
   return <span className={`tl-dot is-${status}`} aria-hidden="true" />
 }
 
+/** General and specific work types from the index, each listed once. */
+function workTypes(r: IndexRecord): string {
+  const all = [r.general_work_types, r.specific_work_types].flatMap((x) => (x ?? '').split(';'))
+  const seen = new Set<string>()
+  return all
+    .map((w) => w.trim())
+    .filter((w) => w && !seen.has(w.toLowerCase()) && seen.add(w.toLowerCase()))
+    .join('; ')
+}
+
 function Detail({ r }: { r: IndexRecord }) {
-  const work = [r.general_work_types, r.specific_work_types].filter(Boolean).join('; ')
+  const work = workTypes(r)
   return (
     <div className="tl-detail" aria-live="polite">
       <p className="tl-detail-head">
@@ -76,6 +86,8 @@ export function Timeline() {
   const [pinned, setPinned] = useState<number | null>(null)
   const [hover, setHover] = useState<number | null>(null)
   const [list, setList] = useState(false)
+  const track = useRef<HTMLDivElement>(null)
+  const touched = useRef(false)
 
   // Stack reports filed in the same year.
   const placed = useMemo(() => {
@@ -88,6 +100,20 @@ export function Timeline() {
         return { r, row, x: (r.report_year - Y0) / (Y1 - Y0) }
       })
   }, [records])
+
+  // On touch, the whole strip is one target: tap or slide along it and the nearest mark is picked.
+  // Marks a year apart sit about 13 px apart on a phone, too close to tap one at a time.
+  function pickAt(e: PointerEvent<HTMLDivElement>) {
+    touched.current = e.pointerType !== 'mouse'
+    const box = track.current?.getBoundingClientRect()
+    if (!touched.current || !box) return
+    const x = e.clientX - box.left
+    const up = box.bottom - e.clientY
+    const near = (p: (typeof placed)[number]) => Math.abs(p.x * box.width - x) + Math.abs(p.row * 18 + 13 - up) / 2
+    const best = placed.reduce((a, b) => (near(b) < near(a) ? b : a))
+    setHover(null) // a tap also focuses and "hovers" its mark; the finger decides what shows
+    setPinned(best.r.aris)
+  }
 
   const counts = {
     corpus: records.filter((r) => r.status === 'corpus').length,
@@ -121,7 +147,12 @@ export function Timeline() {
       </ul>
 
       <div className="tl-strip" onMouseLeave={() => setHover(null)}>
-        <div className="tl-track">
+        <div
+          className="tl-track"
+          ref={track}
+          onPointerDown={pickAt}
+          onPointerMove={(e) => e.pointerType !== 'mouse' && e.buttons > 0 && pickAt(e)}
+        >
           <div className="tl-baseline" aria-hidden="true" />
           {placed.map(({ r, row, x }) => (
             <button
@@ -130,11 +161,14 @@ export function Timeline() {
               className={`tl-mark${pinned === r.aris ? ' is-pinned' : ''}`}
               style={{ left: `${x * 100}%`, bottom: `${row * 18}px` }}
               aria-pressed={pinned === r.aris}
-              aria-label={`${r.report_year}, ARIS ${r.aris}, ${operatorName(r.operator)}. ${statusWord(r)}.`}
+              aria-label={`${r.report_year}, ARIS ${r.aris}, ${operatorName(r.operator).replace(/\.$/, '')}. ${statusWord(r)}.`}
               onMouseEnter={() => setHover(r.aris)}
               onFocus={() => setHover(r.aris)}
               onBlur={() => setHover(null)}
-              onClick={() => setPinned((p) => (p === r.aris ? null : r.aris))}
+              onClick={(e) => {
+                if (touched.current && e.detail > 0) return // the strip already picked it
+                setPinned((p) => (p === r.aris ? null : r.aris))
+              }}
             >
               <Mark status={r.status} />
             </button>
@@ -149,7 +183,10 @@ export function Timeline() {
         </div>
       </div>
 
-      {shown ? <Detail r={shown} /> : <p className="tl-hint small muted">Select a mark for its year, operator, work and reported spend.</p>}
+      {shown ? <Detail r={shown} /> : <p className="tl-hint small muted">
+          <span className="for-fine">Select a mark</span>
+          <span className="for-touch">Tap or slide along the strip</span> for each report's year, operator, work and reported spend.
+        </p>}
 
       <button type="button" className="disclosure small" aria-expanded={list} onClick={() => setList((v) => !v)}>
         <ChevronIcon />
@@ -164,6 +201,7 @@ export function Timeline() {
                 <th scope="col">ARIS</th>
                 <th scope="col">Operator</th>
                 <th scope="col">Title</th>
+                <th scope="col">Work</th>
                 <th scope="col" className="r">
                   Reported spend
                 </th>
@@ -181,6 +219,7 @@ export function Timeline() {
                   </td>
                   <td>{operatorName(r.operator)}</td>
                   <td>{r.title}</td>
+                  <td>{workTypes(r) || <span className="muted">not listed</span>}</td>
                   <td className="num r">{r.spent_reported != null ? `C$${money.format(r.spent_reported)}` : <span className="muted">not listed</span>}</td>
                   <td>
                     <span className="tl-status-cell">

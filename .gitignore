@@ -8,3 +8,4 @@ dist/
 _review_screenshots/
 .vercel/
 *.log
+REVIEW.md

@@ -632,7 +632,8 @@
     "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
     "checked_by": "claude-opus-5-5",
     "checked_on": "2026-10-15",
-    "note": "Same line as field-commodities-003."
+    "note": "Same line as field-commodities-003.",
+    "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
    },
    "also_in": [],
    "run": "2026-10-15-r2",
@@ -1335,7 +1336,8 @@
     "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
     "checked_by": "claude-opus-5-5",
     "checked_on": "2026-10-15",
-    "note": "Same line as field-location-025."
+    "note": "Same line as field-location-025.",
+    "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
    },
    "also_in": [],
    "run": "2026-10-15-r2",
@@ -1897,7 +1899,7 @@
     "aris": 40980,
     "page": 11
    },
-   "quote": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a \npaved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property is \nreached by continuing east along this road, past Forest Grove, for 49 km to the community of \nEagle Creek, continuing past Eagle Creek for 5 km, then turning north on the Lang Lake (610) \nForest Service Road. This road heads north past Succour Lake, then northeast through the \ncentre of the Property.",
+   "quote": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a paved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property is reached by continuing east along this road, past Forest Grove, for 49 km to the community of Eagle Creek, continuing past Eagle Creek for 5 km, then turning north on the Lang Lake (610) Forest Service Road. This",
    "id": "c-0046",
    "track": 1,
    "censored": false,
@@ -1923,6 +1925,9 @@
      13,
      17
     ]
+   },
+   "quote_cut": {
+    "chars": 481
    }
   },
   {
@@ -1939,7 +1944,7 @@
     "aris": 41327,
     "page": 11
    },
-   "quote": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a \npaved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property is \naccessed by continuing east along this road, past Forest Grove, for 49 km to the community of \nEagle Creek, continuing past Eagle Creek for 5 km, then turning north on the Lang Lake (610) \nForest Service Road. This road heads north past Succour Lake, then northeast through the centre \nof the Property.",
+   "quote": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a paved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property is accessed by continuing east along this road, past Forest Grove, for 49 km to the community of Eagle Creek, continuing past Eagle Creek for 5 km, then turning north on the Lang Lake (610) Forest Service Road.",
    "id": "c-0047",
    "track": 1,
    "censored": false,
@@ -1965,6 +1970,9 @@
      15,
      19
     ]
+   },
+   "quote_cut": {
+    "chars": 482
    }
   },
   {
@@ -1981,7 +1989,7 @@
     "aris": 41800,
     "page": 11
    },
-   "quote": "The Property can be reached from the town of 100 Mile House via the Canim-Hendrix Lake \nRoad, which is a paved secondary road that leaves Highway 97 at a point about 2.4 km north of \ntown. The Property is accessed by continuing east along this road, past Forest Grove, for 49 km \nto the community of Eagle Creek, continuing past Eagle Creek for 5 km, then turning north on \nthe Lang Lake (610) Forest Service Road. This road heads north past Succour Lake, then \nnortheast through the centre of the Property.",
+   "quote": "The Property can be reached from the town of 100 Mile House via the Canim-Hendrix Lake Road, which is a paved secondary road that leaves Highway 97 at a point about 2.4 km north of town. The Property is accessed by continuing east along this road, past Forest Grove, for 49 km to the community of Eagle Creek, continuing past Eagle Creek for 5 km, then turning north on the Lang Lake (610)",
    "id": "c-0048",
    "track": 1,
    "censored": false,
@@ -2002,6 +2010,9 @@
      16,
      21
     ]
+   },
+   "quote_cut": {
+    "chars": 502
    }
   },
   {
@@ -2018,7 +2029,7 @@
     "aris": 40980,
     "page": 11
    },
-   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North \n(620) FSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-\ncentral part of the Property. The Boss Creek (620) FSR gives access to the northeast corner of \nthe Property.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks are best reached on foot or by ATV.",
+   "quote": "Lake Road, the Lang North (620) FSR heads north from the Canim-Hendrix Lake Road, which allows access to the north- central part of the Property. The Boss Creek (620) FSR gives access to the northeast corner of the Property. Within the Property, logging roads, both active and deactivated, provide access to most areas. Some areas along cut blocks are best reached on foot or by",
    "id": "c-0049",
    "track": 1,
    "censored": false,
@@ -2047,6 +2058,9 @@
      22,
      23
     ]
+   },
+   "quote_cut": {
+    "chars": 426
    }
   },
   {
@@ -2063,7 +2077,7 @@
     "aris": 41327,
     "page": 11
    },
-   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North (620) \nFSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-central \npart of the Property. The Boss Creek (620) FSR gives access to the northeast corner of the \nProperty.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks are best reached on foot or by ATV.",
+   "quote": "Lake Road, the Lang North (620) FSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-central part of the Property. The Boss Creek (620) FSR gives access to the northeast corner of the Property. Within the Property, logging roads, both active and deactivated, provide access to most areas. Some areas along cut blocks are best reached on foot or by",
    "id": "c-0050",
    "track": 1,
    "censored": false,
@@ -2089,6 +2103,9 @@
      15,
      24
     ]
+   },
+   "quote_cut": {
+    "chars": 425
    }
   },
   {
@@ -2105,7 +2122,7 @@
     "aris": 41800,
     "page": 11
    },
-   "quote": "Further east, along the main Canim-Hendrix Lake \nRoad, the Lang North (620) FSR heads north from the Canim-Hendrix Lake Road, which allows \naccess to the north-central part of the Property. The Boss Creek (620) FSR gives access to the \nnortheast corner of the Property.  \n \nWithin the Property, logging roads, both active and de-activated, provide access to most areas. \nSome areas along cutblocks are best reached on foot or by ATV.",
+   "quote": "Lake Road, the Lang North (620) FSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-central part of the Property. The Boss Creek (620) FSR gives access to the northeast corner of the Property. Within the Property, logging roads, both active and de-activated, provide access to most areas. Some areas along cutblocks are best reached on foot or by",
    "id": "c-0051",
    "track": 1,
    "censored": false,
@@ -2126,6 +2143,9 @@
      16,
      25
     ]
+   },
+   "quote_cut": {
+    "chars": 425
    }
   },
   {
@@ -2328,7 +2348,8 @@
     "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
     "checked_by": "claude-opus-5-5",
     "checked_on": "2026-10-15",
-    "note": "The OCR text of this line is garbled. The image shows it clearly."
+    "note": "The OCR text of this line is garbled. The image shows it clearly.",
+    "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
    },
    "also_in": [],
    "run": "2026-10-15-r2",
@@ -5234,7 +5255,7 @@
     "aris": 34595,
     "page": 12
    },
-   "quote": "The oldest rocks in the property area occur along the eastern edge of the \nproperty and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. \nThe Late Triassic Early Jurassic Schoolhouse Lake Unit, monzonite and granodiorite, forms the \npredominant phase of the Takomkame batholith in this area.  The Takomkane Suite has intruded \nthe Nicola Group rocks and the Iron Lake ultramafic suite has intruded the Takomkame Suite \n(based on radiometric age dates).",
+   "quote": "The oldest rocks in the property area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic Early Jurassic Schoolhouse Lake Unit, monzonite and granodiorite, forms the predominant phase of the Takomkame batholith in this area. The Takomkane Suite has intruded the Nicola Group rocks and the Iron",
    "id": "c-0117",
    "track": 1,
    "censored": false,
@@ -5255,6 +5276,9 @@
      2,
      5
     ]
+   },
+   "quote_cut": {
+    "chars": 479
    }
   },
   {
@@ -5308,7 +5332,7 @@
     "aris": 34595,
     "page": 13
    },
-   "quote": "Schiarizza divides the Iron Lake complex into an \nultramafic unit and a mafic unit. The ultramafic unit consists mainly of clinopyroxenite and \nhornblende clinopyroxenite, but also includes olivine clinopyroxenite, wehrlite, hornblendite, \ngabbro, diorite and intrusion breccia. The mafic unit consists mainly of medium to coarse-grained \nhornblende-pyroxene gabbro to monzogabbro, medium to fine-grained hornblende diorite, \nmicrodiorite and albite-hornblende pegmatite including breccias of the same.",
+   "quote": "Schiarizza divides the Iron Lake complex into an ultramafic unit and a mafic unit. The ultramafic unit consists mainly of clinopyroxenite and hornblende",
    "id": "c-0119",
    "track": 1,
    "censored": false,
@@ -5328,6 +5352,9 @@
      3,
      7
     ]
+   },
+   "quote_cut": {
+    "chars": 497
    }
   },
   {
@@ -5380,7 +5407,7 @@
     "aris": 34595,
     "page": 13
    },
-   "quote": "These Early Jurassic dates are significantly younger than the \ndates obtained from the Boss Creek and Schoolhouse Lake monzonites (195.0 to 202.0 Ma), \nindicating that the Iron Lake Complex is younger than the Takomkane Batholith, and has \npresumably intruded the batholith as well as the Nicola Group. These dates however are not \nalways in agreement with observations at a number of outcrops of intrusion breccia where \nultramafic fragments occur within a granodiorite matrix.",
+   "quote": "Lake monzonites (195.0 to 202.0 Ma), indicating that the Iron Lake Complex is younger than the Takomkane Batholith, and has presumably intruded the batholith as well as the",
    "id": "c-0121",
    "track": 1,
    "censored": false,
@@ -5400,6 +5427,9 @@
      3,
      9
     ]
+   },
+   "quote_cut": {
+    "chars": 473
    }
   },
   {
@@ -5489,7 +5519,7 @@
     "aris": 36430,
     "page": 15
    },
-   "quote": "The oldest rocks in the property area occur along the eastern edge of the \nproperty and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola \nGroup. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit monzonite and \ngranodiorite, forms the predominant phase of the Takomkane batholith in this area.  \nThe granodioritic Takomkane Suite has intruded the Nicola Group rocks and the Iron \nLake ultramafic suite has later intruded the Takomkane Suite.",
+   "quote": "area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit",
    "id": "c-0124",
    "track": 1,
    "censored": false,
@@ -5519,6 +5549,9 @@
      13,
      17
     ]
+   },
+   "quote_cut": {
+    "chars": 465
    }
   },
   {
@@ -5535,7 +5568,7 @@
     "aris": 36430,
     "page": 15
    },
-   "quote": "Melanocratic gabbro from the ultramafic unit of the Iron Lake complex has yielded Ar/Ar \nplateau ages of 187.7 ±1.1 Ma and 186.34 ±0.96 Ma on hornblende and biotite \nseparates, respectively. These Early Jurassic dates are significantly younger than the \ndates obtained from the Boss Creek and Schoolhouse Lake monzonites (195.0 to 202.0 \nMa), indicating that the Iron Lake Complex is younger than the Takomkane Batholith, \nand has presumably intruded the batholith as well as the Nicola Group.",
+   "quote": "the ultramafic unit of the Iron Lake complex has yielded Ar/Ar plateau ages of 187.7 ±1.1 Ma and 186.34 ±0.96 Ma on hornblende and biotite separates, respectively. These",
    "id": "c-0125",
    "track": 1,
    "censored": false,
@@ -5561,6 +5594,9 @@
      13,
      19
     ]
+   },
+   "quote_cut": {
+    "chars": 488
    }
   },
   {
@@ -5673,7 +5709,7 @@
     "aris": 36430,
     "page": 15
    },
-   "quote": "The Takomkane Batholithic rocks on the property, although locally well exposed are also \nextensively till covered in much of the property. The lithology of these rocks is \ndominantly granodiorite and varies from equigranular to weakly porphyritic in texture. \nMafic minerals are dominated by hornblende with lesser biotite.",
+   "quote": "in much of the property. The lithology of these rocks is dominantly granodiorite and varies from equigranular to weakly porphyritic in",
    "id": "c-0128",
    "track": 1,
    "censored": false,
@@ -5694,6 +5730,9 @@
      13,
      22
     ]
+   },
+   "quote_cut": {
+    "chars": 320
    }
   },
   {
@@ -5710,7 +5749,7 @@
     "aris": 36430,
     "page": 15
    },
-   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of \nultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic \nsuccession and are in contact with the Schoolhouse Lake unit of the Takomkane \nBatholith across poorly exposed but probably intrusive contacts to the north and \nnorthwest.  The Iron Lake Complex is divided into ultramafic and mafic units.",
+   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of ultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic succession and are in contact with the",
    "id": "c-0129",
    "track": 1,
    "censored": false,
@@ -5741,6 +5780,9 @@
      18,
      23
     ]
+   },
+   "quote_cut": {
+    "chars": 400
    }
   },
   {
@@ -5849,7 +5891,7 @@
     "aris": 36430,
     "page": 4
    },
-   "quote": "The property is underlain by a mafic to ultramafic intrusive body of early Jurassic age \noccurring in proximity to the slightly older granodiorite Takomkane Batholith that has \nbeen determined to be Upper Triassic Early Jurassic. Field relationships support the \ninterpretation that the mafic to ultramafic body, named the Iron Lake Complex, intrudes \nthe granodiorite batholith and presumably also the surrounding volcanic rocks \nbelonging to the Nicola Group, both of which are part of the Quesnel Terrane.",
+   "quote": "The property is underlain by a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to the slightly older granodiorite Takomkane Batholith that has been determined",
    "id": "c-0132",
    "track": 1,
    "censored": false,
@@ -5875,6 +5917,9 @@
      26,
      28
     ]
+   },
+   "quote_cut": {
+    "chars": 503
    }
   },
   {
@@ -5975,7 +6020,7 @@
     "aris": 36807,
     "page": 15
    },
-   "quote": "The oldest rocks in the property area occur along the eastern edge of the \nproperty and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola \nGroup. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit monzonite and \ngranodiorite, forms the predominant phase of the Takomkane batholith in this area.  \nThe granodioritic Takomkane Suite has intruded the Nicola Group rocks and the Iron \nLake ultramafic suite has later intruded the Takomkane Suite.",
+   "quote": "The oldest rocks in the property area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit monzonite and granodiorite, forms the predominant phase of the Takomkane batholith in this area. The granodioritic Takomkane Suite has intruded the Nicola Group rocks",
    "id": "c-0135",
    "track": 1,
    "censored": false,
@@ -6005,6 +6050,9 @@
      33,
      37
     ]
+   },
+   "quote_cut": {
+    "chars": 465
    }
   },
   {
@@ -6021,7 +6069,7 @@
     "aris": 36807,
     "page": 15
    },
-   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of \nultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic \nsuccession and are in contact with the Schoolhouse Lake unit of the Takomkane \nBatholith across poorly exposed but probably intrusive contacts to the north and \nnorthwest.  The Iron Lake Complex is divided into ultramafic and mafic units.",
+   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of ultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic succession and are in contact with the",
    "id": "c-0136",
    "track": 1,
    "censored": false,
@@ -6051,6 +6099,9 @@
      33,
      38
     ]
+   },
+   "quote_cut": {
+    "chars": 400
    }
   },
   {
@@ -6067,7 +6118,7 @@
     "aris": 36807,
     "page": 15
    },
-   "quote": "The \nultramafic unit consists mainly of clinopyroxenite and hornblende clinopyroxenite, but \nalso includes olivine clinopyroxenite, wehrlite, hornblendite, gabbro, diorite and \nintrusion breccia. The mafic unit consists mainly of medium to coarse‐grained \nhornblende‐pyroxene gabbro to monzogabbro, medium to fine‐grained hornblende \ndiorite, microdiorite and albite‐hornblende pegmatite including breccias of the same.",
+   "quote": "The ultramafic unit consists mainly of clinopyroxenite and hornblende clinopyroxenite, but also includes olivine clinopyroxenite, wehrlite, hornblendite, gabbro, diorite and intrusion breccia. The",
    "id": "c-0137",
    "track": 1,
    "censored": false,
@@ -6101,6 +6152,9 @@
      33,
      39
     ]
+   },
+   "quote_cut": {
+    "chars": 414
    }
   },
   {
@@ -6117,7 +6171,7 @@
     "aris": 36807,
     "page": 15
    },
-   "quote": "Melanocratic gabbro from the ultramafic unit of the Iron Lake complex has yielded Ar/Ar \nplateau ages of 187.7 ±1.1 Ma and 186.34 ±0.96 Ma on hornblende and biotite \nseparates, respectively. These Early Jurassic dates are significantly younger than the \ndates obtained from the Boss Creek and Schoolhouse Lake monzonites (195.0 to 202.0 \nMa), indicating that the Iron Lake Complex is younger than the Takomkane Batholith, \nand has presumably intruded the batholith as well as the Nicola Group.",
+   "quote": "the ultramafic unit of the Iron Lake complex has yielded Ar/Ar plateau ages of 187.7 ±1.1 Ma and 186.34 ±0.96 Ma on hornblende and biotite separates, respectively. These",
    "id": "c-0138",
    "track": 1,
    "censored": false,
@@ -6143,6 +6197,9 @@
      33,
      40
     ]
+   },
+   "quote_cut": {
+    "chars": 488
    }
   },
   {
@@ -6247,7 +6304,7 @@
     "aris": 36807,
     "page": 6
    },
-   "quote": "The property is underlain by a mafic to ultramafic intrusive body of early Jurassic age \noccurring in proximity to the slightly older granodiorite Takomkane Batholith that has \nbeen determined to be Upper Triassic Early Jurassic. Field relationships support the \ninterpretation that the mafic to ultramafic body, named the Iron Lake Complex, intrudes \nthe granodiorite batholith and presumably also the surrounding volcanic rocks \nbelonging to the Nicola Group, both of which are part of the Quesnel Terrane.",
+   "quote": "The property is underlain by a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to the slightly older granodiorite Takomkane Batholith that has been determined",
    "id": "c-0141",
    "track": 1,
    "censored": false,
@@ -6273,6 +6330,9 @@
      34,
      43
     ]
+   },
+   "quote_cut": {
+    "chars": 503
    }
   },
   {
@@ -6584,7 +6644,7 @@
     "aris": 38640,
     "page": 12
    },
-   "quote": "The oldest rocks in \nthe property area occur along the eastern edge of the property and are volcanic breccias and \nvolcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic \nSchoolhouse Lake Unit monzonite and granodiorite, forms the predominant phase of the \nTakomkane batholith in this area.  The granodioritic Takomkane Suite has intruded the Nicola \nGroup rocks and the Iron Lake ultramafic suite has later intruded the Takomkane Suite.",
+   "quote": "The oldest rocks in the property area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit monzonite and granodiorite, forms the predominant phase of the Takomkane batholith in this area. The granodioritic Takomkane Suite has intruded the Nicola Group rocks",
    "id": "c-0149",
    "track": 1,
    "censored": false,
@@ -6614,6 +6674,9 @@
      51,
      56
     ]
+   },
+   "quote_cut": {
+    "chars": 465
    }
   },
   {
@@ -6630,7 +6693,7 @@
     "aris": 38640,
     "page": 12
    },
-   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of ultramafic \nand mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic succession and are in \ncontact with the Schoolhouse Lake unit of the Takomkane Batholith across poorly exposed but \nprobably intrusive contacts to the north and northwest.  The Iron Lake Complex is divided into \nultramafic and mafic units.",
+   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of ultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic succession and are in contact with the",
    "id": "c-0150",
    "track": 1,
    "censored": false,
@@ -6660,6 +6723,9 @@
      51,
      57
     ]
+   },
+   "quote_cut": {
+    "chars": 400
    }
   },
   {
@@ -6676,7 +6742,7 @@
     "aris": 38640,
     "page": 12
    },
-   "quote": "The ultramafic unit consists mainly of clinopyroxenite and hornblende clinopyroxenite, but also \nincludes olivine clinopyroxenite, wehrlite, hornblendite, gabbro, diorite and intrusion breccia. \nThe mafic unit consists mainly of medium to coarse‐grained hornblende‐pyroxene gabbro to \nmonzogabbro, medium to fine‐grained hornblende diorite, microdiorite and albite‐hornblende \npegmatite including breccias of the same.",
+   "quote": "The ultramafic unit consists mainly of clinopyroxenite and hornblende clinopyroxenite, but also includes olivine clinopyroxenite, wehrlite, hornblendite, gabbro, diorite and intrusion breccia. The",
    "id": "c-0151",
    "track": 1,
    "censored": false,
@@ -6710,6 +6776,9 @@
      51,
      58
     ]
+   },
+   "quote_cut": {
+    "chars": 414
    }
   },
   {
@@ -6726,7 +6795,7 @@
     "aris": 38640,
     "page": 12
    },
-   "quote": "Melanocratic gabbro from the ultramafic unit of the \nIron Lake complex has yielded Ar/Ar plateau ages of 187.7 ±1.1 Ma and 186.34 ±0.96 Ma on \nhornblende and biotite separates, respectively. These Early Jurassic dates are significantly \nyounger than the dates obtained from the Boss Creek and Schoolhouse Lake monzonites (195.0 \nto 202.0 Ma), indicating that the Iron Lake Complex is younger than the Takomkane Batholith, \nand has presumably intruded this as well as the Nicola Group.",
+   "quote": "the ultramafic unit of the Iron Lake complex has yielded Ar/Ar plateau ages of 187.7 ±1.1 Ma and 186.34 ±0.96 Ma on hornblende and biotite separates, respectively. These",
    "id": "c-0152",
    "track": 1,
    "censored": false,
@@ -6747,6 +6816,9 @@
      51,
      59
     ]
+   },
+   "quote_cut": {
+    "chars": 479
    }
   },
   {
@@ -6763,7 +6835,7 @@
     "aris": 38640,
     "page": 14
    },
-   "quote": "Near the northwest corner of the ultramafic unit hornblende pyroxenite, hornblende‐feldspar \npyroxenite, gabbro and diorite have been mapped by the BC Geological Survey as parallel sheets \ndefined partly by modal layering and partly by dikes, giving some evidence of magmatic layering.",
+   "quote": "have been mapped by the BC Geological Survey as parallel sheets defined partly by modal layering and partly by dikes, giving some evidence of magmatic layering",
    "id": "c-0153",
    "track": 1,
    "censored": false,
@@ -6793,6 +6865,9 @@
      52,
      60
     ]
+   },
+   "quote_cut": {
+    "chars": 283
    }
   },
   {
@@ -6809,7 +6884,7 @@
     "aris": 38640,
     "page": 14
    },
-   "quote": "Although locally well exposed, the Takomkane Batholithic rocks are also extensively till covered \nin much of the property. The lithology of these rocks is dominantly granodiorite and varies from \nequigranular to weakly porphyritic in texture. Mafic minerals are dominated by hornblende with \nlesser biotite.",
+   "quote": "in much of the property. The lithology of these rocks is dominantly granodiorite and varies from equigranular to weakly porphyritic in",
    "id": "c-0154",
    "track": 1,
    "censored": false,
@@ -6835,6 +6910,9 @@
      52,
      61
     ]
+   },
+   "quote_cut": {
+    "chars": 304
    }
   },
   {
@@ -6851,7 +6929,7 @@
     "aris": 38640,
     "page": 5
    },
-   "quote": "The property is underlain by the Iron Lake Complex; a mafic to ultramafic intrusive body of early \nJurassic age occurring in proximity to the slightly older (Upper Triassic Early Jurassic) \ngranodiorite Takomkane Batholith. Field relationships indicate that the mafic to ultramafic body, \nnamed the Iron Lake Complex, intrudes the granodiorite batholith and the surrounding Nicola \nGroup volcanic rocks, both of which are part of the Quesnel Terrane.",
+   "quote": "The property is underlain by the Iron Lake Complex; a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to the slightly older (Upper Triassic Early Jurassic) granodiorite Takomkane Batholith. Field relationships indicate that the mafic to ultramafic body, named the Iron Lake Complex, intrudes the granodiorite batholith and the surrounding Nicola Group volcanic",
    "id": "c-0155",
    "track": 1,
    "censored": false,
@@ -6872,6 +6950,9 @@
      53,
      62
     ]
+   },
+   "quote_cut": {
+    "chars": 446
    }
   },
   {
@@ -6962,7 +7043,7 @@
     "aris": 40980,
     "page": 9
    },
-   "quote": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel \nTerrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic \nNicola Group, representing an island arc and marginal basin assemblage.",
+   "quote": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic",
    "id": "c-0158",
    "track": 1,
    "censored": false,
@@ -7004,6 +7085,9 @@
      67,
      71
     ]
+   },
+   "quote_cut": {
+    "chars": 256
    }
   },
   {
@@ -7020,7 +7104,7 @@
     "aris": 40980,
     "page": 9
    },
-   "quote": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The \ncomplex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group \nvolcaniclastic succession along its eastern, southern, and southwestern margins; and is in \ncontact with the Takomkane Batholith (Boss Creek and Schoolhouse Lake units) on the north \nand northwest margins.",
+   "quote": "northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession",
    "id": "c-0159",
    "track": 1,
    "censored": false,
@@ -7046,6 +7130,9 @@
      67,
      72
     ]
+   },
+   "quote_cut": {
+    "chars": 378
    }
   },
   {
@@ -7062,7 +7149,7 @@
     "aris": 40980,
     "page": 9
    },
-   "quote": "The showing consists of a 2-\ncm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a \nsteep, north-northeast striking shear zone.",
+   "quote": "consists of a 2- cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
    "id": "c-0160",
    "track": 1,
    "censored": false,
@@ -7088,6 +7175,9 @@
      67,
      73
     ]
+   },
+   "quote_cut": {
+    "chars": 168
    }
   },
   {
@@ -7154,7 +7244,7 @@
     "aris": 40980,
     "page": 23
    },
-   "quote": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The \ncomplex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group \nvolcaniclastic succession along its eastern, southern, and southwestern margins; and is in \ncontact with the Takomkane Batholith (Boss Creek and Schoolhouse Lake units) to the north \nand northwest (Schiarizza and Boulton, 2006a).",
+   "quote": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession along its eastern, southern, and southwestern margins; and is in contact with the Takomkane Batholith (Boss Creek and Schoolhouse Lake units) to the north and northwest (Schiarizza and Boulton,",
    "id": "c-0162",
    "track": 1,
    "censored": false,
@@ -7180,6 +7270,9 @@
      68,
      75
     ]
+   },
+   "quote_cut": {
+    "chars": 402
    }
   },
   {
@@ -7196,7 +7289,7 @@
     "aris": 40980,
     "page": 23
    },
-   "quote": "An Ar-Ar age of 187.7 ±1.1 Ma was obtained \nas a hornblende-cooling age collected from a gabbro within the ultramafic unit. A second age of \n190.4 ±0.5 Ma (zircon U-Pb) was obtained from a diorite (Schiarizza et al., 2013), resulting in \nan Early Jurassic age, both ages younger than previously thought and somewhat younger than \nthe Takomkane batholith. The ultramafic rocks contain abundant magnetite and correspond to a \nstrong positive anomaly on regional aeromagnetic maps.",
+   "quote": "An Ar-Ar age of 187.7 ±1.1 Ma was obtained as a hornblende-cooling age collected from a gabbro within the ultramafic unit. A second age of 190.4 ±0.5 Ma (zircon U-Pb) was obtained from a diorite (Schiarizza et al., 2013), resulting in an Early Jurassic age, both ages younger than previously thought and somewhat younger than the Takomkane batholith. The ultramafic rocks contain abundant",
    "id": "c-0163",
    "track": 1,
    "censored": false,
@@ -7226,6 +7319,9 @@
      68,
      76
     ]
+   },
+   "quote_cut": {
+    "chars": 473
    }
   },
   {
@@ -7242,7 +7338,7 @@
     "aris": 40980,
     "page": 25
    },
-   "quote": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark \ngreen to dark grey andesitic to basaltic flows, with lesser tuff and volcaniclastic rock. A \nnortheast-southwest trending sequence of shale, greywacke and fine-grained siliciclastic rocks \nis present in the central part of the Property. Bedding generally trends northeast and dips 40° \nto 80° northwest. Foliation is well developed, penetrative, steeply dipping, northeast trending, \nparallel to subparallel to bedding.",
+   "quote": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark green to dark grey andesitic to basaltic flows, with",
    "id": "c-0164",
    "track": 1,
    "censored": false,
@@ -7272,6 +7368,9 @@
      70,
      77
     ]
+   },
+   "quote_cut": {
+    "chars": 511
    }
   },
   {
@@ -7288,7 +7387,7 @@
     "aris": 40980,
     "page": 25
    },
-   "quote": "The Nicola Group rocks have been intruded by the Iron Lake complex, which occurs in the \nwestern part of the Property. The complex is exposed for about 8.5 km, in a north-south \norientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the \ncomplex is underlain by a thick pyroxenite unit, which probably forms the base of the sill \ncomplex (Belik, 2021). To the west, it is overlain by a sequence of mixed pyroxenite, gabbro, \ndiorite and pegmatite.",
+   "quote": "km, in a north-south orientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is underlain by a thick",
    "id": "c-0165",
    "track": 1,
    "censored": false,
@@ -7318,6 +7417,9 @@
      70,
      78
     ]
+   },
+   "quote_cut": {
+    "chars": 482
    }
   },
   {
@@ -7534,7 +7636,7 @@
     "aris": 40980,
     "page": 22
    },
-   "quote": "The Early Jurassic \nTakomkane Batholith lies to the northwest of the Property. It has been subdivided into two \nunits: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss \nCreek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of \na monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza \net al, 2013).",
+   "quote": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss Creek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of a monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza et",
    "id": "c-0170",
    "track": 1,
    "censored": false,
@@ -7564,6 +7666,9 @@
      82,
      85
     ]
+   },
+   "quote_cut": {
+    "chars": 404
    }
   },
   {
@@ -7776,7 +7881,7 @@
     "aris": 41327,
     "page": 9
    },
-   "quote": "The Iron Lake ultramafic-mafic complex lies \nnorthwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 \nkm wide. It intrudes the Nicola Group volcaniclastic succession along its eastern, southern, and \nsouthwestern margins; and is in contact with the Takomkane Batholith (Boss Creek and \nSchoolhouse Lake units) on the north and northwest margins.",
+   "quote": "northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession",
    "id": "c-0175",
    "track": 1,
    "censored": false,
@@ -7802,6 +7907,9 @@
      91,
      96
     ]
+   },
+   "quote_cut": {
+    "chars": 378
    }
   },
   {
@@ -7860,7 +7968,7 @@
     "aris": 41327,
     "page": 23
    },
-   "quote": "The Early Jurassic \nTakomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: \nthe Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss Creek \nunit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of a \nmonzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza et \nal, 2013).",
+   "quote": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss Creek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of a monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza et",
    "id": "c-0177",
    "track": 1,
    "censored": false,
@@ -7890,6 +7998,9 @@
      92,
      98
     ]
+   },
+   "quote_cut": {
+    "chars": 404
    }
   },
   {
@@ -7906,7 +8017,7 @@
     "aris": 41327,
     "page": 23
    },
-   "quote": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The \ncomplex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic \nsuccession along its eastern, southern, and southwestern margins; and is in contact with the \nTakomkane Batholith (Boss Creek and Schoolhouse Lake units) to the north and northwest \n(Schiarizza and Boulton, 2006a).",
+   "quote": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession along its eastern, southern, and southwestern margins; and is in contact with the Takomkane Batholith (Boss Creek and Schoolhouse Lake units) to the north and northwest (Schiarizza and Boulton,",
    "id": "c-0178",
    "track": 1,
    "censored": false,
@@ -7932,6 +8043,9 @@
      92,
      99
     ]
+   },
+   "quote_cut": {
+    "chars": 402
    }
   },
   {
@@ -7948,7 +8062,7 @@
     "aris": 41327,
     "page": 23
    },
-   "quote": "An Ar-Ar age of 187.7 ±1.1 Ma was obtained as a hornblende-\ncooling age collected from a gabbro within the ultramafic unit. A second age of 190.4 ±0.5 Ma \n(zircon U-Pb) was obtained from a diorite (Schiarizza et al., 2013), resulting in an Early Jurassic \nage, both ages younger than previously thought and somewhat younger than the Takomkane \nbatholith. The ultramafic rocks contain abundant magnetite and correspond to a strong positive \nanomaly on regional aeromagnetic maps.",
+   "quote": "An Ar-Ar age of 187.7 ±1.1 Ma was obtained as a hornblende- cooling age collected from a gabbro within the ultramafic unit. A second age of 190.4 ±0.5 Ma (zircon U-Pb) was obtained from a diorite (Schiarizza et al., 2013), resulting in an Early Jurassic age, both ages younger than previously thought and somewhat younger than the Takomkane batholith. The ultramafic rocks contain abundant",
    "id": "c-0179",
    "track": 1,
    "censored": false,
@@ -7978,6 +8092,9 @@
      92,
      100
     ]
+   },
+   "quote_cut": {
+    "chars": 474
    }
   },
   {
@@ -7994,7 +8111,7 @@
     "aris": 41327,
     "page": 24
    },
-   "quote": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark \ngreen to dark grey andesitic to basaltic flows, with lesser tuff and volcaniclastic rock. A northeast-\nsouthwest trending sequence of shale, greywacke and fine-grained siliciclastic rocks is present in \nthe central part of the Property. Bedding generally trends northeast and dips 40° to 80° \nnorthwest. Foliation is well developed, penetrative, steeply dipping, northeast trending, parallel \nto subparallel to bedding.",
+   "quote": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark green to dark grey andesitic to basaltic flows, with lesser tuff and volcaniclastic rock. A northeast- southwest trending sequence of shale, greywacke and fine-grained siliciclastic rocks is present in the central part of the Property. Bedding generally trends northeast and dips 40° to 80°",
    "id": "c-0180",
    "track": 1,
    "censored": false,
@@ -8024,6 +8141,9 @@
      93,
      101
     ]
+   },
+   "quote_cut": {
+    "chars": 512
    }
   },
   {
@@ -8040,7 +8160,7 @@
     "aris": 41327,
     "page": 24
    },
-   "quote": "The Nicola Group rocks have been intruded by the Iron Lake complex, which occurs in the western \npart of the Property. The complex is exposed for about 8.5 km, in a north-south orientation. The \ncomplex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is \nunderlain by a thick pyroxenite unit, which probably forms the base of the sill complex (Belik, \n2021). To the west, it is overlain by a sequence of mixed pyroxenite, gabbro, diorite and \npegmatite.",
+   "quote": "by the Iron Lake complex, which occurs in the western part of the Property. The complex is exposed for about 8.5 km, in a north-south orientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is underlain by a thick pyroxenite unit, which probably forms the base of the sill complex (Belik, 2021). To the west, it is overlain by a",
    "id": "c-0181",
    "track": 1,
    "censored": false,
@@ -8070,6 +8190,9 @@
      93,
      102
     ]
+   },
+   "quote_cut": {
+    "chars": 482
    }
   },
   {
@@ -8472,7 +8595,7 @@
     "aris": 41327,
     "page": 38
    },
-   "quote": "In this region the lithology appears to be entirely coarse-\ngrained clinopyroxenite, transitional to medium-grained, 100 to 150 m west of the road. Medium-\ngrained leuco-gabbro injections and some magmatic brecciation are evident in the northeast \nsector of the large clinopyroxenite outcrop west of the main road. East of the road, several large \nblack clinopyroxenite blocks display igneous layering.",
+   "quote": "this region the lithology appears to be entirely coarse- grained clinopyroxenite, transitional to medium-grained, 100 to 150 m west of the road. Medium- grained leuco-gabbro injections and some magmatic brecciation are evident in the northeast sector of the large clinopyroxenite outcrop west of the main road. East of the road, several large black clinopyroxenite blocks display igneous layering",
    "id": "c-0191",
    "track": 1,
    "censored": false,
@@ -8493,6 +8616,9 @@
      116,
      118
     ]
+   },
+   "quote_cut": {
+    "chars": 400
    }
   },
   {
@@ -8720,7 +8846,7 @@
     "aris": 41800,
     "page": 23
    },
-   "quote": "The Early Jurassic \nTakomkane Batholith lies to the northwest of the Property. It has been subdivided into two \nunits: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss \nCreek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of \na monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza \net al, 2013).",
+   "quote": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss Creek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of a monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza et",
    "id": "c-0196",
    "track": 1,
    "censored": false,
@@ -8750,6 +8876,9 @@
      123,
      130
     ]
+   },
+   "quote_cut": {
+    "chars": 404
    }
   },
   {
@@ -8812,7 +8941,7 @@
     "aris": 41800,
     "page": 24
    },
-   "quote": "An Ar-Ar age of 187.7 ±1.1 Ma was obtained \nas a hornblende-cooling age collected from a gabbro within the ultramafic unit. A second age of \n190.4 ±0.5 Ma (zircon U-Pb) was obtained from a diorite (Schiarizza et al., 2013), resulting in \nan Early Jurassic age, both ages younger than previously thought and somewhat younger than \nthe Takomkane batholith. The ultramafic rocks contain abundant magnetite and correspond to a \nstrong positive anomaly on regional aeromagnetic maps.",
+   "quote": "An Ar-Ar age of 187.7 ±1.1 Ma was obtained as a hornblende-cooling age collected from a gabbro within the ultramafic unit. A second age of 190.4 ±0.5 Ma (zircon U-Pb) was obtained from a diorite (Schiarizza et al., 2013), resulting in an Early Jurassic age, both ages younger than previously thought and somewhat younger than the Takomkane batholith. The ultramafic rocks contain abundant",
    "id": "c-0198",
    "track": 1,
    "censored": false,
@@ -8842,6 +8971,9 @@
      124,
      132
     ]
+   },
+   "quote_cut": {
+    "chars": 473
    }
   },
   {
@@ -8858,7 +8990,7 @@
     "aris": 41800,
     "page": 26
    },
-   "quote": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark \ngreen to dark grey andesitic to basaltic flows, with lesser tuff and volcaniclastic rock. A \nnortheast-southwest trending sequence of shale, greywacke and fine-grained siliciclastic rocks \nis present in the central part of the Property. Bedding generally trends northeast and dips 40° \nto 80° northwest. Foliation is well developed, penetrative, steeply dipping, northeast trending, \nparallel to subparallel to bedding.",
+   "quote": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark green to dark grey andesitic to basaltic flows, with",
    "id": "c-0199",
    "track": 1,
    "censored": false,
@@ -8888,6 +9020,9 @@
      125,
      133
     ]
+   },
+   "quote_cut": {
+    "chars": 511
    }
   },
   {
@@ -8904,7 +9039,7 @@
     "aris": 41800,
     "page": 26
    },
-   "quote": "The Nicola Group rocks have been intruded by the Iron Lake complex, which occurs in the \nwestern part of the Property. The complex is exposed for about 8.5 km, in a north-south \norientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the \ncomplex is underlain by a thick pyroxenite unit, which probably forms the base of the sill \ncomplex (Belik, 2021). To the west, it is overlain by a sequence of mixed pyroxenite, gabbro, \ndiorite and pegmatite.",
+   "quote": "by the Iron Lake complex, which occurs in the western part of the Property. The complex is exposed for about 8.5 km, in a north-south orientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is underlain by a thick pyroxenite unit, which probably forms the base of the sill complex (Belik, 2021). To the west, it is overlain by a",
    "id": "c-0200",
    "track": 1,
    "censored": false,
@@ -8934,6 +9069,9 @@
      125,
      134
     ]
+   },
+   "quote_cut": {
+    "chars": 482
    }
   },
   {
@@ -9138,7 +9276,7 @@
     "aris": 34595,
     "page": 5
    },
-   "quote": "Iron Lake covers a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity \nto a slightly older granodiorite batholith that has been determined to be Upper Triassic Early \nJurassic. Field relationships support the interpretation that the mafic to ultramafic body, named \nthe Iron Lake Complex, intrudes the granodiorite batholith and presumably also the surrounding \nvolcanic rocks belonging to the Nicola Group.",
+   "quote": "Iron Lake covers a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to a slightly older granodiorite batholith that has been determined to be Upper Triassic Early Jurassic. Field relationships support the interpretation that the mafic to ultramafic body, named the Iron Lake Complex, intrudes the granodiorite batholith and presumably also the surrounding volcanic",
    "id": "c-0205",
    "track": 1,
    "censored": false,
@@ -9159,6 +9297,9 @@
      140,
      142
     ]
+   },
+   "quote_cut": {
+    "chars": 432
    }
   },
   {
@@ -14748,7 +14889,8 @@
     "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
     "checked_by": "claude-opus-5-5",
     "checked_on": "2026-10-15",
-    "note": "The OCR text puts longitude before latitude and reads the degree signs as 'o'. Codex (gpt-6.1-sol), as second reader of the gold, read the same values from the image independently."
+    "note": "The OCR text puts longitude before latitude and reads the degree signs as 'o'. Codex (gpt-6.1-sol), as second reader of the gold, read the same values from the image independently.",
+    "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
    },
    "also_in": [],
    "run": "2026-10-15-r2",
@@ -15681,7 +15823,7 @@
     "aris": 41327,
     "page": 9
    },
-   "quote": "Several styles of mineralization are found on the Property. The Iron Lake occurrence comprises \nmassive sulphide mineralization within ultramafic rocks of the Iron Lake complex, southeast near \nIsland Lake. Semi-massive to massive sulphides were intersected in the 2005-6 drilling program, \nconsisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite.",
+   "quote": "found on the Property. The Iron Lake occurrence comprises massive sulphide mineralization within ultramafic rocks of the Iron Lake complex, southeast near Island Lake. Semi-massive to massive",
    "id": "c-0359",
    "track": 1,
    "censored": false,
@@ -15702,6 +15844,9 @@
      2,
      5
     ]
+   },
+   "quote_cut": {
+    "chars": 373
    }
   },
   {
@@ -15802,7 +15947,7 @@
     "aris": 41327,
     "page": 9
    },
-   "quote": "In the southwest part of the Property are the July and Beer showings. Both are described as \ncopper mineralization within and adjacent to the Iron Lake ultramafic-mafic complex northeast \nof Roger Lake. The July showing is underlain by pyroxenite and mafic gabbro, cut by numerous \ndykes of diorite, monzodiorite and monzonite. The Beer showing comprises scattered occurrences \nof disseminated chalcopyrite and malachite, within highly sheared and fractured diorite, \nmonzodiorite and monzonite of the Iron Lake complex.",
+   "quote": "by numerous dykes of diorite, monzodiorite and monzonite. The Beer showing comprises scattered occurrences of disseminated chalcopyrite and malachite, within highly sheared and fractured diorite, monzodiorite",
    "id": "c-0362",
    "track": 1,
    "censored": false,
@@ -15823,6 +15968,9 @@
      2,
      8
     ]
+   },
+   "quote_cut": {
+    "chars": 515
    }
   },
   {
@@ -15881,7 +16029,7 @@
     "aris": 41327,
     "page": 26
    },
-   "quote": "The Iron Lake occurrence (BC Minfile 092P 132) comprises massive sulphide mineralization within \nultramafic rocks of the Iron Lake complex, southeast near Island Lake. Semi-massive to massive \nsulphides were intersected in the 2005-6 drilling program by Argent Mining Corp, consisting \nmainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite. Holes 05-IL-02 and \n05IL-03 intercepted 1.2 and 6.1 m of massive sulphide, respectively, containing pyrrhotite and \nchalcopyrite.",
+   "quote": "program by Argent Mining Corp, consisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite. Holes 05-IL-02 and 05IL-03 intercepted 1.2 and 6.1 m of massive sulphide, respectively, containing pyrrhotite and chalcopyrite",
    "id": "c-0364",
    "track": 1,
    "censored": false,
@@ -15911,6 +16059,9 @@
      3,
      10
     ]
+   },
+   "quote_cut": {
+    "chars": 485
    }
   },
   {
@@ -16333,7 +16484,7 @@
     "aris": 41327,
     "page": 27
    },
-   "quote": "Recent geological mapping by Belik (2021) has led to the discovery of another area of \nmineralization, about 100 m to the southeast. A high-grade boulder from this zone assayed >1% \nCu and 3,820 ppb Au, and a nearby composite grab from a fracture zone assayed 2,030 ppm Cu \nand 90 ppb Au. Eight coarse-grained intrusive breccia zones up to 50 m wide were identified, \nover an area of about 1 km by 0.5 km, both within and peripheral to the fine-grained diorite unit \n(Belik, 2021).",
+   "quote": "from a fracture zone assayed 2,030 ppm Cu and 90 ppb Au. Eight coarse-grained intrusive breccia zones up to 50 m wide were identified, over an area of about 1 km by 0.5 km, both within and",
    "id": "c-0374",
    "track": 1,
    "censored": false,
@@ -16363,6 +16514,9 @@
      4,
      21
     ]
+   },
+   "quote_cut": {
+    "chars": 476
    }
   },
   {
@@ -16379,7 +16533,7 @@
     "aris": 41327,
     "page": 32
    },
-   "quote": "Hole IL-22-001 encountered the mineralized horizon between 123.48 and 125.87 m, \nwithin a clinopyroxenite-gabbro intrusive breccia characterized by rounded to sub-rounded \nclinopyroxenite fragments, bordered by reaction rims, and suspended within a coarse-grained \ngabbro matrix. Mineralization in the horizon comprised bands and agglomerates of massive \nmagnetite, pyrrhotite, pyrite, hematite and chalcopyrite",
+   "quote": "encountered the mineralized horizon between 123.48 and 125.87 m, within a clinopyroxenite-gabbro intrusive breccia characterized by rounded to sub-rounded clinopyroxenite fragments, bordered by reaction rims, and suspended within a coarse-grained gabbro matrix. Mineralization in the horizon comprised bands and agglomerates of massive magnetite, pyrrhotite, pyrite, hematite and chalcopyrite",
    "id": "c-0375",
    "track": 1,
    "censored": false,
@@ -16399,6 +16553,9 @@
      24,
      27
     ]
+   },
+   "quote_cut": {
+    "chars": 407
    }
   },
   {
@@ -16451,7 +16608,7 @@
     "aris": 41327,
     "page": 33
    },
-   "quote": "It intercepted the horizon between 124.96 to 136.98 m, which comprised \nseveral bands of semi-massive and brecciated to massive pyrrhotite, pyrite, chalcopyrite, \nmagnetite and hematite, up to 1.58 m wide, separated by weakly chlorite-epidote-carbonate \naltered pyroxenite with clots and gashes of pyrrhotite, pyrite and chalcopyrite. Rare, late stage, \ncolloform quartz-carbonate-pyrite veins were observed to cut sections of semi-massive sulphides.",
+   "quote": "the horizon between 124.96 to 136.98 m, which comprised several bands of semi-massive and brecciated to massive pyrrhotite, pyrite, chalcopyrite, magnetite and hematite, up to 1.58 m wide, separated by weakly chlorite-epidote-carbonate altered",
    "id": "c-0377",
    "track": 1,
    "censored": false,
@@ -16471,6 +16628,9 @@
      22,
      29
     ]
+   },
+   "quote_cut": {
+    "chars": 446
    }
   },
   {
@@ -16672,7 +16832,7 @@
     "aris": 41327,
     "page": 34
    },
-   "quote": "It cut \nseveral zones of semi-massive to massive mineralization between 196.05 to 204.48 m, \ncomprising primarily pyrrhotite with lesser pyrite, magnetite and chalcopyrite, as well as a \nsecond, discrete zone of massive magnetite between 225.69 and 226.05 m. Quartz-carbonate \nveins and veinlets were developed in the brecciated clinopyroxenite between the individual \nsulphide zones, along with a gabbro matrix hosting clots and disseminations of pyrite and \npyrrhotite.",
+   "quote": "It cut several zones of semi-massive to massive mineralization between 196.05 to 204.48 m, comprising primarily pyrrhotite with lesser pyrite, magnetite and chalcopyrite, as well as a second, discrete zone of massive magnetite between 225.69 and 226.05 m. Quartz-carbonate veins and veinlets were developed in the brecciated clinopyroxenite between the individual sulphide zones, along with a",
    "id": "c-0383",
    "track": 1,
    "censored": false,
@@ -16693,6 +16853,9 @@
      23,
      35
     ]
+   },
+   "quote_cut": {
+    "chars": 465
    }
   },
   {
@@ -16930,7 +17093,7 @@
     "aris": 41327,
     "page": 38
    },
-   "quote": "Two minor occurrences of sulphide were observed in the field. One is located along L900 at around \nUTM 646143E with minor pyrite and chalcopyrite is a small, andesitic creek outcrop, near a small, \nmapped, quartz diorite intrusion. The other is at the east end of L1700N, exposed along a small \nflowing creek, hornfels altered andesite flows and interbedded dark shale contain a minor \nstockwork of pyritic veinlets and fracture fillings with trace chalcopyrite.",
+   "quote": "Two minor occurrences of sulphide were observed in the field. One is located along L900 at around UTM 646143E with minor pyrite and chalcopyrite is a small, andesitic creek outcrop, near a small, mapped, quartz diorite intrusion. The other is at the east end of L1700N, exposed along a small flowing creek, hornfels altered andesite flows and interbedded dark shale contain a minor stockwork of",
    "id": "c-0390",
    "track": 1,
    "censored": false,
@@ -16950,6 +17113,9 @@
      42,
      46
     ]
+   },
+   "quote_cut": {
+    "chars": 458
    }
   },
   {
@@ -17187,7 +17353,7 @@
     "aris": 41800,
     "page": 27
    },
-   "quote": "Shear-hosted Cu-Au mineralization within quartz-carbonate veins occurs at the Cate showing \n(BC Minfile 092P 182), in the southeast part of the Property, northeast of Succour Lake. The \narea is underlain by volcaniclastic rocks of the Nicola Group, consisting of sandstone, breccia, \nsiltstone and argillite, locally cut by diorite, gabbroic and feldspar porphyritic dykes. The \nshowing was discovered in 1993, consisting of a 2-cm wide sulphide vein, consisting of \npyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear \nzone.",
+   "quote": "Lake. The area is underlain by volcaniclastic rocks of the Nicola Group, consisting of sandstone, breccia, siltstone and argillite, locally cut by diorite, gabbroic and feldspar porphyritic dykes. The showing was discovered in 1993, consisting of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
    "id": "c-0397",
    "track": 1,
    "censored": false,
@@ -17217,6 +17383,9 @@
      52,
      57
     ]
+   },
+   "quote_cut": {
+    "chars": 564
    }
   },
   {
@@ -17526,7 +17695,7 @@
     "aris": 41800,
     "page": 10
    },
-   "quote": "Hole IL-23-026, was drilled towards IL-23-024 to target the up-dip projection of the massive \nsulphides intersected in IL-23-024. A 30 cm massive sulphide layer was intersected at 216 m.",
+   "quote": "was drilled towards IL-23-024 to target the up-dip projection of the massive sulphides intersected in IL-23-024. A 30 cm massive sulphide layer was intersected at 216 m",
    "id": "c-0405",
    "track": 1,
    "censored": false,
@@ -17546,6 +17715,9 @@
      64,
      67
     ]
+   },
+   "quote_cut": {
+    "chars": 185
    }
   },
   {
@@ -17598,7 +17770,7 @@
     "aris": 41800,
     "page": 26
    },
-   "quote": "The Iron Lake occurrence (BC Minfile 092P 132) comprises massive sulphide mineralization \nwithin ultramafic rocks of the Iron Lake complex, southeast near Island Lake. Semi-massive to \nmassive sulphides were intersected in the 2005-6 drilling program by Argent Mining Corp, \nconsisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite. Holes 05-\nIL-02 and 05IL-03 intercepted 1.2 and 6.1 m of massive sulphide, respectively, containing \npyrrhotite and chalcopyrite.",
+   "quote": "program by Argent Mining Corp, consisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite. Holes 05- IL-02 and 05IL-03 intercepted 1.2 and 6.1 m of massive sulphide, respectively, containing pyrrhotite and chalcopyrite",
    "id": "c-0407",
    "track": 1,
    "censored": false,
@@ -17628,6 +17800,9 @@
      65,
      69
     ]
+   },
+   "quote_cut": {
+    "chars": 486
    }
   },
   {
@@ -17872,7 +18047,7 @@
     "aris": 40980,
     "page": 9
    },
-   "quote": "Several styles of mineralization are found on the Property. The Iron Lake occurrence comprises \nmassive sulphide mineralization within ultramafic rocks of the Iron Lake complex, southeast \nnear Island Lake. Semi-massive to massive sulphides were intersected in the 2005-6 drilling \nprogram by Argent Mining Corp, consisting mainly of pyrrhotite and chalcopyrite, within \nhornblendite and peridotite.",
+   "quote": "found on the Property. The Iron Lake occurrence comprises massive sulphide mineralization within ultramafic rocks of the Iron Lake complex, southeast near Island Lake. Semi-massive to massive",
    "id": "c-0414",
    "track": 1,
    "censored": false,
@@ -17893,6 +18068,9 @@
      81,
      85
     ]
+   },
+   "quote_cut": {
+    "chars": 395
    }
   },
   {
@@ -17946,7 +18124,7 @@
     "aris": 40980,
     "page": 9
    },
-   "quote": "Shear-hosted Cu-Au mineralization within quartz-carbonate veins occurs at the Cate showing, \nin the southeast part of the Property, northeast of Succour Lake. The showing consists of a 2-\ncm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a \nsteep, north-northeast striking shear zone.",
+   "quote": "the Property, northeast of Succour Lake. The showing consists of a 2- cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
    "id": "c-0416",
    "track": 1,
    "censored": false,
@@ -17972,6 +18150,9 @@
      81,
      87
     ]
+   },
+   "quote_cut": {
+    "chars": 326
    }
   },
   {
@@ -17988,7 +18169,7 @@
     "aris": 40980,
     "page": 9
    },
-   "quote": "The Lisa showing is about 1.3 km south-southwest of the Cate showing, roughly along strike \nfrom it. The showing comprises rubble of mineralized quartz–ankerite vein material having \nanomalous gold values.",
+   "quote": "Lisa showing is about 1.3 km south-southwest of the Cate showing, roughly along strike from it. The showing comprises rubble of mineralized quartz–ankerite vein material having anomalous gold values",
    "id": "c-0417",
    "track": 1,
    "censored": false,
@@ -18014,6 +18195,9 @@
      81,
      88
     ]
+   },
+   "quote_cut": {
+    "chars": 203
    }
   },
   {
@@ -18490,7 +18674,7 @@
     "aris": 34595,
     "page": 16
    },
-   "quote": "Two styles of mineralization are currently the focus of exploration in the Iron Lake Ultramafic \nIntrusive Complex; the first being disseminated sulfides containing copper, gold and platinum \ngroup metals similar to the mineralization which has been found as float in the vicinity of \n645784E, 5757070N (NAD 83) and the second as massive sulfide mineralization discovered 250 \nmetres to the southwest by drilling airborne conductors.",
+   "quote": "Two styles of mineralization are currently the focus of exploration in the Iron Lake Ultramafic Intrusive Complex; the first being disseminated sulfides containing copper, gold and platinum group metals similar to the mineralization which has been found as float in the vicinity of 645784E, 5757070N (NAD 83) and the second as massive sulfide mineralization discovered 250 metres to the",
    "id": "c-0429",
    "track": 1,
    "censored": false,
@@ -18511,6 +18695,9 @@
      109,
      112
     ]
+   },
+   "quote_cut": {
+    "chars": 429
    }
   },
   {
@@ -18701,7 +18888,7 @@
     "aris": 34595,
     "page": 5
    },
-   "quote": "Two styles of magmatic sulfide mineralization present opportunities for discovery at Iron Lake. \nThe first being disseminated sulfide with economically significant values of copper, gold, \nplatinum and palladium; and the second being massive sulfide with economically significant \nvalues in copper, nickel and cobalt. A hybrid of the two styles of mineralization with the full suite \nof elements is also possible. Sulfide minerals in the disseminated style of mineralization are \naccompanied with 10% to 40% magnetite.",
+   "quote": "sulfide with economically significant values of copper, gold, platinum and palladium; and the second being massive sulfide with economically significant values in copper, nickel and cobalt. A hybrid of the two styles of mineralization with the full suite of elements is also possible. Sulfide minerals in the disseminated style of mineralization are accompanied with 10% to 40% magnetite",
    "id": "c-0434",
    "track": 1,
    "censored": false,
@@ -18722,6 +18909,9 @@
      105,
      117
     ]
+   },
+   "quote_cut": {
+    "chars": 513
    }
   },
   {
@@ -18738,7 +18928,7 @@
     "aris": 34595,
     "page": 11
    },
-   "quote": "A massive sulfide intercept of 1.2 metres was obtained in the hole \ntargeting the first electromagnetic anomaly and an aggregate intercept of 6.1 metres of massive \nsulfide was obtained (within a 17-metre interval that was estimated to consist of greater than 60% \nsulfide) in the hole targeting the second electromagnetic anomaly.  The massive sulfide intercepts \nwere largely pyrrhotite with lesser chalcopyrite",
+   "quote": "intercept of 1.2 metres was obtained in the hole targeting the first electromagnetic anomaly and an aggregate intercept of 6.1 metres of massive sulfide was obtained (within a 17-metre interval that was estimated to consist of greater than 60% sulfide) in the hole targeting the second electromagnetic anomaly. The massive sulfide intercepts were largely pyrrhotite with lesser chalcopyrite",
    "id": "c-0435",
    "track": 1,
    "censored": false,
@@ -18759,6 +18949,9 @@
      106,
      118
     ]
+   },
+   "quote_cut": {
+    "chars": 408
    }
   },
   {
@@ -19256,7 +19449,7 @@
     "aris": 36430,
     "page": 17
    },
-   "quote": "Exploration on the original Iron Lake property in the 1970’s identified low grade \nporphyry copper mineralization. Work since then has identified a number of areas of \nmineralization on the Iron Lake property including disseminated gold, platinum and \npalladium mineralization, magmatic massive sulfide in the Central Zone and auriferous \nquartz veins in the southeast part (Succour Lake area) of the property targeted in the \n2016 programme.",
+   "quote": "areas of mineralization on the Iron Lake property including disseminated gold, platinum and palladium mineralization, magmatic massive sulfide in the Central Zone and auriferous quartz veins in the southeast part (Succour Lake area) of the property",
    "id": "c-0448",
    "track": 1,
    "censored": false,
@@ -19282,6 +19475,9 @@
      137,
      139
     ]
+   },
+   "quote_cut": {
+    "chars": 437
    }
   },
   {
@@ -19953,7 +20149,7 @@
     "aris": 36430,
     "page": 4
    },
-   "quote": "A number of different styles of mineralization present opportunities for discovery at \nIron Lake. Magmatic disseminated sulfide with economically significant values of \ncopper, gold, platinum and palladium is known as is massive sulfide with economically \nsignificant values in copper, nickel and cobalt. A hybrid of the two styles of \nmineralization with the full suite of elements is also possible. A third mineralization \nstyle, auriferous quartz veins, was the target of the 2016 exploration on a number of \nnew claims staked in the southeast part of the area.",
+   "quote": "of copper, gold, platinum and palladium is known as is massive sulfide with economically significant values in copper, nickel and cobalt. A hybrid of the two styles of mineralization with the full suite of elements is also possible. A third mineralization style, auriferous quartz veins, was the target of the 2016 exploration on a number of new claims staked in the southeast part of the area",
    "id": "c-0464",
    "track": 1,
    "censored": false,
@@ -19979,6 +20175,9 @@
      157,
      162
     ]
+   },
+   "quote_cut": {
+    "chars": 558
    }
   },
   {
@@ -19995,7 +20194,7 @@
     "aris": 36807,
     "page": 19
    },
-   "quote": "Exploration on the original Iron Lake property in the 1970’s identified low grade \nporphyry copper mineralization. Work since then has identified a number of areas of \nmineralization on the Iron Lake property including disseminated gold, platinum and \npalladium mineralization, magmatic massive sulfide in the Central Zone and auriferous \nquartz veins in the southeast part (Succour Lake area) of the property targeted in the \n2016 programme.",
+   "quote": "in the 1970’s identified low grade porphyry copper mineralization. Work since then has identified a number of areas of mineralization on the Iron Lake property including disseminated gold, platinum and palladium mineralization, magmatic massive sulfide in the Central Zone and auriferous quartz veins in the southeast part (Succour Lake area) of the property targeted in the 2016 programme",
    "id": "c-0465",
    "track": 1,
    "censored": false,
@@ -20021,6 +20220,9 @@
      163,
      166
     ]
+   },
+   "quote_cut": {
+    "chars": 437
    }
   },
   {
@@ -21025,7 +21227,7 @@
     "aris": 38640,
     "page": 14
    },
-   "quote": "Exploration on the original Iron Lake property in the 1970’s identified low grade porphyry \ncopper mineralization. Work since then has identified a number of areas and types of \nmineralization on the Iron Lake property including disseminated gold, platinum and palladium \nmineralization and magmatic massive sulfide in the central area, and auriferous quartz veins in \nthe southeast part of the property.",
+   "quote": "a number of areas and types of mineralization on the Iron Lake property including disseminated gold, platinum and palladium mineralization and magmatic massive sulfide in the central area, and auriferous quartz veins in the southeast part of the property",
    "id": "c-0489",
    "track": 1,
    "censored": false,
@@ -21046,6 +21248,9 @@
      200,
      203
     ]
+   },
+   "quote_cut": {
+    "chars": 400
    }
   },
   {
@@ -21200,7 +21405,7 @@
     "aris": 38640,
     "page": 14
    },
-   "quote": "This 17 metre \ninterval consisted a number of discrete massive sulfide beds within pyroxenite with strongly \ndisseminated sulfides, locally to 60%. The entire 17 metre interval averaged 0.34% copper, \n0.04% nickel, which included a 1.4 metre sample which returned 0.95% copper, 0.09% nickel \nand 0.08% cobalt. The sulfides encountered were mostly pyrrhotite with lesser chalcopyrite.",
+   "quote": "copper, 0.04% nickel, which included a 1.4 metre sample which returned 0.95% copper, 0.09% nickel and 0.08% cobalt. The sulfides encountered were mostly pyrrhotite with lesser chalcopyrite",
    "id": "c-0493",
    "track": 1,
    "censored": false,
@@ -21221,6 +21426,9 @@
      200,
      207
     ]
+   },
+   "quote_cut": {
+    "chars": 379
    }
   },
   {
@@ -21665,7 +21873,8 @@
     "image_reads": "MINING DIVISION: Clinton",
     "checked_by": "claude-opus-5-5",
     "checked_on": "2026-10-15",
-    "note": ""
+    "note": "",
+    "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
    },
    "also_in": [
     {
@@ -21953,7 +22162,7 @@
     "aris": 34595,
     "page": 22
    },
-   "quote": "An opportunity currently exists to complete follow up to the \nmassive sulfide discovery of 2005 with more drilling and at the same time to complete an initial \ndrill test of several discrete and well defined induced polarization anomalies outlined in 2011 and \n2012. Holes A, B and H shown on the accompanying Recommendations Map are designed to test \nthe 2005 massive sulfide discovery down dip and in the case of proposed hole B, along strike.",
+   "quote": "An opportunity currently exists to complete follow up to the massive sulfide discovery of 2005 with more drilling and at the same time to complete an initial drill test of several discrete and well defined induced polarization anomalies outlined in 2011 and 2012. Holes A, B and H shown on the accompanying Recommendations Map are designed to test the 2005 massive sulfide discovery down dip and",
    "id": "c-0510",
    "track": 1,
    "censored": false,
@@ -21974,6 +22183,9 @@
      2,
      5
     ]
+   },
+   "quote_cut": {
+    "chars": 441
    }
   },
   {
@@ -22555,7 +22767,7 @@
     "aris": 41800,
     "page": 9
    },
-   "quote": "A drilling azimuth of northeast is recommended to better intersect the \nmassive sulphides. \n \nThe Iron Lake complex in the northwest conductive zone produced two large, flat-lying, low \nconductivity plates. A single hole drilled previously into the conductive zone did not intersect a \nconductive source. It is possible that the hole did not go deep enough, and a deeper drill hole \ntargeting both the conductive zone and high magnetic susceptibility is recommended.",
+   "quote": "the massive sulphides. The Iron Lake complex in the northwest conductive zone produced two large, flat-lying, low conductivity plates. A single hole drilled previously into the conductive zone did not intersect a conductive source. It is possible that the hole did not go deep enough, and a deeper drill hole targeting both the conductive zone and high magnetic susceptibility is recommended",
    "id": "c-0525",
    "track": 1,
    "censored": false,
@@ -22576,6 +22788,9 @@
      33,
      40
     ]
+   },
+   "quote_cut": {
+    "chars": 459
    }
   },
   {

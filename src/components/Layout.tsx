@@ -48,10 +48,15 @@ export function DemoLayout({ title, children }: { title: string; children: React
             page link opens the report on ARIS.
           </p>
           <p>
-            Built by Abdallah Safi.{' '}
-            <a href={LINKS.repo} target="_blank" rel="noopener noreferrer">
-              Code on GitHub
-            </a>
+            Built by Abdallah Safi.
+            {LINKS.repo && (
+              <>
+                {' '}
+                <a href={LINKS.repo} target="_blank" rel="noopener noreferrer">
+                  Code on GitHub
+                </a>
+              </>
+            )}
           </p>
         </div>
       </footer>

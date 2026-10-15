@@ -2,6 +2,89 @@
  "run": "2026-10-15-r2",
  "answers": [
   {
+   "id": "q08",
+   "category": "answerable",
+   "question": "What further work does the most recent report recommend?",
+   "answer": "Report 41800 (November 30, 2023) recommends drilling the Discovery Zone toward the northeast, drilling a deeper hole into the northwest conductive zone that targets the conductive zone and high magnetic susceptibility, and doing more work to test the Discovery Zone along strike and to follow up on significant drill intercepts elsewhere on the property.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0023",
+    "c-0024",
+    "c-0025",
+    "c-0026",
+    "c-0027",
+    "c-0028"
+   ],
+   "rejected": [
+    "eval-q08-006",
+    "eval-q08-007"
+   ],
+   "session": "eval-q08",
+   "passed": false,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Drill on a northeast azimuth",
+     "met": false
+    },
+    {
+     "label": "A deeper hole into the northwest conductive zone",
+     "met": false
+    },
+    {
+     "label": "Test the Discovery Zone along strike and follow up intercepts elsewhere (p39)",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [
+    "missing_value"
+   ],
+   "reason": "Missing from the answer: Drill on a northeast azimuth; A deeper hole into the northwest conductive zone."
+  },
+  {
+   "id": "q15",
+   "category": "conflict",
+   "question": "Which NTS map area is the Iron Lake property on?",
+   "answer": "Most reports put the Iron Lake property on NTS 092P096 (34595, 36430, 36807 and 38640), but the summary form in report 34595 says 093N034, so the sources disagree; report 41327 gives BCGS 092P.086, 087, 096, 097 instead.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0036",
+    "c-0037",
+    "c-0038",
+    "c-0039",
+    "c-0040",
+    "c-0041"
+   ],
+   "rejected": [],
+   "session": "eval-q15",
+   "passed": false,
+   "refusal": false,
+   "items": [
+    {
+     "label": "092P",
+     "met": true
+    },
+    {
+     "label": "34595 title page: 093N034",
+     "met": true
+    },
+    {
+     "label": "36807 title page: 093N043",
+     "met": false
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [
+    "missed_disagreement"
+   ],
+   "reason": "Missing from the answer: 36807 title page: 093N043."
+  },
+  {
    "id": "q01",
    "category": "answerable",
    "question": "How many metres of diamond drilling were completed on the Iron Lake property in 2022?",
@@ -27,7 +110,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   },
   {
    "id": "q02",
@@ -80,7 +163,7 @@
    ],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value and the required caveat."
+   "reason": "The answer states every expected value and the required caveat."
   },
   {
    "id": "q03",
@@ -107,7 +190,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   },
   {
    "id": "q04",
@@ -133,7 +216,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   },
   {
    "id": "q05",
@@ -168,7 +251,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   },
   {
    "id": "q06",
@@ -195,7 +278,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   },
   {
    "id": "q07",
@@ -222,48 +305,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
-  },
-  {
-   "id": "q08",
-   "category": "answerable",
-   "question": "What further work does the most recent report recommend?",
-   "answer": "Report 41800 (November 30, 2023) recommends drilling the Discovery Zone toward the northeast, drilling a deeper hole into the northwest conductive zone that targets the conductive zone and high magnetic susceptibility, and doing more work to test the Discovery Zone along strike and to follow up on significant drill intercepts elsewhere on the property.",
-   "answer_missing": false,
-   "refused": false,
-   "claims": [
-    "c-0023",
-    "c-0024",
-    "c-0025",
-    "c-0026",
-    "c-0027",
-    "c-0028"
-   ],
-   "rejected": [
-    "eval-q08-006",
-    "eval-q08-007"
-   ],
-   "session": "eval-q08",
-   "passed": true,
-   "refusal": false,
-   "items": [
-    {
-     "label": "Drill on a northeast azimuth",
-     "met": true
-    },
-    {
-     "label": "A deeper hole into the northwest conductive zone",
-     "met": true
-    },
-    {
-     "label": "Test the Discovery Zone along strike and follow up intercepts elsewhere (p39)",
-     "met": true
-    }
-   ],
-   "caveats": [],
-   "unbacked_numbers": [],
-   "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   },
   {
    "id": "q09",
@@ -370,7 +412,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   },
   {
    "id": "q14",
@@ -400,41 +442,7 @@
    "caveats": [],
    "unbacked_numbers": [],
    "failures": [],
-   "reason": "Has every expected value."
-  },
-  {
-   "id": "q15",
-   "category": "conflict",
-   "question": "Which NTS map area is the Iron Lake property on?",
-   "answer": "Most reports put the Iron Lake property on NTS 092P096 (34595, 36430, 36807 and 38640), but the summary form in report 34595 says 093N034, so the sources disagree; report 41327 gives BCGS 092P.086, 087, 096, 097 instead.",
-   "answer_missing": false,
-   "refused": false,
-   "claims": [
-    "c-0036",
-    "c-0037",
-    "c-0038",
-    "c-0039",
-    "c-0040",
-    "c-0041"
-   ],
-   "rejected": [],
-   "session": "eval-q15",
-   "passed": true,
-   "refusal": false,
-   "items": [
-    {
-     "label": "092P",
-     "met": true
-    },
-    {
-     "label": "093N",
-     "met": true
-    }
-   ],
-   "caveats": [],
-   "unbacked_numbers": [],
-   "failures": [],
-   "reason": "Has every expected value."
+   "reason": "The answer states every expected value."
   }
  ]
 }

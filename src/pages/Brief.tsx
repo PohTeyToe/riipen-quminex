@@ -4,14 +4,15 @@ import { ChevronIcon } from '../components/Icons'
 import schemaJson from '../../agent/claim.schema.json'
 import { briefExamples } from '../data/run'
 import { useHashScroll } from '../router'
+import { LINKS } from '../links'
 
 const DELIVERABLES: [string, string, string][] = [
   ['Track 1 agent prototype', 'A field-by-field agent with four tools, run offline', 'Live runs on your reports, your framework'],
   ['Data, tool and agent framework package', 'Corpus loader, page search, claim schema, quote checker, disagreement rules, with tests', 'Packaging, tools for tracks 2 and 3'],
-  ['Eval scripts', '15 questions, four scores, every miss listed', 'A larger set with answers your geologists write'],
+  ['Eval scripts', '15 questions and a scored summary, every miss listed', 'A larger set with answers your geologists write'],
   ['Technical report with hallucination risks', 'Failure counts by type from a real run', 'The written report'],
   ['Presentation', 'Not started', 'Not started'],
-  ['Synthesis into property evaluations', 'One claim format; disagreements found by code', 'Claims from tracks 2 and 3'],
+  ['Synthesis into property evaluations', 'A cited summary written from the card. Code checks its numbers and that it gives every side of a disagreement', 'Claims from tracks 2 and 3'],
 ]
 
 const PLAN: [string, string, string][] = [
@@ -236,7 +237,18 @@ export default function BriefPage() {
         </div>
         )}
         <p className="small muted">
-          {keysOpen ? 'Keys marked ? are optional. ' : ''}The full schema is <span className="mono">agent/claim.schema.json</span> in the repo.
+          {keysOpen ? 'Keys marked ? are optional. ' : ''}The full schema is <span className="mono">agent/claim.schema.json</span>
+          {LINKS.repo ? (
+            <>
+              {' '}in the{' '}
+              <a className="text-link" href={`${LINKS.repo}/blob/main/agent/claim.schema.json`} target="_blank" rel="noopener noreferrer">
+                repo
+              </a>
+              .
+            </>
+          ) : (
+            ' in the code.'
+          )}
         </p>
       </section>
 

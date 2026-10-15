@@ -9,7 +9,9 @@ import answersJson from '../../data/eval/answers.json'
 import goldJson from '../../data/eval/gold.json'
 import scoresJson from '../../data/eval/scores.json'
 import changesJson from '../../data/eval/changes.json'
-import myReadJson from '../../data/eval/my_read.json'
+import missesNoteJson from '../../data/eval/misses_note.json'
+import summaryJson from '../../data/summary.json'
+import summaryReviewJson from '../../data/eval/summary_review.json'
 import searchLogJson from '../../data/eval/search_log.json'
 import secondReaderJson from '../../data/eval/second_reader.json'
 import type {
@@ -22,6 +24,7 @@ import type {
   Rejected,
   Score,
   SearchLog,
+  Summary,
   TraceStep,
 } from './types'
 
@@ -72,6 +75,8 @@ export const scores = scoresJson as unknown as {
   correct_refusals: Score
   false_refusals: Score
   disagreements_flagged: Score
+  summary_points?: Score
+  summary_sentences?: Score
   failure_counts: FailureCount[]
   failure_counts_note: string
 }
@@ -84,7 +89,9 @@ export const changes = changesJson as unknown as {
   after_run_2: Change[]
 }
 
-export const myRead = myReadJson as unknown as { draft: boolean; sentences: string[] }
+export const missesNote = missesNoteJson as unknown as { written_by: string; sentences: string[] }
+export const summary = summaryJson as unknown as Summary
+export const summaryReview = summaryReviewJson as unknown as { written_by: string; checked: string; notes: { sentence: string; note: string }[] }
 export const searchLog = new Map((searchLogJson as unknown as SearchLog[]).map((s) => [s.id, s]))
 export const secondReader = secondReaderJson as unknown as {
   reader: string
@@ -164,7 +171,9 @@ export function checkWords(c: Claim): { text: string; scanned: boolean; imageRea
     }
     if (check.image_check === 'confirmed') {
       return {
-        text: `Scanned page. Code can't read it reliably, so it was checked against the page image by Claude (${check.checked_by}) on ${check.checked_on}.`,
+        text:
+          `Scanned page. Code can't read it reliably, so Claude (${check.checked_by}) checked it against the page image on ${check.checked_on}.` +
+          (check.second_read_by ? ` ${check.second_read_by} read the same page image separately and got the same values.` : ''),
         scanned: true,
         imageReads: check.image_reads,
       }

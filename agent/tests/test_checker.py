@@ -161,20 +161,92 @@ def test_il_22_011_groups_and_arithmetic_flags_the_text():
                          claim("text", 41327, 34, Q34, V34, "interval")])
     assert len(g["groups"]) == 1
     grp = g["groups"][0]
-    assert grp["disagree"]
-    assert sorted((s["width_m"], s["claims"]) for s in grp["sides"]) == [("2.07", ["table"]), ("2.36", ["text"])]
+    assert grp["disagree"] and grp["disagree_on"] == ["width"]
+    assert sorted(s["claims"] for s in grp["sides"]) == [["table"], ["text"]]
     assert grp["arithmetic"]["table"]["ok"]
     assert grp["arithmetic"]["text"]["line"] == "177.53 − 175.36 = 2.17 m. The report states 2.36 m."
 
 
-def test_sub_interval_does_not_group():
+# 41800: Table 4 on p37 and the text on p10 give the same IL-23-25 interval with different copper.
+V37_25 = {"hole": "IL-23-25", "from_m": "318.25", "to_m": "342.29", "width_m": "24.04",
+          "grades": {"Cu (%)": "0.002", "Ni (%)": "0.100", "Au (ppb)": "7", "Pt (ppb)": "21", "Pd (ppb)": "<5"}}
+V10_25 = {"hole": "IL-23-025", "from_m": "318.3", "to_m": "342.3", "width_m": "24.04",
+          "grades": {"Ni (ppm)": "1,002", "Cu (ppm)": "6"}}
+Q37_25 = ("IL-23-25 \n16.47 \n750.00 \n733.53 \n0.002 \n0.030 \n5 \n29 \n10 \n"
+          "Including \n318.25 \n342.29 \n24.04 \n0.002 \n0.100 \n7 \n21 \n<5")
+Q10_25 = ("hole IL-23-025 predominantly intersected magnetite-bearing \npyroxenite. No massive sulphide intervals "
+          "were encountered. The strongest interval returned \n24.04 m of 1,002 ppm nickel, with 6 ppm copper, "
+          "from 318.3 m to 342.3 m.")
+
+
+def test_same_interval_with_different_copper_is_a_disagreement():
+    g = group_intervals([claim("table", 41800, 37, Q37_25, V37_25, "interval"),
+                         claim("text", 41800, 10, Q10_25, V10_25, "interval")])
+    assert len(g["groups"]) == 1
+    grp = g["groups"][0]
+    assert grp["disagree_on"] == ["Cu"]
+    cu = next(x for x in grp["compared"] if x["what"] == "Cu")
+    assert cu["line"] == "Cu: 0.002% and 6 ppm (0.0006%) differ by 0.0014%. Rounding allows 0.0005%."
+    ni = next(x for x in grp["compared"] if x["what"] == "Ni")
+    assert ni["agree"]
+
+
+def test_sub_interval_is_listed_under_its_parent():
     main = {"hole": "IL-22-006", "from_m": "123.82", "to_m": "136.98", "width_m": "13.16",
             "grades": {"Cu (%)": "0.18", "Ni (%)": "0.027"}}
     sub = {"hole": "IL-22-006", "from_m": "123.82", "to_m": "133.02", "width_m": "9.20",
            "grades": {"Cu (%)": "0.21", "Ni (%)": "0.030"}}
     g = group_intervals([claim("main", 41327, 33, "x", main, "interval"),
-                         claim("sub", 41327, 33, "y", sub, "interval")])
+                         claim("sub", 41327, 33, "IL-22-006 ... including 123.82 133.02 9.20", sub, "interval")])
     assert len(g["groups"]) == 2 and not any(x["disagree"] for x in g["groups"])
+    sub_g = next(x for x in g["groups"] if x["claims"] == ["sub"])
+    assert sub_g["inside"] == "main" and sub_g["inside_word"] == "including"
+
+
+def test_whole_hole_composite_is_parent_of_both_sources_of_its_including_interval():
+    whole = {"hole": "IL-23-25", "from_m": "16.47", "to_m": "750.00", "width_m": "733.53",
+             "grades": {"Cu (%)": "0.002", "Ni (%)": "0.030"}}
+    g = group_intervals([claim("whole", 41800, 37, "IL-23-25 16.47 750.00", whole, "interval"),
+                         claim("table", 41800, 37, Q37_25, V37_25, "interval"),
+                         claim("text", 41800, 10, Q10_25, V10_25, "interval")])
+    assert sorted(x["claims"] for x in g["groups"]) == [["table", "text"], ["whole"]]
+    inner = next(x for x in g["groups"] if x["claims"] == ["table", "text"])
+    assert inner["inside"] == "whole" and inner["row"] == "table"
+
+
+# ---------------------------------------------------------------- grades sit with their element
+
+def test_table_grades_must_sit_in_their_column():
+    v = {"hole": "IL-23-024", "from_m": "569.00", "to_m": "578.46", "width_m": "9.46",
+         "grades": {"Cu (%)": "0.42", "Ni (%)": "0.034", "Au (ppb)": "29"}}
+    q = "IL-23-024 \n569.00 \n578.46 \n9.46 \n0.42 \n0.034 \n29 \n13 \n31"
+    assert check_claim("interval", v, 41800, 37, q)["accepted"]
+    swapped = v | {"grades": {"Cu (%)": "0.034", "Ni (%)": "0.42", "Au (ppb)": "29"}}
+    r = check_claim("interval", swapped, 41800, 37, q)
+    assert not r["accepted"] and r["failure"] == "grade_not_with_element"
+    assert "the Cu column of this row reads 0.42" in r["reason"]
+    wrong_unit = v | {"grades": {"Cu (ppm)": "0.42"}}
+    assert check_claim("interval", wrong_unit, 41800, 37, q)["failure"] == "grade_not_with_element"
+
+
+def test_a_number_never_matches_its_censored_form():
+    q = "IL-22-011\n175.46 \n177.53\n2.07 \n0.30\n0.049\n10\n<10\n<10"
+    ok = {"hole": "IL-22-011", "from_m": "175.46", "to_m": "177.53", "width_m": "2.07", "grades": {"Pt (ppb)": "<10"}}
+    assert check_claim("interval", ok, 41327, 33, q)["accepted"]
+    bad = ok | {"grades": {"Pt (ppb)": "10"}}
+    r = check_claim("interval", bad, 41327, 33, q)
+    assert not r["accepted"] and "the Pt column of this row reads <10" in r["reason"]
+    row = "including\n123.82 \n133.02\n9.20 \n0.21\n0.030\n<10\n29\n<10"
+    assert check_claim("value", "29", 41327, 33, row)["accepted"]
+    assert check_claim("value", "10", 41327, 33, row)["failure"] == "value_not_in_quote"
+
+
+def test_sentence_grades_must_sit_next_to_their_element():
+    assert check_claim("interval", V10_25, 41800, 10, Q10_25)["accepted"]
+    swapped = V10_25 | {"grades": {"Ni (ppm)": "6", "Cu (ppm)": "1,002"}}
+    r = check_claim("interval", swapped, 41800, 10, Q10_25)
+    assert not r["accepted"] and r["failure"] == "grade_not_with_element"
+    assert check_claim("interval", V34, 41327, 34, Q34)["accepted"]
 
 
 def test_ppm_and_percent_grades_group_at_stated_precision():

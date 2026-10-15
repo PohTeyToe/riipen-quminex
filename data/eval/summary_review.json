@@ -1,0 +1,19 @@
+{
+ "summary": "2026-10-15-s2",
+ "written_by": "Claude (claude-opus-5-5), the data agent, after the summary session, by reading each kept sentence against the quotes it cites and, where a quote left it unclear, the report page. Not a geologist.",
+ "checked": "All 10 kept sentences. Every number matched its cited quote, as code had already checked. Three sentences have wording their cited quotes don't support exactly; the notes say how.",
+ "notes": [
+  {
+   "sentence": "s04",
+   "note": "The cited 40980 p2 form gives 48.3 line-km without saying which survey it was. The report's text (40980 p8, p31, p42) says it was the IP survey on three grids, but the summary doesn't cite those pages."
+  },
+  {
+   "sentence": "s10",
+   "note": "IL-22-20 is one table row whose stated width doesn't match its own depths, not two sources disagreeing."
+  },
+  {
+   "sentence": "s11",
+   "note": "\"The other reports\" includes 36807's own p3 and p9, which agree with the rest, and the 092P pages include 34595's own p3. 36807 p1 also gives 093N043; no session claimed it, so neither the card nor this sentence has it."
+  }
+ ]
+}

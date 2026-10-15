@@ -324,9 +324,9 @@
   "60"
  ],
  "post_processing_hashes": {
-  "rules.py": "74a005ab516cc08afcfe26c2b4b6fa7e97192e5071f664dea8c928f9e936ed1d",
-  "score.py": "ffc1273b8618e291c3a264180b28593f910062e76a75e79a1f2929f62536effe",
-  "build_data.py": "0d47c901c077d7801f5fce1c34ff47b9c099be7f0bc293f182c800fac790257a"
+  "rules.py": "37016e4967007126c19ffa3a27f3bb91a6db2a8e149b7849fff50979111f6ec8",
+  "score.py": "ae1d0f3454542e8ab5793cafb5c104170b06dcb33c006cc576d8fc9290bb19c8",
+  "build_data.py": "1e1c5908c1725b24bf93b7299cfe105218c077f799a9b85b0bd7034cbadd7ce3"
  },
  "changes_after_run_2": [
   {
@@ -340,6 +340,47 @@
   {
    "what": "Gold answer for q02: added Au 29 ppb, Pt 13 ppb and Pd 31 ppb from Table 4 as expected values.",
    "why": "The second reader's pass on the final gold said the answer to a question about grades was incomplete without them. Confirmed on 41800 p37. The q02 verdict is unchanged; the agent's answer already had them."
+  },
+  {
+   "what": "The checker got stricter. A number no longer matches where the quote puts < or > in front of it, and each drill grade must sit with its own element: in its column of the table row, or next to its name in a sentence. Every claim from the run was checked again; none changed.",
+   "why": "Review found that a Pt value of 10 passed against a quote reading <10, and that swapping the Cu and Ni grades of a table row still passed."
+  },
+  {
+   "what": "Two drill intervals are the same interval when the hole matches and the depths overlap by at least 90% of the longer one. Code then compares their widths and every grade both give. An interval inside a longer one is listed under it.",
+   "why": "The old rule needed the copper and nickel grades to match before it would compare two intervals, so it could never find a grade disagreement. 41800 gives IL-23-25 copper as 0.002% in Table 4 and 6 ppm in the text; that now shows as a disagreement."
+  },
+  {
+   "what": "Text fields no longer carry a Settled label. Code doesn't compare them, so they show as quotes.",
+   "why": "Commodities read Settled while its own quotes list different metals."
+  },
+  {
+   "what": "What an eval session found that a field session missed now goes into the field's row, marked as found by the eval.",
+   "why": "The map sheet row read Settled on 092P while the q15 session had found 093N on 34595's title page."
+  },
+  {
+   "what": "The scorer counts an expected value only when the answer line states it, fails a question when the answer has a number no cited quote contains, and counts a missing answer line as a miss.",
+   "why": "Review showed an answer of \"Not much here.\" passed when the cited quotes held the expected values. Under the new rule q08 fails, because its answer paraphrases the report."
+  },
+  {
+   "what": "Gold answer for q15: the single 093N item became two, 34595's title page (093N034) and 36807's (093N043), as the gold answer already said.",
+   "why": "An answer naming 092P and 093N once passed. This makes q15 harder after the run, and the run 2 answer now misses it."
+  },
+  {
+   "what": "Each claim now ships at most 400 characters of its page, counting a quote as the agent wrote it. A longer quote is cut to the part around its value, and a page's excerpts stop at half its text unless the quotes alone run over.",
+   "why": "50 excerpts ran past the 400 characters the site promised, and overlapping excerpts covered up to 85% of some pages."
+  },
+  {
+   "what": "Added the summary: a separate claude session reads only the card and writes a cited evaluation one sentence at a time. Code keeps a sentence only if every number in it is in what it cites and it cites every side of any disagreement it touches. The points it should make were written before it ran.",
+   "why": "Review: the card was an index of quotes, not the property evaluation the brief asks for."
+  },
+  {
+   "what": "The summary prompt no longer asks for \"the best\" drill results, and it tells the session to name a source by ARIS number and page instead of calling it a cover or title page. The summary session ran again on the final card.",
+   "why": "The first summary session (2026-10-15-s1) called two intervals the best, which the report doesn't, and called 36807 p1 a cover page, though 36807's cover page agrees with the other reports. The first word came from the prompt; the second went past the quotes. The points the summary should make didn't change between the two sessions."
   }
- ]
+ ],
+ "recheck": {
+  "note": "Every claim the run accepted was checked again with the checker as it is now. Any it would throw out is shown as thrown out.",
+  "claims": 528,
+  "thrown_out": []
+ }
 }

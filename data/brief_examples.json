@@ -154,33 +154,31 @@
     "widths_disagree": true,
     "sides": [
      {
-      "width_m": "2.07",
       "claims": [
-       "example-t3-table"
+       "example-t3"
       ]
      },
      {
-      "width_m": "2.36",
       "claims": [
-       "example-t3"
+       "example-t3-table"
       ]
      }
     ],
     "arithmetic": {
-     "example-t3-table": {
-      "ok": true,
-      "computed_m": "2.07",
-      "stated_m": "2.07",
-      "line": "177.53 − 175.46 = 2.07 m."
-     },
      "example-t3": {
       "ok": false,
       "computed_m": "2.17",
       "stated_m": "2.36",
       "line": "177.53 − 175.36 = 2.17 m. The report states 2.36 m."
+     },
+     "example-t3-table": {
+      "ok": true,
+      "computed_m": "2.07",
+      "stated_m": "2.07",
+      "line": "177.53 − 175.46 = 2.07 m."
      }
     },
-    "rule_text": "Two intervals for the same hole with the same copper and nickel grades and overlapping depths describe the same interval. Their widths disagree if they differ by more than 0.05 m. Code also checks that to minus from equals the stated width, allowing for how precisely each number is written."
+    "rule_text": "Two intervals for the same hole are the same interval when their depths overlap by at least 90% of the longer one. Code then compares them: widths more than 0.05 m apart disagree, and so does any grade both give that differs by more than the rounding of the numbers as written. An interval that lies inside a longer one is listed under it, the way reports write \"including\". Code also checks that to minus from equals the stated width, allowing for how precisely each number is written."
    }
   }
  ]

@@ -1,35 +1,87 @@
 {
-  "how": "Each claim on a scanned page was compared with a rendering of that PDF page (PyMuPDF, 70 to 200 dpi), not with its OCR text. Renderings stay in data/private/ and are never shipped.",
-  "checked_by_label": "Claude (claude-opus-5-5), the data agent that prepared the run data",
-  "owner_check": {"done": false, "by": null, "date": null,
-                  "note": "Until Abdallah looks at 36807 p1 himself, the panel says it was checked against the page image by Claude. When he has, set done, by and date here and rebuild."},
-  "checks": [
-    {"attempt_id": "field-location-025", "aris": 36807, "page": 1, "result": "confirmed",
-     "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
-     "checked_by": "claude-opus-5-5", "checked_on": "2026-10-15",
-     "note": "The OCR text puts longitude before latitude and reads the degree signs as 'o'. Codex (gpt-6.1-sol), as second reader of the gold, read the same values from the image independently."},
-    {"attempt_id": "eval-q13-006", "aris": 36807, "page": 1, "result": "confirmed",
-     "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
-     "checked_by": "claude-opus-5-5", "checked_on": "2026-10-15",
-     "note": "Same line as field-location-025."},
-    {"attempt_id": "field-commodities-003", "aris": 36807, "page": 1, "result": "confirmed",
-     "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
-     "checked_by": "claude-opus-5-5", "checked_on": "2026-10-15",
-     "note": "The OCR text of this line is garbled. The image shows it clearly."},
-    {"attempt_id": "eval-q05-002", "aris": 36807, "page": 1, "result": "confirmed",
-     "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
-     "checked_by": "claude-opus-5-5", "checked_on": "2026-10-15",
-     "note": "Same line as field-commodities-003."},
-    {"attempt_id": "field-commodities-004", "aris": 36807, "page": 1, "result": "confirmed",
-     "image_reads": "Copper, gold, platinum, palladium, nickel",
-     "checked_by": "claude-opus-5-5", "checked_on": "2026-10-15",
-     "note": "Second line of the property geology keywords box."},
-    {"attempt_id": "field-mining_division-003", "aris": 36807, "page": 1, "result": "confirmed",
-     "image_reads": "MINING DIVISION: Clinton",
-     "checked_by": "claude-opus-5-5", "checked_on": "2026-10-15", "note": ""},
-    {"attempt_id": "field-location-028", "aris": 36807, "page": 9, "result": "confirmed",
-     "image_reads": "Center: 51°56'3\", -120°49'40\"",
-     "checked_by": "claude-opus-5-5", "checked_on": "2026-10-15",
-     "note": "The centre of the printed map view on a Mineral Titles Online map titled 'Iron Lake Claims', not a stated centre of work."}
-  ]
+ "how": "Each claim on a scanned page was compared with a rendering of that PDF page (PyMuPDF, 70 to 200 dpi), not with its OCR text. Renderings stay in data/private/ and are never shipped.",
+ "checked_by_label": "Claude (claude-opus-5-5), the data agent that prepared the run data",
+ "owner_check": {
+  "done": false,
+  "by": null,
+  "date": null,
+  "note": "Optional. The panel says Claude checked these claims against the page image, and Codex read the same values from the image separately (data/eval/second_reader.json, q04, q05, q13). If Abdallah also checks 36807 p1 by eye, set done, by and date here and rebuild; the panel then says so."
+ },
+ "checks": [
+  {
+   "attempt_id": "field-location-025",
+   "aris": 36807,
+   "page": 1,
+   "result": "confirmed",
+   "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "The OCR text puts longitude before latitude and reads the degree signs as 'o'. Codex (gpt-6.1-sol), as second reader of the gold, read the same values from the image independently.",
+   "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
+  },
+  {
+   "attempt_id": "eval-q13-006",
+   "aris": 36807,
+   "page": 1,
+   "result": "confirmed",
+   "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "Same line as field-location-025.",
+   "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
+  },
+  {
+   "attempt_id": "field-commodities-003",
+   "aris": 36807,
+   "page": 1,
+   "result": "confirmed",
+   "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "The OCR text of this line is garbled. The image shows it clearly.",
+   "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
+  },
+  {
+   "attempt_id": "eval-q05-002",
+   "aris": 36807,
+   "page": 1,
+   "result": "confirmed",
+   "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "Same line as field-commodities-003.",
+   "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
+  },
+  {
+   "attempt_id": "field-commodities-004",
+   "aris": 36807,
+   "page": 1,
+   "result": "confirmed",
+   "image_reads": "Copper, gold, platinum, palladium, nickel",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "Second line of the property geology keywords box."
+  },
+  {
+   "attempt_id": "field-mining_division-003",
+   "aris": 36807,
+   "page": 1,
+   "result": "confirmed",
+   "image_reads": "MINING DIVISION: Clinton",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "",
+   "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers and without seeing the agent,"
+  },
+  {
+   "attempt_id": "field-location-028",
+   "aris": 36807,
+   "page": 9,
+   "result": "confirmed",
+   "image_reads": "Center: 51°56'3\", -120°49'40\"",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "The centre of the printed map view on a Mineral Titles Online map titled 'Iron Lake Claims', not a stated centre of work."
+  }
+ ]
 }

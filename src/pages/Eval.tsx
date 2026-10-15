@@ -4,7 +4,7 @@ import { Chip } from '../components/Panel'
 import { SourceChips } from '../components/FieldRow'
 import { ChevronIcon, ExternalIcon } from '../components/Icons'
 import { pageLink } from '../data/core'
-import { answers, changes, clean, goldById, goldMeta, myRead, rejected, scores, searchLog, sessionSteps, valueText } from '../data/run'
+import { answers, changes, clean, goldById, goldMeta, missesNote, rejected, scores, searchLog, sessionSteps, summary, valueText } from '../data/run'
 import type { Answer, Rejected, Score } from '../data/types'
 import { useHashScroll } from '../router'
 
@@ -24,6 +24,9 @@ function Scoreboard() {
     { name: 'Answer accuracy', s: scores.answer_accuracy },
     { name: 'Correct refusals', s: scores.correct_refusals, extra: { name: 'False refusals', s: scores.false_refusals } },
     { name: 'Disagreements flagged', s: scores.disagreements_flagged },
+    ...(scores.summary_points && scores.summary_sentences
+      ? [{ name: 'Summary points made', s: scores.summary_points, extra: { name: 'Sentences code kept', s: scores.summary_sentences } }]
+      : []),
   ]
   return (
     <section aria-labelledby="scores-h" className="block">
@@ -68,7 +71,9 @@ function Question({ a }: { a: Answer }) {
       </div>
       <div className="q-body">
         <p className="label">Agent's answer</p>
-        <p className={a.refused ? 'muted' : ''}>{a.refused ? 'Not in these sources' : clean(a.answer)}</p>
+        <p className={a.refused || a.answer === null ? 'muted' : ''}>
+          {a.refused ? 'Not in these sources' : a.answer === null ? 'No answer line. The session ended without one.' : clean(a.answer)}
+        </p>
         {a.claims.length > 0 && (
           <div>
             <SourceChips ids={a.claims} max={8} />
@@ -166,8 +171,9 @@ function Questions() {
       <p className="lede">
         Claude wrote the questions and expected answers from the report pages before the first run. Codex (<span className="mono">gpt-6.1-sol</span>) read each
         expected answer against its page without seeing the agent. Before the run it agreed with {pass1.agree} and disputed {pass1.disputed}; after run 2 it agreed with{' '}
-        {pass2.agree} and disputed {pass2.disputed}. Each dispute was settled against the page. Each eval session got only the question text. Two expected answers changed
-        after a run, and both are listed at the bottom with reasons. A geologist hasn't checked any of this yet.
+        {pass2.agree} and disputed {pass2.disputed}. Each dispute was settled against the page. Each eval session got only the question text. An expected value counts only
+        when the answer line itself states it. Three expected answers changed after a run, and all three are listed at the bottom with reasons. A geologist hasn't checked
+        any of this yet.
       </p>
       {misses.length > 0 ? (
         <>
@@ -294,10 +300,66 @@ function WentWrong() {
       )}
 
       <div className="my-read">
-        <h3 className="sub-title">My read</h3>
-        {myRead.draft && <p className="draft-note small">Draft from the run's real misses. Abdallah rewrites this in his own words before sharing.</p>}
-        <p>{myRead.sentences.join(' ')}</p>
+        <h3 className="sub-title">What the misses say</h3>
+        <p className="small muted">Written by Claude after the run, from the misses on this page and a read of the 2023 drilling pages.</p>
+        <ul className="misses-note">
+          {missesNote.sentences.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
+        </ul>
       </div>
+    </section>
+  )
+}
+
+function SummaryScore() {
+  const thrown = summary.thrown_out
+  const abouts = [...new Set(summary.points.map((p) => p.about))]
+  return (
+    <section aria-labelledby="summary-h" className="block" id="summary-score">
+      <h2 id="summary-h" className="section-title">
+        The summary, scored
+      </h2>
+      <p className="lede">
+        A separate session read only the property card and wrote the summary at the top of it, one sentence at a time. Before it ran, Claude listed the{' '}
+        {summary.points.length} points a short evaluation of Iron Lake should make. A point counts only when the summary's own words state it.
+      </p>
+      <ul className="checklist small summary-points">
+        {abouts.map((about) => (
+          <li key={about} className="points-group">
+            <span className="label">{about}</span>
+            <ul>
+              {summary.points
+                .filter((p) => p.about === about)
+                .map((p) => (
+                  <li key={p.label} className={p.met ? 'is-met' : 'is-unmet'}>
+                    <span className="check-word">{p.met ? 'Made' : 'Missing'}</span> {p.label}
+                  </li>
+                ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+      {thrown.length > 0 && (
+        <>
+          <h3 className="sub-title">Sentences code threw out ({thrown.length})</h3>
+          <ol className="thrown">
+            {thrown.map((t) => (
+              <li key={t.id} className="thrown-item">
+                <p className="thrown-value">
+                  <s>{t.text}</s>
+                </p>
+                <p className="small">
+                  <strong className="thrown-reason">{t.failure_label}.</strong> {t.reason}
+                </p>
+                <p className="small thrown-meta">
+                  {t.fixed_by ? <span className="retry is-fixed">Rewritten and kept as sentence {summary.sentences.findIndex((x) => x.id === t.fixed_by) + 1}.</span> : <span className="retry">Dropped.</span>}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
     </section>
   )
 }
@@ -340,6 +402,7 @@ export default function EvalPage() {
     <DemoLayout title="Eval">
       <Scoreboard />
       <Questions />
+      <SummaryScore />
       <ThrownOut />
       <WentWrong />
       <Changes />

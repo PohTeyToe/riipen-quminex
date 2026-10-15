@@ -35,7 +35,7 @@ def test_conflict_answer_missing_one_value_is_a_miss():
     r = score_question("conflict", CONFLICT, "IL-22-011 is 2.07 m wide.", False, [c])
     assert not r["passed"]
     assert r["failures"] == ["missed_disagreement"]
-    assert r["reason"] == "Missing: Text: 2.36 m."
+    assert r["reason"] == "Missing from the answer: Text: 2.36 m."
 
 
 def test_missing_caveat_counts_as_a_miss():
@@ -48,6 +48,32 @@ def test_full_answer_with_caveat_passes():
     assert r["passed"] and r["failures"] == []
 
 
-def test_unbacked_number_is_flagged():
-    r = score_question("answerable", WITH_CAVEAT, "9.46 m at 0.034% Ni, about 12 m true width", False, [TABLE, CAVEAT])
-    assert "number_unbacked" in r["failures"] and r["unbacked_numbers"] == ["12"]
+def test_unbacked_number_fails_the_question():
+    r = score_question("answerable", WITH_CAVEAT, "9.46 m at 0.034% Ni, about 12 m true width; aqua regia may read low",
+                       False, [TABLE, CAVEAT])
+    assert not r["passed"] and r["failures"] == ["number_unbacked"] and r["unbacked_numbers"] == ["12"]
+    assert r["reason"] == "Numbers no cited quote contains: 12."
+
+
+def test_expected_values_must_be_in_the_answer_not_only_in_the_quotes():
+    # The cited quotes hold 9.46 and 0.034, but the answer doesn't say them.
+    r = score_question("answerable", WITH_CAVEAT, "Not much here; aqua regia may read low.", False, [TABLE, CAVEAT])
+    assert not r["passed"] and r["failures"] == ["missing_value"]
+
+
+def test_wrong_numbers_in_the_answer_fail_even_with_good_quotes():
+    r = score_question("answerable", WITH_CAVEAT, "The interval is 999 m wide at 99% copper.", False, [TABLE, CAVEAT])
+    assert not r["passed"] and "number_unbacked" in r["failures"] and "missing_value" in r["failures"]
+
+
+def test_no_answer_line_is_a_miss():
+    r = score_question("answerable", WITH_CAVEAT, None, False, [TABLE, CAVEAT])
+    assert not r["passed"] and r["failures"] == ["answer_missing"]
+    assert r["reason"] == "The session ended without an answer line."
+
+
+def test_a_caveat_must_be_named_in_the_answer_and_backed_by_a_quote():
+    r = score_question("answerable", WITH_CAVEAT, "9.46 m at 0.034% Ni", False, [TABLE, CAVEAT])
+    assert r["caveats"][0]["met"] is False
+    r = score_question("answerable", WITH_CAVEAT, "9.46 m at 0.034% Ni; aqua regia may read low", False, [TABLE])
+    assert r["caveats"][0]["met"] is False

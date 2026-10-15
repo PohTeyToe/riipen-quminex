@@ -16,16 +16,19 @@ import re
 import sys
 from collections import Counter, defaultdict
 
+import card
 import corpus
 import rules
-from checker import censored, to_decimal
+from checker import censored, check_claim, to_decimal
 from runner import PROMPTS
-from score import FAILURES, SCORE_DEFS, answer_line, score_question, squash
+from score import FAILURES, SCORE_DEFS, alt_met, answer_line, score_question, squash
 from textnorm import display_text, normalize
 
 DATA = corpus.DATA
 PRIVATE = corpus.PRIVATE
-EXCERPT_MAX = 400
+EXCERPT_MAX = 400   # characters of page text shipped per claim, quote included
+PAGE_SHARE = 0.5    # no page ships more than this share of its text across all its claims
+CORE_PAD = 60       # when a page is over its share, a text claim keeps its value and this much either side
 
 
 def jload(p):
@@ -34,7 +37,7 @@ def jload(p):
 
 def jdump(p, obj):
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(obj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    p.write_text(json.dumps(obj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
 
 
 def size_label(n: int) -> str:
@@ -132,39 +135,86 @@ def locate(quote: str, text: str) -> tuple[int, int] | None:
     return (m.start(), m.end()) if m else None
 
 
-def excerpt(aris: int, page: int, quote: str) -> dict | None:
-    text = display_text(corpus.page(aris, page)["text"])
-    span = locate(quote, text)
-    if not span:
-        return None
-    s, e = span
-    a = s
-    for _ in range(3):  # back up about two lines
-        j = text.rfind("\n", 0, max(a - 1, 0))
-        if j < 0:
-            a = 0
-            break
-        a = j + 1
-    b = e
-    for _ in range(2):
-        j = text.find("\n", b + 1)
-        if j < 0:
-            b = len(text)
-            break
-        b = j
-    def flat(x):
-        return re.sub(r"\s+", " ", x)
-    before, mid, after = flat(text[a:s]).lstrip(), flat(text[s:e]), flat(text[e:b]).rstrip()
-    room = max(EXCERPT_MAX - len(mid), 0)
-    half = room // 2
-    if len(before) > half:  # trim to whole words; before[-0:] would keep everything
-        cut = before[len(before) - half:] if half else ""
-        before = cut[cut.find(" ") + 1:] if " " in cut else ""
-    keep = room - len(before)
-    if len(after) > keep:
-        cut = after[:keep]
-        after = cut[:cut.rfind(" ")] if " " in cut else ""
-    return {"text": before + mid + after, "highlight": [len(before), len(before) + len(mid)]}
+def flat(x: str) -> str:
+    return re.sub(r"\s+", " ", x)
+
+
+def snap(text: str, a: int, b: int, lo: int, hi: int) -> tuple[int, int]:
+    """Move a and b outward to whole words, staying inside lo..hi."""
+    a, b = max(a, lo), min(b, hi)
+    if a > lo and not text[a - 1].isspace():
+        j = text.find(" ", a, b)
+        a = j + 1 if j >= 0 else a
+    if b < hi and not text[b].isspace():
+        j = text.rfind(" ", a, b)
+        b = j if j > a else b
+    return a, b
+
+
+def window(text: str, core: tuple[int, int], size: int, lo: int, hi: int) -> tuple[int, int]:
+    """About size characters of text[lo:hi], centred on core, cut to whole words."""
+    cs, ce = core
+    pad = max(size - (ce - cs), 0)
+    a = max(lo, cs - pad // 2)
+    b = min(hi, a + max(size, ce - cs))
+    a = max(lo, b - max(size, ce - cs))
+    return snap(text, a, b, lo, hi)
+
+
+def union_len(spans: list[tuple[int, int]]) -> int:
+    total, end = 0, -1
+    for a, b in sorted(spans):
+        if b > end:
+            total += b - max(a, end)
+            end = b
+    return total
+
+
+def plan_excerpts(aris: int, page: int, claims: list[dict]) -> dict[str, dict]:
+    """What each claim on one page ships: at most EXCERPT_MAX characters, the quote first, then a little
+    page context. If the page's claims together would ship more than PAGE_SHARE of its text, context
+    goes first, then long text quotes shrink to their value and CORE_PAD characters either side."""
+    text = flat(display_text(corpus.page(aris, page)["text"]))
+    plans = {}
+    for c in claims:
+        q = locate(c["quote"], text)
+        if not q:
+            continue
+        core = None
+        if isinstance(c.get("value"), str) and c["value"]:
+            v = locate(c["value"], text[q[0]:q[1]])
+            if v:
+                core = (q[0] + v[0], q[0] + v[1])
+        # A quote that ships whole ships as the agent wrote it, line breaks and all, so the cap counts
+        # that length, not only the quote's span in the flattened page text.
+        limit = EXCERPT_MAX - max(0, len(c["quote"]) - (q[1] - q[0]))
+        if core is None:  # an interval's own row ends its quote; anything else starts it
+            core = ((max(q[0], q[1] - limit), q[1]) if c["kind"] == "interval"
+                    else (q[0], min(q[1], q[0] + limit)))
+        bare = q if q[1] - q[0] <= limit else window(text, core, limit, *q)
+        ctx = bare
+        if bare == q and q[1] - q[0] < EXCERPT_MAX:
+            ctx = window(text, q, EXCERPT_MAX, 0, len(text))
+        plans[c["id"]] = {"claim": c, "quote": q, "core": core, "bare": bare, "shown": ctx}
+    budget = PAGE_SHARE * len(text)
+    if union_len([x["shown"] for x in plans.values()]) > budget:
+        for x in plans.values():
+            x["shown"] = x["bare"]
+        for x in sorted(plans.values(), key=lambda x: x["bare"][0] - x["bare"][1]):
+            if union_len([y["shown"] for y in plans.values()]) <= budget:
+                break
+            if x["claim"]["kind"] == "statement" and x["core"][1] - x["core"][0] < x["quote"][1] - x["quote"][0]:
+                x["shown"] = window(text, x["core"], x["core"][1] - x["core"][0] + 2 * CORE_PAD, *x["quote"])
+    out = {}
+    for cid, x in plans.items():
+        (a, b), (qs, qe) = x["shown"], x["quote"]
+        hs, he = max(qs, a), min(qe, b)
+        cut = hs > qs or he < qe
+        out[cid] = {"text": text[a:b], "highlight": [hs - a, he - a],
+                    **({"quote_cut": True, "quote_chars": len(flat(x["claim"]["quote"]).strip()),
+                        "quote_shown": text[hs:he]} if cut else {})}
+    out["_share"] = {"page_chars": len(text), "shipped_chars": union_len([x["shown"] for x in plans.values()])}
+    return out
 
 
 # ---------------------------------------------------------------- claims
@@ -233,7 +283,7 @@ def summarize_call(c: dict, claim_ids: dict) -> dict:
 
 
 def build_claims(run_id: str, sessions: dict, fields_by_id: dict, image_checks: dict):
-    claims, rejected, attempts = [], [], []
+    claims, rejected, attempts, rechecked_out = [], [], [], []
     claim_ids: dict[str, str] = {}
     n = 0
     for s, sess in sessions.items():
@@ -245,6 +295,12 @@ def build_claims(run_id: str, sessions: dict, fields_by_id: dict, image_checks: 
                     "field_as_proposed": a["field"], "field": route_field(s, a["field"], a["kind"], fields_by_id),
                     "kind": a["kind"], "value": a["value"], "unit": a["unit"],
                     "source": {"aris": a["report"], "page": a["page"]}, "quote": a["quote"]}
+            now = check_claim(a["kind"], a["value"], a["report"], a["page"], a["quote"])
+            if r["accepted"] and not now["accepted"]:
+                # The checker got stricter after the run. A claim it would now throw out is shown as thrown out.
+                r = r | {"accepted": False, "failure": now["failure"], "found_on": now["found_on"],
+                         "reason": "Thrown out on the recheck after the run: " + now["reason"]}
+                rechecked_out.append(r["claim_id"])
             attempts.append(base | {"accepted": r["accepted"]})
             if r["accepted"]:
                 n += 1
@@ -256,7 +312,8 @@ def build_claims(run_id: str, sessions: dict, fields_by_id: dict, image_checks: 
                 if r["by"] == "page image":
                     ic = image_checks.get(r["claim_id"])
                     check |= ({"image_check": ic["result"], "image_reads": ic["image_reads"], "checked_by": ic["checked_by"],
-                               "checked_on": ic["checked_on"], "note": ic.get("note", "")} if ic else
+                               "checked_on": ic["checked_on"], "note": ic.get("note", ""),
+                               **({"second_read_by": ic["second_read_by"]} if ic.get("second_read_by") else {})} if ic else
                               {"image_check": "pending", "checked_by": None, "checked_on": None})
                 grades = (a["value"].get("grades") or {}) if isinstance(a["value"], dict) else {}
                 cen_grades = {k: censored(v) for k, v in grades.items() if censored(v)}
@@ -283,7 +340,7 @@ def build_claims(run_id: str, sessions: dict, fields_by_id: dict, image_checks: 
                                         "retry": status, "fixed_by_attempt": fixed_by})
     for rj in rejected:
         rj["fixed_by"] = claim_ids.get(rj.pop("fixed_by_attempt"))
-    return claims, rejected, attempts, claim_ids
+    return claims, rejected, attempts, claim_ids, rechecked_out
 
 
 def claim_trace(claim: dict, calls: list[dict], rejected_by_fix: dict) -> list[int]:
@@ -308,7 +365,8 @@ def claim_trace(claim: dict, calls: list[dict], rejected_by_fix: dict) -> list[i
 
 # ---------------------------------------------------------------- fields
 
-def field_state(f: dict, claims: list[dict], session: dict | None, default_zone: int) -> dict:
+def field_state(f: dict, claims: list[dict], session: dict | None, default_zone: int, extra: list[dict] = ()) -> dict:
+    """extra: claims from other sessions that the field's own rule should also see (the eval cross-check)."""
     def part_result(rule: str, cl: list[dict], extra: dict) -> dict:
         values = [c for c in cl if c["kind"] != "caveat"]
         if not values:
@@ -325,11 +383,13 @@ def field_state(f: dict, claims: list[dict], session: dict | None, default_zone:
             g = rules.group_intervals(values)
         else:
             g = {"rule": "none", "groups": [{"claims": [c["id"] for c in values]}], "unplaced": []}
-        if rule == "interval":
-            disagree = any(x["disagree"] for x in g["groups"])
+        if rule == "none":
+            state = "quotes"
+        elif rule == "interval":
+            state = "disagree" if any(x["disagree"] for x in g["groups"]) else "settled"
         else:
-            disagree = len(g["groups"]) > 1
-        return {"state": "disagree" if disagree else "settled", "rule": rule, "rule_text": rules.RULE_TEXT[rule],
+            state = "disagree" if len(g["groups"]) > 1 else "settled"
+        return {"state": state, "rule": rule, "rule_text": rules.RULE_TEXT[rule],
                 "claims": [c["id"] for c in values], "caveat_claims": [c["id"] for c in cl if c["kind"] == "caveat"],
                 **g}
 
@@ -344,7 +404,7 @@ def field_state(f: dict, claims: list[dict], session: dict | None, default_zone:
         states = [p["state"] for p in out["parts"]]
         out["state"] = "disagree" if "disagree" in states else ("settled" if "settled" in states else "not_in_sources")
     else:
-        out |= part_result(f["rule"], [c for c in claims if c["field"] == f["id"]], f)
+        out |= part_result(f["rule"], [c for c in claims if c["field"] == f["id"]] + list(extra), f)
     if out["state"] == "not_in_sources" and session:
         calls = session["calls"]
         out["searches"] = [c["args"]["query"] for c in calls if c["tool"] == "search"]
@@ -390,9 +450,70 @@ def cross_check(rule: str, fs: dict, eval_claims: list[dict], by_id: dict, zone:
                 if pts and min(rules.km_between(p, q) for q in pts) > rules.SAME_PLACE_KM:
                     found.append({"claim": c["id"], "session": c["session"], "source": c["source"],
                                   "km_from_nearest_field_point": round(min(rules.km_between(p, q) for q in pts), 1)})
-    return {"note": "The same rule run over claims from the eval sessions. Listed only if they found something this "
-                    "field's session did not; the field's state above is unchanged.",
+    return {"note": "The same rule run over the eval sessions' claims. Anything they found that this field's own "
+                    "session missed is folded into the row and marked as found by the eval.",
             "found": found}
+
+
+# ---------------------------------------------------------------- summary
+
+SENTENCE_FAILURES = {
+    "number_unbacked": "Number not in a cited claim",
+    "one_side": "Cited one side of a disagreement",
+    "unknown_id": "Cited something not on the card",
+    "cites_nothing": "Cited nothing",
+    "too_long": "Sentence too long",
+    "empty": "Empty sentence",
+}
+
+
+def build_summary(fields: dict, claims: list[dict], index: dict) -> dict | None:
+    """The summary session's sentences, rechecked against today's card, and scored against the summary gold."""
+    root = PRIVATE / "summaries"
+    runs = sorted(d for d in root.iterdir() if (d / "summary.meta.json").exists()) if root.exists() else []
+    if not runs:
+        return None
+    d = runs[-1]
+    meta, manifest = jload(d / "summary.meta.json"), jload(d / "manifest.json")
+    calls = [json.loads(ln) for ln in (d / "summary.tools.jsonl").read_text(encoding="utf-8").splitlines() if ln.strip()]
+    today = card.Card(fields, claims, index)
+    kept, thrown, trace = [], [], []
+    for i, c in enumerate(calls):
+        if c["tool"] == "read_card":
+            trace.append({"i": i, "tool": "read_card", "result": f"{c['result']['fields']} fields"})
+        elif c["tool"] == "read_field":
+            trace.append({"i": i, "tool": "read_field", "field": c["args"]["field"],
+                          "result": f"{c['result']['claims']} claims"})
+        elif c["tool"] == "propose_sentence":
+            a, r = c["args"], c["result"]
+            now = today.check_sentence(a["text"], a["cite"])
+            row = {"id": r["sentence_id"], "text": a["text"], "cite": list(dict.fromkeys(a["cite"]))}
+            if r["accepted"] and now["accepted"]:
+                kept.append(row)
+            else:
+                why = r if not r["accepted"] else now | {"reason": "Thrown out on today's card: " + now["reason"]}
+                thrown.append(row | {"failure": why["failure"], "failure_label": SENTENCE_FAILURES.get(why["failure"], why["failure"]),
+                                     "reason": why["reason"]})
+            trace.append({"i": i, "tool": "propose_sentence", "sentence": r["sentence_id"],
+                          "result": "kept" if r["accepted"] else "thrown out: " + r["reason"]})
+    for t in thrown:  # a later kept sentence that cites the same things is the fix
+        later = [k for k in kept if k["id"] > t["id"] and set(k["cite"]) & set(t["cite"])]
+        t["fixed_by"] = later[0]["id"] if later else None
+    text = " ".join(k["text"] for k in kept)
+    gold = jload(DATA / "eval" / "summary_gold.json")
+    points = [{"about": g["about"], "label": g["label"], "met": any(alt_met(a, text) for a in g["any_of"])}
+              for g in gold["points"]]
+    frozen = manifest["frozen_hashes"]
+    return {
+        "summary": d.name, "date": meta["started"][:10], "model": meta["init_model"], "cli_version": meta["cli_version"],
+        "effort": manifest["effort"], "tools": manifest["tools"], "only_card_tools": manifest["only_card_tools"],
+        "result": meta["result_subtype"], "model_turns": meta.get("num_turns"), "seconds": meta["seconds"],
+        "gold_unchanged_since_run": frozen.get("summary_gold.json") == hashlib.sha256(
+            (DATA / "eval" / "summary_gold.json").read_bytes()).hexdigest(),
+        "rule_text": card.__doc__.split("\n\n")[1].strip(),
+        "sentences": kept, "thrown_out": thrown, "trace": trace,
+        "points": points, "gold_written_by": gold["written_by"], "gold_what": gold["what"],
+    }
 
 
 # ---------------------------------------------------------------- main
@@ -411,7 +532,7 @@ def main(run_id: str) -> None:
     changes = jload(DATA / "eval" / "changes.json")
     image_checks_path = DATA / "image_checks.json"
     image_checks = {c["attempt_id"]: c for c in jload(image_checks_path)["checks"]} if image_checks_path.exists() else {}
-    claims, rejected, attempts, claim_ids = build_claims(run_id, sessions, fields_by_id, image_checks)
+    claims, rejected, attempts, claim_ids, rechecked_out = build_claims(run_id, sessions, fields_by_id, image_checks)
     by_id = {c["id"]: c for c in claims}
 
     # caveats attach by rule, within the card and within each eval answer
@@ -433,18 +554,33 @@ def main(run_id: str) -> None:
     jdump(DATA / "traces.json", {"run": run_id, "note": "Summarized tool calls. Full page text is never stored here.",
                                  "sessions": traces})
 
-    # excerpts
-    excerpts, missing = {}, []
+    # excerpts: what each claim ships of its page
+    excerpts, shares = {}, []
+    by_page = defaultdict(list)
     for c in claims:
-        ex = excerpt(c["source"]["aris"], c["source"]["page"], c["quote"])
-        if ex:
-            excerpts[c["id"]] = ex
-        else:
-            missing.append(c["id"])
-    jdump(DATA / "excerpts.json", {"max_chars": EXCERPT_MAX,
-                                   "note": "Quote plus about two lines either side, at most 400 characters. When the quote "
-                                           "itself is longer, the excerpt is just the quote.",
-                                   "excerpts": excerpts, "not_located": missing})
+        by_page[(c["source"]["aris"], c["source"]["page"])].append(c)
+    for (aris, pno), cs in sorted(by_page.items()):
+        plan = plan_excerpts(aris, pno, cs)
+        share = plan.pop("_share")
+        shares.append({"aris": aris, "page": pno, **share})
+        excerpts |= plan
+    missing = [c["id"] for c in claims if c["id"] not in excerpts]
+    cut_quotes = {cid: ex.pop("quote_shown") for cid, ex in excerpts.items() if "quote_shown" in ex}
+    report_chars = {r["aris"]: sum(len(flat(corpus.page_text(r["aris"], n))) for n in corpus.pages(r["aris"])
+                                   if r["pages_used"][0] <= n <= r["pages_used"][1]) for r in corp["reports"]}
+    shipped = Counter()
+    for x in shares:
+        shipped[x["aris"]] += x["shipped_chars"]
+    over = [x for x in shares if x["shipped_chars"] > PAGE_SHARE * x["page_chars"]]
+    jdump(DATA / "excerpts.json", {
+        "max_chars": EXCERPT_MAX, "page_share": PAGE_SHARE,
+        "note": f"Each claim ships at most {EXCERPT_MAX} characters of its page: the quote, then a little context if there "
+                f"is room. A longer quote is cut to the part around its value. If a page's claims together would ship "
+                f"more than {PAGE_SHARE:.0%} of its text, context goes first, then long text quotes shrink to their value.",
+        "pages_over_share": [{k: x[k] for k in ("aris", "page")} | {"share": round(x["shipped_chars"] / x["page_chars"], 2)}
+                             for x in over],
+        "report_share": {str(a): round(shipped[a] / report_chars[a], 3) for a in report_chars},
+        "excerpts": excerpts, "not_located": missing})
 
     # fields
     field_out = []
@@ -452,17 +588,34 @@ def main(run_id: str) -> None:
     for f in fields:
         fc = [c for c in claims if c["scope"] == "field" and fields_by_id.get(c["field"], {}).get("id") == f["id"]]
         fs = field_state(f, fc, sessions.get(f"field-{f['id']}"), default_zone)
+        if f.get("rule") in ("location", "map_sheet") and fs["state"] != "not_in_sources":
+            cc = cross_check(f["rule"], fs, eval_claims, by_id, default_zone)
+            if cc["found"]:
+                extra = [by_id[x["claim"]] for x in cc["found"]]
+                fs = field_state(f, fc, sessions.get(f"field-{f['id']}"), default_zone, extra)
+                fs["from_eval"] = sorted(c["id"] for c in extra)
+            fs["eval_cross_check"] = cc
         for part in fs.get("parts", [fs]):
             sides_summary(part, by_id)
             for g in part.get("groups") or []:
-                if "hole" in g:
-                    holes = [by_id[c]["value"]["hole"] for c in g["claims"]]
-                    g["hole"] = min(holes, key=lambda h: (bool(re.search(r"\s", h)), h))
-        if f.get("rule") in ("location", "map_sheet") and fs["state"] != "not_in_sources":
-            fs["eval_cross_check"] = cross_check(f["rule"], fs, eval_claims, by_id, default_zone)
+                if "hole" in g:  # the hole as each source writes it, line-break hyphens closed up
+                    g["hole_written"] = sorted({re.sub(r"-\s+", "-", by_id[c]["value"]["hole"]).strip()
+                                                for c in g["claims"]})
         field_out.append(fs)
-    jdump(DATA / "fields.json", {"run": run_id, "default_utm_zone": default_zone,
-                                 "text_field_note": rules.RULE_TEXT["none"], "fields": field_out})
+    fields_file = {"run": run_id, "default_utm_zone": default_zone, "text_field_note": rules.RULE_TEXT["none"],
+                   "fields": field_out}
+    jdump(DATA / "fields.json", fields_file)
+    summary = build_summary(fields_file, claims, index)
+    if summary:
+        # The hand notes under summary sentences are for one summary session. After a rerun they must be redone.
+        review = jload(DATA / "eval" / "summary_review.json")
+        kept = {s["id"] for s in summary["sentences"]}
+        stale = [n["sentence"] for n in review["notes"] if n["sentence"] not in kept]
+        if review.get("summary") != summary["summary"] or stale:
+            sys.exit(f"data/eval/summary_review.json reviews summary {review.get('summary')}, but the card shows "
+                     f"{summary['summary']} (notes on sentences it doesn't keep: {stale or 'none'}). Reread the new "
+                     f"summary against its quotes, rewrite the notes and set \"summary\".")
+        jdump(DATA / "summary.json", summary)
 
     # eval
     questions = jload(DATA / "eval" / "questions.json")
@@ -514,10 +667,31 @@ def main(run_id: str) -> None:
                             "from_checker": sum(1 for r in rejected if r["failure"] == k)} for k in FAILURES],
         "failure_counts_note": "Checker counts cover every rejected claim in the run, field sessions and eval sessions. "
                                "Answer counts cover the 15 eval answers.",
+        **({"summary_points": {"n": sum(p["met"] for p in summary["points"]), "of": len(summary["points"]),
+                               "definition": "Points a short evaluation of Iron Lake should make, written before the summary "
+                                             "session ran, that the summary's own text states."},
+            "summary_sentences": {"n": len(summary["sentences"]),
+                                  "of": len(summary["sentences"]) + len(summary["thrown_out"]),
+                                  "definition": "Sentences code kept, out of every sentence the summary session proposed. "
+                                                "A sentence is kept only if every number in it is in what it cites and it "
+                                                "cites every side of any disagreement it touches."}}
+           if summary else {}),
         "changes_after_first_eval": changes["changes"],
     }
     jdump(DATA / "eval" / "scores.json", scores)
 
+    # The summary session reads the card with full quotes; that copy stays private.
+    jdump(PRIVATE / "card_claims.json", {"run": run_id, "claims": claims})
+    # Everything above used the full quotes. The shipped claim carries only the part of its quote the site shows.
+    for c in claims:
+        if c["id"] in cut_quotes:
+            c["quote"] = cut_quotes[c["id"]]
+            c["quote_cut"] = {"chars": excerpts[c["id"]]["quote_chars"]}
+    for r in rejected:
+        if len(r["quote"] or "") > EXCERPT_MAX:
+            full = len(r["quote"])
+            r["quote"] = r["quote"][:EXCERPT_MAX].rsplit(" ", 1)[0]
+            r["quote_cut"] = {"chars": full}
     jdump(DATA / "claims.json", {"run": run_id, "count": len(claims), "claims": claims})
     jdump(DATA / "rejected.json", {"run": run_id, "count": len(rejected), "rejected": rejected})
 
@@ -571,6 +745,9 @@ def main(run_id: str) -> None:
         "post_processing_hashes": {f: hashlib.sha256((corpus.ROOT / "agent" / f).read_bytes()).hexdigest()
                                    for f in ("rules.py", "score.py", "build_data.py")},
         "changes_after_run_2": changes.get("after_run_2", []),
+        "recheck": {"note": "Every claim the run accepted was checked again with the checker as it is now. Any it would "
+                            "throw out is shown as thrown out.",
+                    "claims": len(claims) + len(rechecked_out), "thrown_out": rechecked_out},
     }
     jdump(DATA / "run.json", run)
     print(f"claims {len(claims)}, rejected {len(rejected)}, excerpts missing {len(missing)}")

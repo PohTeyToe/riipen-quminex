@@ -43,7 +43,7 @@ function messiness(t: string) {
 }
 
 /** One chip per page, first few shown, the rest one tap away. */
-export function SourceChips({ ids, max = 3, siblings }: { ids: string[]; max?: number; siblings?: string[] }) {
+export function SourceChips({ ids, max = 3, siblings, context }: { ids: string[]; max?: number; siblings?: string[]; context?: string }) {
   const [all, setAll] = useState(false)
   const seen = new Set<string>()
   const unique: Claim[] = []
@@ -59,10 +59,10 @@ export function SourceChips({ ids, max = 3, siblings }: { ids: string[]; max?: n
   return (
     <span className="chips">
       {shown.map((c) => (
-        <Chip key={c.id} id={c.id} siblings={siblings ?? ids} />
+        <Chip key={c.id} id={c.id} siblings={siblings ?? ids} context={context} />
       ))}
       {rest > 0 && (
-        <button type="button" className="chip is-more" onClick={() => setAll(true)} aria-label={`Show ${rest} more sources`}>
+        <button type="button" className="chip is-more" onClick={() => setAll(true)} aria-label={`Show ${rest} more ${rest === 1 ? 'source' : 'sources'}`}>
           +{rest}
         </button>
       )}
@@ -70,8 +70,15 @@ export function SourceChips({ ids, max = 3, siblings }: { ids: string[]; max?: n
   )
 }
 
+const STATE_WORD: Record<State, string> = {
+  settled: 'Settled',
+  disagree: 'Sources disagree',
+  not_in_sources: 'Not in these sources',
+  quotes: 'Quotes, not compared',
+}
+
 export function StateLabel({ state, children }: { state: State; children?: ReactNode }) {
-  const word = state === 'settled' ? 'Settled' : state === 'disagree' ? 'Sources disagree' : 'Not in these sources'
+  const word = STATE_WORD[state]
   return (
     <p className={`state is-${state}`}>
       <span className="state-word">{word}</span>
@@ -127,14 +134,18 @@ function GroupValues({ g, max = 3, mono = true }: { g: Group; max?: number; mono
   )
 }
 
-function Sides({ groups, render }: { groups: Group[]; render: (g: Group) => ReactNode }) {
+function Sides({ groups, render, label }: { groups: Group[]; render: (g: Group) => ReactNode; label?: (g: Group) => string }) {
   return (
     <div className="sides" role="group" aria-label="The sides that disagree">
       {groups.map((g, i) => {
         const { pages, reports } = sourceCounts(claimsOf(g.claims))
+        const name = label?.(g)
         return (
           <div className="side" key={i}>
-            <p className="side-count">{countLabel(pages, reports)}</p>
+            <p className="side-count">
+              {name && <span className="mono">{name}: </span>}
+              {countLabel(pages, reports)}
+            </p>
             {render(g)}
           </div>
         )
@@ -182,17 +193,17 @@ function Unplaced({ ids, what }: { ids: string[]; what: string }) {
   )
 }
 
-function CrossCheck({ f }: { f: Field }) {
+/** What an eval session found that this field's own session missed. Code folds it into the row; this says where it came from. */
+function FromEval({ f }: { f: Field }) {
   const found = f.eval_cross_check?.found ?? []
   if (!found.length) return null
   return (
     <div className="cross-check">
-      <p className="cross-check-head">The eval run found what this row missed</p>
       {found.map((x) => (
         <p key={x.claim} className="small">
-          The same rule, run over the eval sessions' claims, found{' '}
-          {x.map_areas?.length ? <span className="mono">{x.map_areas.join(', ')}</span> : 'another value'} on <Chip id={x.claim} /> (session{' '}
-          <code>{x.session}</code>). This field's own session never opened that page, so the row above stays as the session left it.
+          <span className="cross-check-head">Found by the eval, not this field's session.</span>{' '}
+          {x.map_areas?.length ? <span className="mono">{x.map_areas.join(', ')}</span> : 'This value'} on <Chip id={x.claim} /> came from the{' '}
+          <code>{x.session.replace('eval-', '')}</code> eval session. The {f.name.toLowerCase()} session never opened that page.
         </p>
       ))}
     </div>
@@ -223,7 +234,7 @@ function LocationBody({ f }: { f: Field }) {
         {f.code_line && <CodeLine lines={[f.code_line]} rule={f.rule_text} />}
       </div>
       <Unplaced ids={f.unplaced ?? []} what="where code couldn't read a point, so they sit on neither side" />
-      <CrossCheck f={f} />
+      <FromEval f={f} />
     </>
   )
 }
@@ -239,10 +250,13 @@ function GroupedBody({ f }: { f: Field | FieldPart }) {
       lines.push(`${nf.format(a)} and ${nf.format(b)} differ by ${pct.toFixed(2)}%. The rule allows 0.1%.`)
     }
     return (
-      <div className="disagree-area">
-        <Sides groups={groups} render={(g) => <GroupValues g={g} max={2} />} />
-        <CodeLine lines={lines} rule={f.rule_text} />
-      </div>
+      <>
+        <div className="disagree-area">
+          <Sides groups={groups} label={f.rule === 'map_sheet' ? (g) => g.key ?? '' : undefined} render={(g) => <GroupValues g={g} max={2} />} />
+          <CodeLine lines={lines} rule={f.rule_text} />
+        </div>
+        {'eval_cross_check' in f && <FromEval f={f as Field} />}
+      </>
     )
   }
   return (
@@ -254,7 +268,7 @@ function GroupedBody({ f }: { f: Field | FieldPart }) {
         </div>
       ))}
       {f.rule_text && <p className="rule small">Rule, in code: {f.rule_text}</p>}
-      {'eval_cross_check' in f && <CrossCheck f={f as Field} />}
+      {'eval_cross_check' in f && <FromEval f={f as Field} />}
     </>
   )
 }
@@ -341,37 +355,96 @@ function Grades({ c }: { c: Claim }) {
   )
 }
 
+const ELEMENT_NAME: Record<string, string> = { Cu: 'copper', Ni: 'nickel', Au: 'gold', Pt: 'platinum', Pd: 'palladium', Co: 'cobalt', Ag: 'silver' }
+
+function disagreeTitle(g: Group): string {
+  const what = (g.disagree_on ?? []).map((w) => (w === 'width' ? 'widths' : `${ELEMENT_NAME[w] ?? w} grades`))
+  return `${what.join(' and ')} disagree`
+}
+
+/** The hole as each source writes it, when they don't all write it the same way. */
+function Spellings({ g }: { g: Group }) {
+  const written = g.hole_written ?? []
+  if (written.length < 2) return null
+  return <span className="spellings small muted">written {written.join(' and ')}</span>
+}
+
+interface Row {
+  g: Group
+  c: Claim
+  level: number
+}
+
+/** One row per interval. An interval inside a longer one follows it, indented, the way reports write "including". */
+function orderRows(groups: Group[]): Row[] {
+  const byRow = new Map(groups.map((g) => [g.row ?? g.claims[0], g]))
+  const children = new Map<string, Group[]>()
+  for (const g of groups) {
+    if (g.inside && byRow.has(g.inside)) children.set(g.inside, [...(children.get(g.inside) ?? []), g])
+  }
+  const from = (g: Group) => {
+    const v = claim(g.row ?? g.claims[0])?.value ?? null
+    return isInterval(v) ? Number.parseFloat(v.from_m ?? '0') : 0
+  }
+  const hole = (g: Group) => clean(g.hole ?? '')
+  const sort = (list: Group[]) => [...list].sort((a, b) => hole(a).localeCompare(hole(b), 'en', { numeric: true }) || from(a) - from(b))
+  const out: Row[] = []
+  const walk = (g: Group, level: number) => {
+    const c = claim(g.row ?? g.claims[0])
+    if (c) out.push({ g, c, level })
+    for (const k of sort(children.get(g.row ?? '') ?? [])) walk(k, level + 1)
+  }
+  for (const g of sort(groups.filter((g) => !g.inside || !byRow.has(g.inside)))) walk(g, 0)
+  return out
+}
+
+function conflictId(p: FieldPart, g: Group) {
+  return `${p.id.replace('.', '-')}-${(g.row ?? '').replace('c-', '')}`
+}
+
+/** What a side says on the measures that disagree: "24.04 m", "Cu 6 ppm". */
+function disputedValue(g: Group, c: Claim): string {
+  const said = (g.compared ?? [])
+    .filter((x) => !x.agree)
+    .flatMap((x) => {
+      const v = x.values.find((y) => y.claim === c.id)
+      return v ? [x.what === 'width' ? `${v.written} m` : `${x.what} ${v.written}`] : []
+    })
+  return said.length ? said.join(', ') : isInterval(c.value) ? `${c.value.width_m} m` : valueText(c)
+}
+
 function IntervalsBody({ p }: { p: FieldPart }) {
   const [all, setAll] = useState(false)
   const conflicts = p.groups.filter((g) => g.disagree)
-  const arithmetic = p.groups.flatMap((g) =>
-    Object.entries(g.arithmetic ?? {})
-      .filter(([, a]) => !a.ok)
-      .map(([id, a]) => ({ id, line: a.line, group: g })),
+  const offByArithmetic = new Map(
+    p.groups.flatMap((g) =>
+      Object.entries(g.arithmetic ?? {})
+        .filter(([, a]) => !a.ok)
+        .map(([id, a]) => [id, { line: a.line, group: g }] as const),
+    ),
   )
-  const offByArithmetic = new Set(arithmetic.map((a) => a.id))
-  const rows = claimsOf(p.claims).filter((c) => isInterval(c.value))
-  const shown = all ? rows : rows.slice(0, 6)
+  const rows = orderRows(p.groups)
+  const shown = all ? rows : rows.slice(0, 8)
 
   return (
     <>
       {conflicts.map((g) => (
-        <div className="disagree-area" key={g.hole}>
+        <div className="disagree-area" key={g.row} id={conflictId(p, g)}>
           <p className="disagree-title">
-            <span className="mono">{g.hole}</span>: widths disagree
+            <span className="mono">{clean(g.hole ?? '')}</span>: {disagreeTitle(g)} <Spellings g={g} />
           </p>
           <Sides
-            groups={(g.sides ?? []).map((s) => ({ ...g, claims: s.claims, key: s.width_m }))}
+            groups={(g.sides ?? []).map((s) => ({ ...g, claims: s.claims }))}
             render={(side) => (
               <ul className="values">
                 {claimsOf(side.claims).map((c) => (
                   <li key={c.id}>
                     <ValueButton id={c.id} siblings={g.claims} className="mono">
-                      {side.key} m
+                      {disputedValue(g, c)}
                     </ValueButton>
                     <Chip id={c.id} siblings={g.claims} />
                     <p className="small muted interval-sub">
-                      {isInterval(c.value) && `${c.value.from_m} to ${c.value.to_m} m. `}
+                      {isInterval(c.value) && `${clean(c.value.hole)}, ${c.value.from_m} to ${c.value.to_m} m, ${c.value.width_m} m. `}
                       <Grades c={c} />
                     </p>
                   </li>
@@ -379,13 +452,21 @@ function IntervalsBody({ p }: { p: FieldPart }) {
               </ul>
             )}
           />
-          <CodeLine lines={Object.values(g.arithmetic ?? {}).map((a) => a.line)} rule={p.rule_text} />
+          <CodeLine
+            lines={[
+              ...(g.compared ?? []).filter((x) => !x.agree).map((x) => x.line),
+              ...Object.values(g.arithmetic ?? {})
+                .filter((a) => !a.ok)
+                .map((a) => a.line),
+            ]}
+            rule={p.rule_text}
+          />
         </div>
       ))}
 
       <div className="table-scroll">
         <table className="data-table intervals">
-          <caption className="sr-only">{p.name}, as the reports write them</caption>
+          <caption className="sr-only">{p.name}, one row per interval, as the reports write them</caption>
           <thead>
             <tr>
               <th scope="col">Hole</th>
@@ -399,17 +480,19 @@ function IntervalsBody({ p }: { p: FieldPart }) {
                 Width (m)
               </th>
               <th scope="col">Grades as written</th>
-              <th scope="col">Source</th>
+              <th scope="col">Sources</th>
             </tr>
           </thead>
           <tbody>
-            {shown.map((c) => {
+            {shown.map(({ g, c, level }) => {
               const v = isInterval(c.value) ? c.value : null
               if (!v) return null
+              const off = offByArithmetic.has(c.id)
               return (
-                <tr key={c.id}>
-                  <td data-label="Hole">
-                    <ValueButton id={c.id} className="mono">
+                <tr key={c.id} className={`${level ? 'is-inside' : ''}${g.disagree ? ' is-disagree' : ''}`}>
+                  <td data-label="Hole" style={level ? { paddingLeft: `${level * 16}px` } : undefined}>
+                    {level > 0 && <span className="inside-word">{g.inside_word}</span>}
+                    <ValueButton id={c.id} siblings={g.claims} className="mono">
                       {clean(v.hole)}
                     </ValueButton>
                   </td>
@@ -419,16 +502,25 @@ function IntervalsBody({ p }: { p: FieldPart }) {
                   <td data-label="To" className="num r">
                     {v.to_m}
                   </td>
-                  <td data-label="Width" className={`num r${offByArithmetic.has(c.id) ? ' is-off' : ''}`}>
+                  <td data-label="Width" className={`num r${off ? ' is-off' : ''}`}>
                     {v.width_m}
-                    {offByArithmetic.has(c.id) && <span className="off-mark" aria-label="to minus from gives a different width; see the code line below">*</span>}
+                    {off && (
+                      <span className="off-mark" aria-label="to minus from gives a different width; see the code line below">
+                        *
+                      </span>
+                    )}
                   </td>
                   <td data-label="Grades">
                     <Grades c={c} />
                     {c.caveats.length > 0 && <span className="tag">caveat</span>}
                   </td>
-                  <td data-label="Source">
-                    <Chip id={c.id} />
+                  <td data-label="Sources">
+                    <SourceChips ids={g.claims} siblings={g.claims} max={3} />
+                    {g.disagree && (
+                      <a className="tag is-disagree" href={`#${conflictId(p, g)}`}>
+                        Sources disagree
+                      </a>
+                    )}
                   </td>
                 </tr>
               )
@@ -436,18 +528,18 @@ function IntervalsBody({ p }: { p: FieldPart }) {
           </tbody>
         </table>
       </div>
-      {rows.length > 6 && (
+      {rows.length > 8 && (
         <button type="button" className="text-button" aria-expanded={all} onClick={() => setAll((v) => !v)}>
           {all ? 'Show fewer' : `Show all ${rows.length} intervals`}
         </button>
       )}
 
-      {arithmetic.filter((a) => !a.group.disagree).length > 0 && (
+      {[...offByArithmetic.values()].some((a) => !a.group.disagree) && (
         <div className="code-line">
-          {arithmetic
-            .filter((a) => !a.group.disagree)
-            .map((a) => (
-              <p key={a.id} className="mono">
+          {[...offByArithmetic.entries()]
+            .filter(([, a]) => !a.group.disagree)
+            .map(([id, a]) => (
+              <p key={id} className="mono">
                 * {clean(a.group.hole ?? '')}: {a.line}
               </p>
             ))}

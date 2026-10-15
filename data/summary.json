@@ -1,0 +1,390 @@
+{
+ "summary": "2026-10-15-s2",
+ "date": "2026-10-15",
+ "model": "claude-opus-5-5",
+ "cli_version": "2.1.299",
+ "effort": "high",
+ "tools": [
+  "mcp__card__read_card",
+  "mcp__card__read_field",
+  "mcp__card__propose_sentence"
+ ],
+ "only_card_tools": true,
+ "result": "success",
+ "model_turns": 19,
+ "seconds": 56.8,
+ "gold_unchanged_since_run": true,
+ "rule_text": "The summary agent reads only what build_data.py put on the card: accepted claims, field states,\nthe sides of each disagreement and the code lines. It writes one sentence at a time and cites what\neach sentence rests on. Code checks every sentence before it is kept:",
+ "sentences": [
+  {
+   "id": "s01",
+   "text": "The reports place the Iron Lake property in the Clinton Mining Division of south central British Columbia, 45 kilometers northeast of 100 Mile House, where since 1989 it has been explored for ultramafic intrusion-hosted copper-gold platinum-palladium mineralization.",
+   "cite": [
+    "c-0502",
+    "c-0503",
+    "c-0504",
+    "c-0505",
+    "c-0506",
+    "c-0507",
+    "c-0508",
+    "c-0061",
+    "c-0066",
+    "c-0067",
+    "c-0068"
+   ]
+  },
+  {
+   "id": "s02",
+   "text": "The property is centered on the Iron Lake Complex, an early Jurassic body of ultramafic and mafic plutonic rocks that intrudes Upper Triassic Nicola Group volcaniclastics and is in contact with the Takomkane Batholith.",
+   "cite": [
+    "c-0129",
+    "c-0132",
+    "c-0117",
+    "c-0136"
+   ]
+  },
+  {
+   "id": "s03",
+   "text": "The reports describe two styles of mineralization: disseminated sulfide with economically significant values of copper, gold, platinum and palladium, and massive sulfide with economically significant values in copper, nickel and cobalt.",
+   "cite": [
+    "c-0073",
+    "c-0063",
+    "c-0075"
+   ]
+  },
+  {
+   "id": "s04",
+   "text": "Recent surveys include IP and total field magnetometer surveys in 2019, an airborne MMT-EM and magnetic survey by Tech-X in 2021, a 48.3 line-km IP survey in 2022 and a helicopter-borne Xcite time domain EM survey in 2023.",
+   "cite": [
+    "c-0262",
+    "c-0224",
+    "c-0228",
+    "c-0229",
+    "c-0210"
+   ]
+  },
+  {
+   "id": "s05",
+   "text": "Diamond drilling totalled 5,001.30 m in 2022, while the 2023 total is given as 1,680 m (41800 p33, p38) and as 1,670 m (41800 p9), so the same report disagrees with itself.",
+   "cite": [
+    "c-0080",
+    "c-0082",
+    "c-0105",
+    "c-0106",
+    "c-0107",
+    "code:drilling_2023.total_metres"
+   ]
+  },
+  {
+   "id": "s08",
+   "text": "Significant intervals listed in 41327 p33 include IL-22-006 with 13.16 m of 0.18% Cu, 0.027% Ni and 23 ppb Pt, IL-22-013 with 2.15 m of 0.48% Cu and 86 ppb Au, and IL-22-014 with 17.90 m of 0.09% Cu.",
+   "cite": [
+    "c-0084",
+    "c-0091",
+    "c-0093"
+   ]
+  },
+  {
+   "id": "s09",
+   "text": "Report 41800 p37 lists IL-23-024 with 9.46 m of 0.42% Cu, including 0.50 m of 1.17% Cu, and IL-23-26 with 0.47 m of 0.65% Cu, 71 ppb Pt and 295 ppb Pd.",
+   "cite": [
+    "c-0108",
+    "c-0115",
+    "c-0109",
+    "c-0112"
+   ]
+  },
+  {
+   "id": "s10",
+   "text": "The reports disagree on several numbers: IL-22-011 is 2.07 m wide in 41327 p33 but 2.36 m in 41327 p34, IL-22-20 is stated as 2.50 m though its depths give 1.50 m, and IL-23-25 carries 0.002% Cu in 41800 p37 but 6 ppm Cu in 41800 p10.",
+   "cite": [
+    "c-0090",
+    "c-0104",
+    "c-0101",
+    "code:drilling_2022.intervals",
+    "c-0111",
+    "c-0114",
+    "code:drilling_2023.intervals"
+   ]
+  },
+  {
+   "id": "s11",
+   "text": "They also disagree on location: 36807 p1 gives coordinates 62.0 km from those in the other reports, and 34595 p1 gives map sheet 093N034 where the others give 092P sheets.",
+   "cite": [
+    "c-0337",
+    "c-0313",
+    "c-0315",
+    "c-0317",
+    "c-0319",
+    "c-0323",
+    "c-0324",
+    "c-0325",
+    "code:location",
+    "c-0040",
+    "c-0342",
+    "c-0343",
+    "c-0344",
+    "c-0345",
+    "c-0346",
+    "c-0348",
+    "c-0350"
+   ]
+  },
+  {
+   "id": "s13",
+   "text": "No resource estimate is stated for Iron Lake itself, two batches of fire assays in 41327 p32 failed QA/QC, and 41800 p37 warns that 2023 aqua regia results may be expected to be lower than actual values.",
+   "cite": [
+    "refused:resource_estimate",
+    "c-0103",
+    "c-0113",
+    "c-0102"
+   ]
+  }
+ ],
+ "thrown_out": [
+  {
+   "id": "s06",
+   "text": "Significant 2022 intervals listed in 41327 p33 include IL-22-006 with 13.16 m of 0.18% Cu, 0.027% Ni and 23 ppb Pt, IL-22-013 with 2.15 m of 0.48% Cu and 86 ppb Au, and IL-22-014 with 17.90 m of 0.09% Cu.",
+   "cite": [
+    "c-0084",
+    "c-0091",
+    "c-0093"
+   ],
+   "failure": "number_unbacked",
+   "failure_label": "Number not in a cited claim",
+   "reason": "No cited claim or code line contains: 2022",
+   "fixed_by": "s08"
+  },
+  {
+   "id": "s07",
+   "text": "For 2023, 41800 p37 lists IL-23-024 with 9.46 m of 0.42% Cu, including 0.50 m of 1.17% Cu, and IL-23-26 with 0.47 m of 0.65% Cu, 71 ppb Pt and 295 ppb Pd.",
+   "cite": [
+    "c-0108",
+    "c-0115",
+    "c-0109",
+    "c-0112"
+   ],
+   "failure": "number_unbacked",
+   "failure_label": "Number not in a cited claim",
+   "reason": "No cited claim or code line contains: 2023",
+   "fixed_by": "s09"
+  },
+  {
+   "id": "s12",
+   "text": "No resource estimate is stated for Iron Lake itself, two batches of 2022 fire assays failed QA/QC, and 41800 p37 warns that 2023 aqua regia results may be expected to be lower than actual values.",
+   "cite": [
+    "refused:resource_estimate",
+    "c-0103",
+    "c-0113",
+    "c-0102"
+   ],
+   "failure": "number_unbacked",
+   "failure_label": "Number not in a cited claim",
+   "reason": "No cited claim or code line contains: 2022",
+   "fixed_by": "s13"
+  }
+ ],
+ "trace": [
+  {
+   "i": 0,
+   "tool": "read_card",
+   "result": "12 fields"
+  },
+  {
+   "i": 1,
+   "tool": "read_field",
+   "field": "commodities",
+   "result": "26 claims"
+  },
+  {
+   "i": 2,
+   "tool": "read_field",
+   "field": "geological_setting",
+   "result": "91 claims"
+  },
+  {
+   "i": 3,
+   "tool": "read_field",
+   "field": "mineralization",
+   "result": "143 claims"
+  },
+  {
+   "i": 4,
+   "tool": "read_field",
+   "field": "geophysical_surveys",
+   "result": "106 claims"
+  },
+  {
+   "i": 5,
+   "tool": "propose_sentence",
+   "sentence": "s01",
+   "result": "kept"
+  },
+  {
+   "i": 6,
+   "tool": "propose_sentence",
+   "sentence": "s02",
+   "result": "kept"
+  },
+  {
+   "i": 7,
+   "tool": "propose_sentence",
+   "sentence": "s03",
+   "result": "kept"
+  },
+  {
+   "i": 8,
+   "tool": "propose_sentence",
+   "sentence": "s04",
+   "result": "kept"
+  },
+  {
+   "i": 9,
+   "tool": "propose_sentence",
+   "sentence": "s05",
+   "result": "kept"
+  },
+  {
+   "i": 10,
+   "tool": "propose_sentence",
+   "sentence": "s06",
+   "result": "thrown out: No cited claim or code line contains: 2022"
+  },
+  {
+   "i": 11,
+   "tool": "propose_sentence",
+   "sentence": "s07",
+   "result": "thrown out: No cited claim or code line contains: 2023"
+  },
+  {
+   "i": 12,
+   "tool": "propose_sentence",
+   "sentence": "s08",
+   "result": "kept"
+  },
+  {
+   "i": 13,
+   "tool": "propose_sentence",
+   "sentence": "s09",
+   "result": "kept"
+  },
+  {
+   "i": 14,
+   "tool": "propose_sentence",
+   "sentence": "s10",
+   "result": "kept"
+  },
+  {
+   "i": 15,
+   "tool": "propose_sentence",
+   "sentence": "s11",
+   "result": "kept"
+  },
+  {
+   "i": 16,
+   "tool": "propose_sentence",
+   "sentence": "s12",
+   "result": "thrown out: No cited claim or code line contains: 2022"
+  },
+  {
+   "i": 17,
+   "tool": "propose_sentence",
+   "sentence": "s13",
+   "result": "kept"
+  }
+ ],
+ "points": [
+  {
+   "about": "Where and what",
+   "label": "Clinton Mining Division",
+   "met": true
+  },
+  {
+   "about": "Where and what",
+   "label": "Explored for copper",
+   "met": true
+  },
+  {
+   "about": "Where and what",
+   "label": "And for platinum group metals",
+   "met": true
+  },
+  {
+   "about": "Work done",
+   "label": "2022 drilling: 5,001.30 m",
+   "met": true
+  },
+  {
+   "about": "Work done",
+   "label": "2023 airborne survey: 205 line-km",
+   "met": false
+  },
+  {
+   "about": "Best results",
+   "label": "IL-23-024: 9.46 m",
+   "met": true
+  },
+  {
+   "about": "Best results",
+   "label": "IL-23-024: 0.42% Cu",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "Location: one title page sits about 62 km from the rest",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "Map sheet: 092P",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "Map sheet: 093N",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "2023 drilling: 1,680 m",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "2023 drilling: 1,670 m",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "IL-22-011 width: 2.07 m",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "IL-22-011 width: 2.36 m",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "IL-23-25 copper: 0.002%",
+   "met": true
+  },
+  {
+   "about": "Disagreements",
+   "label": "IL-23-25 copper: 6 ppm",
+   "met": true
+  },
+  {
+   "about": "Gaps and caveats",
+   "label": "No resource estimate",
+   "met": true
+  },
+  {
+   "about": "Gaps and caveats",
+   "label": "2023 assays: aqua regia digestion may read low",
+   "met": true
+  }
+ ],
+ "gold_written_by": "Claude (claude-opus-5-5), the data agent, from the property card, before the summary session ran. The summary session never reads this file.",
+ "gold_what": "The points a short evaluation of Iron Lake should make from these reports. Each is met only when the summary's own text states it, matched the same way as the eval answers: numbers as a run of numbers, text ignoring case, spaces and punctuation, so a paraphrase doesn't match."
+}

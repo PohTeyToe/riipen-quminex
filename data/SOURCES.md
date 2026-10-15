@@ -12,7 +12,7 @@ Everything in `data/` either came from a public BC government source listed here
 | BC Data Catalogue, ARIS dataset | `https://catalogue.data.gov.bc.ca/api/3/action/package_show?id=af68d1d1-b85e-4ea9-b5f3-e09fc83f3f4f` | 2026-10-15 | Licence check: "Access Only". |
 | BC government copyright page (linked from ARIS) | `http://gov.bc.ca/copyright` (redirects to `https://www2.gov.bc.ca/gov/content/home/copyright`) | 2026-10-15 | "It may not be reproduced or redistributed without the prior written permission of the Province of British Columbia." |
 
-Because of the last two rows, the site ships no page images and no copies of the PDFs. It ships short quotes with attribution, excerpts of at most 400 characters (the quote plus about two lines either side), and deep links to each page on ARIS (`<pdf url>#page=N`).
+Because of the last two rows, the site ships no page images and no copies of the PDFs. It ships short quotes with attribution and deep links to each page on ARIS (`<pdf url>#page=N`). Each claim ships at most 400 characters of its page, counting the quote as written: the quote, then a little context if there is room; a longer quote is cut to the part around its value. If a page's claims together would ship more than half of its text, context goes first, then long text quotes shrink to their value. `excerpts.json` lists the pages still over half and the share of each report shipped.
 
 PDF page numbers are the page in the PDF file, not the number printed on the page. 41327 and 41800 are used from PDF page 5 to the end of the report body (49 and 45); their appendices are left out.
 
@@ -22,7 +22,8 @@ PDF page numbers are the page in the PDF file, not the number printed on the pag
 |---|---|---|
 | `corpus.json` | The seven reports, page ranges used, sizes, links, scanned pages | `agent/build_data.py` |
 | `normalization.json` | Every non-ASCII character in the corpus text and what the checker's normalization does with it | `agent/scan_chars.py` |
-| `excerpts.json` | For each claim, its quote inside a short excerpt of its page, with the highlight span | `agent/build_data.py` |
+| `excerpts.json` | For each claim, its quote inside a short excerpt of its page, with the highlight span; the pages over the share cap and the share of each report shipped | `agent/build_data.py` |
+| `summary.json` | The summary's kept sentences and their citations, every sentence code threw out and why, the session's calls, and the points it made | `agent/build_data.py`, `agent/card.py` |
 | `scanned_pages.json` | Pages that are scans (one image over at least 85% of the page, with a text layer), and the image check of each cited one | `agent/extract_pages.py`, `agent/build_data.py` |
 | `fields.json` | Field states, groups and code lines from the disagreement rules | `agent/rules.py` |
 | `eval/scores.json`, `eval/answers.json` | Verdicts and scores from the gold answers | `agent/score.py` |
@@ -46,6 +47,8 @@ Model: Claude (`claude-opus-5-5`) through the `claude` CLI 2.1.299, effort high,
 |---|---|---|
 | `eval/questions.json`, `eval/gold.json` | 15 questions and their gold answers, written from the pages before the first run | Every gold quote passes the same checker (`agent/check_gold.py`). Second reader: Codex (`gpt-6.1-sol`, reasoning xhigh, read-only), given the questions, gold, page text and the one scanned page image, nothing about the agent. Pass 1 (before any run) is in `eval/second_reader_pass1.json`, with its three disputes resolved in `gold.json`. Pass 2, run after run 2 on the gold as it then stood, is in `eval/second_reader.json`: 14 agree, and its one dispute (q02) is resolved in `gold.json`. A geologist has not checked them. |
 | `eval/changes.json` | Why there were two full runs, what changed after run 1 and after run 2, each with its reason | |
-| `eval/my_read.json` | A four-sentence draft of "My read", written from run 2's real misses. Marked draft: Abdallah rewrites it before it goes on the page. | |
+| `eval/misses_note.json` | "What the misses say" on the Eval tab: five sentences written by Claude after run 2 and its review, from the misses and a read of 41800 p37. The facts behind each sentence are listed in the file. | |
+| `eval/summary_review.json` | Claude's read of each kept summary sentence against the quotes it cites, after the session. Two notes, shown under their sentences on the card. | |
+| `eval/summary_gold.json` | The 18 points a short evaluation of Iron Lake should make, written by Claude from the card before the summary session ran. The session never reads it. | |
 | `image_checks.json` | For each claim on a scanned page: whether the quote and value match a rendering of the page image, who looked and when | |
 | `brief_examples.json` | The track 2 and track 3 example claims, written from real pages to show the claim format. No track 2 or 3 agent exists. Both pass the same checker. The track 1 example is a real claim from the run. | `agent/brief_examples.py` |

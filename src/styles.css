@@ -478,6 +478,24 @@ code,
   top: 0;
 }
 
+.tl-track {
+  touch-action: pan-y;
+}
+
+.for-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .for-touch {
+    display: inline;
+  }
+
+  .for-fine {
+    display: none;
+  }
+}
+
 .tl-hint {
   border-top: 1px solid var(--rule-soft);
   padding-top: 10px;
@@ -839,7 +857,13 @@ code,
 
 .parts {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 22px;
+}
+
+/* A part holds a scrolling table; without this its grid track grows to the table's width. */
+.part {
+  min-width: 0;
 }
 
 .part-name {
@@ -1266,7 +1290,7 @@ code,
 
 .scoreboard {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   background: var(--panel);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
@@ -1453,6 +1477,10 @@ code,
   flex-wrap: wrap;
   align-items: baseline;
   gap: 2px 6px;
+}
+
+.thrown-meta .text-link {
+  min-height: 24px;
 }
 
 .retry {
@@ -1860,6 +1888,11 @@ code,
     border-left: 0;
   }
 
+  .score:nth-child(5) {
+    grid-column: 1 / -1;
+    border-left: 0;
+  }
+
   .score:nth-child(n + 3) {
     border-top: 1px solid var(--rule);
   }
@@ -1867,6 +1900,16 @@ code,
   .try-step {
     grid-template-columns: minmax(0, 1fr) 300px;
     gap: 20px;
+  }
+
+  /* The field name sits above its values, so drill tables get the full width. */
+  .field {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .field-def {
+    max-width: none;
   }
 }
 
@@ -1992,9 +2035,10 @@ code,
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
-      'hole hole src'
+      'hole hole hole'
       'from to width'
-      'grades grades grades';
+      'grades grades grades'
+      'src src src';
     gap: 4px 10px;
     padding: 10px 0;
     border-top: 1px solid var(--rule-soft);
@@ -2009,11 +2053,6 @@ code,
 
   .intervals td[data-label='Hole'] {
     grid-area: hole;
-  }
-
-  .intervals td[data-label='Source'] {
-    grid-area: src;
-    text-align: right !important;
   }
 
   .intervals td[data-label='From'] {
@@ -2151,6 +2190,18 @@ code,
   }
 }
 
+/* Until the narrowed page has room for the field name beside a drill table, it sits above it. */
+@media (min-width: 1100px) and (max-width: 1365px) {
+  html.panel-open .field {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  html.panel-open .field-def {
+    max-width: none;
+  }
+}
+
 @media (min-width: 761px) {
   .wordmark .short {
     display: none;
@@ -2162,4 +2213,180 @@ code,
   .panel.is-open {
     transition: none;
   }
+}
+
+/* ---------- The agent's summary ---------- */
+
+.summary {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 18px 20px 16px;
+  margin-bottom: 28px;
+}
+
+.summary .section-head p {
+  max-width: 80ch;
+}
+
+.summary-list {
+  list-style: decimal;
+  padding-left: 22px;
+  display: grid;
+  gap: 10px;
+  max-width: 80ch;
+}
+
+.summary-list li::marker {
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.summary-text {
+  font-family: var(--serif);
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+.summary-cites {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  vertical-align: baseline;
+}
+
+.cite-tag {
+  margin-left: 0;
+  text-decoration: none;
+  line-height: 22px;
+}
+
+.cite-tag:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.summary-foot {
+  margin-top: 12px;
+}
+
+.summary-points {
+  margin: 12px 0 8px;
+  gap: 10px;
+}
+
+.summary-points .label {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.misses-note {
+  display: grid;
+  gap: 8px;
+  list-style: disc;
+  padding-left: 20px;
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+/* ---------- Intervals: one row per interval, "including" rows under their parent ---------- */
+
+.intervals tr.is-inside td {
+  background: var(--panel-2);
+}
+
+.inside-word {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+.spellings {
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+.tag.is-disagree {
+  margin-left: 0;
+  margin-top: 4px;
+  color: var(--ochre);
+  background: var(--ochre-bg);
+  border-color: var(--ochre-rule);
+  text-decoration: none;
+  line-height: 22px;
+}
+
+.intervals td[data-label='Sources'] {
+  min-width: 0;
+}
+
+.intervals td[data-label='Sources'] .chips {
+  margin-right: 4px;
+}
+
+/* ---------- Tap targets: at least 24 px tall ---------- */
+
+.chip {
+  line-height: 22px;
+}
+
+.try-text .text-link,
+.text-button,
+.disclosure,
+.value-button {
+  min-height: 24px;
+}
+
+.field-key .anchor {
+  display: inline-block;
+  min-height: 24px;
+}
+
+@media (min-width: 761px) {
+  /* The panel opens under the top bar, so the section tabs stay usable while it is open. */
+  .panel {
+    top: 53px;
+  }
+}
+
+@media (max-width: 760px) {
+  .intervals td[data-label='Sources'] {
+    grid-area: src;
+  }
+
+  .intervals tr.is-inside {
+    padding-left: 12px;
+  }
+
+  .intervals tr.is-inside td {
+    background: none;
+  }
+
+  .intervals td[data-label='Hole'] {
+    padding-left: 0 !important;
+  }
+
+  .summary {
+    padding: 16px 14px 14px;
+  }
+
+  .summary-list {
+    padding-left: 18px;
+  }
+}
+
+.review-note {
+  margin-top: 4px;
+  padding: 4px 10px;
+  border-left: 2px solid var(--ochre-rule);
+  background: var(--ochre-bg);
+  color: var(--ink-2);
+  max-width: 72ch;
+}
+
+.review-who {
+  font-weight: 600;
+  color: var(--ochre);
 }

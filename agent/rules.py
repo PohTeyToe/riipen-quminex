@@ -11,10 +11,11 @@ import re
 from decimal import Decimal
 from functools import lru_cache
 
-from checker import censored, numbers, to_decimal
+from checker import ELEMENTS, censored, element_of, numbers, to_decimal, unit_of
 from textnorm import normalize
 
 SAME_PLACE_KM = 5.0
+SAME_INTERVAL_OVERLAP = Decimal("0.9")
 WIDTH_TOL_M = Decimal("0.05")
 ARITH_TOL_M = Decimal("0.01")
 NUMBER_REL_TOL = Decimal("0.001")
@@ -25,11 +26,12 @@ RULE_TEXT = {
     "map_sheet": "Map sheets are compared on the four-character NTS map area, such as 092P.",
     "exact_text": "Values are compared as text, ignoring case, punctuation and the field's own label words.",
     "number": "Numbers within 0.1% of each other count as the same value, so rounding doesn't split them.",
-    "interval": "Two intervals for the same hole with the same copper and nickel grades and overlapping depths "
-                "describe the same interval. Their widths disagree if they differ by more than 0.05 m. Code also "
-                "checks that to minus from equals the stated width, allowing for how precisely each number is written.",
-    "none": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, "
-            "metres and drill intervals.",
+    "interval": "Two intervals for the same hole are the same interval when their depths overlap by at least 90% "
+                "of the longer one. Code then compares them: widths more than 0.05 m apart disagree, and so does any "
+                "grade both give that differs by more than the rounding of the numbers as written. An interval that "
+                "lies inside a longer one is listed under it, the way reports write \"including\". Code also checks "
+                "that to minus from equals the stated width, allowing for how precisely each number is written.",
+    "none": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
 }
 
 # ---------------------------------------------------------------- location
@@ -185,27 +187,7 @@ def group_numbers(claims: list[dict]) -> dict:
 
 # ---------------------------------------------------------------- intervals
 
-ELEMENTS = {
-    "Cu": ("cu", "copper"), "Ni": ("ni", "nickel"), "Au": ("au", "gold"), "Pt": ("pt", "platinum"),
-    "Pd": ("pd", "palladium"), "Co": ("co", "cobalt"), "Ag": ("ag", "silver"),
-}
 TO_PCT = {"%": Decimal(1), "ppm": Decimal("0.0001"), "g/t": Decimal("0.0001"), "ppb": Decimal("0.0000001")}
-
-
-def element_of(key: str) -> str | None:
-    words = re.findall(r"[a-z]+", key.lower())
-    for sym, names in ELEMENTS.items():
-        if any(w in names for w in words):
-            return sym
-    return None
-
-
-def unit_of(*texts: str) -> str | None:
-    s = " ".join(t.lower() for t in texts if t)
-    for u in ("ppm", "ppb", "g/t", "%"):
-        if u in s:
-            return u
-    return None
 
 
 def grade_pct(key: str, raw: str) -> tuple[Decimal, Decimal] | None:
@@ -243,17 +225,6 @@ def metres(raw) -> Decimal | None:
     return d / 100 if re.search(r"\bcm\b", str(raw).lower()) else d
 
 
-def same_grades(a: dict, b: dict) -> bool:
-    ga, gb = grades_by_element(a), grades_by_element(b)
-    for el in ("Cu", "Ni"):
-        if el not in ga or el not in gb:
-            return False
-        (va, ha), (vb, hb) = ga[el], gb[el]
-        if abs(va - vb) > max(ha, hb):
-            return False
-    return True
-
-
 def half_unit(raw) -> Decimal:
     """Half a unit of the last digit written: 318.3 -> 0.05, 2.36 -> 0.005, 47 cm -> 0.005 m."""
     d = to_decimal(raw)
@@ -264,11 +235,126 @@ def half_unit(raw) -> Decimal:
     return half / 100 if re.search(r"\bcm\b", str(raw).lower()) else half
 
 
-def depths_overlap(a: dict, b: dict) -> bool:
-    fa, ta, fb, tb = (metres(a.get("from_m")), metres(a.get("to_m")), metres(b.get("from_m")), metres(b.get("to_m")))
-    if None in (fa, ta, fb, tb):
-        return True  # can't tell, so grades decide
-    return fa < tb and fb < ta
+def depths(v: dict) -> tuple[Decimal, Decimal] | None:
+    f, t = metres(v.get("from_m")), metres(v.get("to_m"))
+    return (f, t) if f is not None and t is not None and t > f else None
+
+
+def same_interval(a: dict, b: dict) -> bool:
+    """Same hole, and the depths overlap by at least 90% of the longer interval. Without depths on
+    both sides, the copper and nickel grades decide."""
+    if hole_key(a["hole"]) != hole_key(b["hole"]):
+        return False
+    da, db = depths(a), depths(b)
+    if da and db:
+        overlap = min(da[1], db[1]) - max(da[0], db[0])
+        longer = max(da[1] - da[0], db[1] - db[0])
+        return overlap > 0 and overlap >= SAME_INTERVAL_OVERLAP * longer
+    ga, gb = grades_by_element(a), grades_by_element(b)
+    return all(el in ga and el in gb and abs(ga[el][0] - gb[el][0]) <= max(ga[el][1], gb[el][1])
+               for el in ("Cu", "Ni"))
+
+
+def inside(a: dict, b: dict) -> bool:
+    """a lies inside the longer interval b of the same hole (allowing for rounding)."""
+    da, db = depths(a), depths(b)
+    if not (da and db) or hole_key(a["hole"]) != hole_key(b["hole"]):
+        return False
+    tol = sum(half_unit(x) for x in (a.get("from_m"), a.get("to_m"), b.get("from_m"), b.get("to_m")))
+    return db[0] - tol <= da[0] and da[1] <= db[1] + tol and (db[1] - db[0]) - (da[1] - da[0]) > WIDTH_TOL_M
+
+
+def fmt_pct(d: Decimal) -> str:
+    return f"{d.normalize():f}%"
+
+
+def written_grade(key: str, raw: str) -> str:
+    """A grade with its unit, as the report writes it: "0.002%", "6 ppm"."""
+    unit = unit_of(raw, key)
+    if unit is None or unit in raw.lower():
+        return raw
+    return raw + ("%" if unit == "%" else f" {unit}")
+
+
+def compare_widths(g: list[dict]) -> dict | None:
+    known = [(w, c) for c in g if (w := metres(c["value"].get("width_m"))) is not None]
+    if len(known) < 2:
+        return None
+    spread = max(w for w, _ in known) - min(w for w, _ in known)
+    agree = spread <= WIDTH_TOL_M
+    line = "Widths " + " and ".join(f"{w} m" for w, _ in known)
+    line += " agree." if agree else f" differ by {spread} m. The rule allows {WIDTH_TOL_M} m."
+    return {"what": "width", "agree": agree, "line": line,
+            "values": [{"claim": c["id"], "written": str(c["value"]["width_m"]), "value": str(w), "allow": str(WIDTH_TOL_M)}
+                       for w, c in known]}
+
+
+def compare_grades(g: list[dict]) -> list[dict]:
+    by_el: dict[str, list] = {}
+    for c in g:
+        for k, raw in (c["value"].get("grades") or {}).items():
+            el, pct = element_of(k) or element_of(str(raw)), grade_pct(k, str(raw))
+            if el and pct:
+                by_el.setdefault(el, []).append({"claim": c["id"], "written": written_grade(k, str(raw)),
+                                                 "value": str(pct[0]), "allow": str(pct[1])})
+    out = []
+    for el, vals in by_el.items():
+        if len(vals) < 2:
+            continue
+        nums = [Decimal(v["value"]) for v in vals]
+        spread, allow = max(nums) - min(nums), max(Decimal(v["allow"]) for v in vals)
+        agree = spread <= allow
+        shown = [v["written"] if v["written"].endswith("%") else f"{v['written']} ({fmt_pct(Decimal(v['value']))})"
+                 for v in vals]
+        line = f"{el}: " + " and ".join(shown)
+        line += " agree within rounding." if agree else f" differ by {fmt_pct(spread)}. Rounding allows {fmt_pct(allow)}."
+        out.append({"what": el, "agree": agree, "line": line, "values": vals})
+    return out
+
+
+def sides_of(g: list[dict], compared: list[dict]) -> list[dict]:
+    """Claims that agree with each other on every measure that disagrees share a side."""
+    off = [x for x in compared if not x["agree"]]
+
+    def close(a: dict, b: dict) -> bool:
+        for x in off:
+            va = next((v for v in x["values"] if v["claim"] == a["id"]), None)
+            vb = next((v for v in x["values"] if v["claim"] == b["id"]), None)
+            if va and vb and abs(Decimal(va["value"]) - Decimal(vb["value"])) > max(Decimal(va["allow"]), Decimal(vb["allow"])):
+                return False
+        return True
+
+    return [{"claims": sorted(c["id"] for c in side)} for side in single_link(g, close)] if off else []
+
+
+def group_intervals(claims: list[dict]) -> dict:
+    items = [c for c in claims if isinstance(c.get("value"), dict)]
+    out = []
+    for g in single_link(items, lambda a, b: same_interval(a["value"], b["value"])):
+        g = sorted(g, key=lambda c: c["id"])
+        compared = [x for x in [compare_widths(g), *compare_grades(g)] if x]
+        off = [x["what"] for x in compared if not x["agree"]]
+        row = max(g, key=lambda c: len(c["value"].get("grades") or {}))  # the fullest claim stands for the group
+        out.append({
+            "hole": row["value"]["hole"],
+            "claims": sorted(c["id"] for c in g),
+            "row": row["id"],
+            "disagree": bool(off),
+            "disagree_on": off,
+            "compared": compared,
+            "sides": sides_of(g, compared),
+            "arithmetic": {c["id"]: a for c in g if (a := arithmetic(c["value"])) is not None},
+        })
+    # An interval inside a longer one of the same hole is listed under the shortest such interval.
+    value = {c["id"]: c["value"] for c in items}
+    for o in out:
+        parents = [p for p in out if p is not o and inside(value[o["row"]], value[p["row"]])]
+        if parents:
+            p = min(parents, key=lambda p: depths(value[p["row"]])[1] - depths(value[p["row"]])[0])
+            quotes = " ".join(normalize(c["quote"]) for c in items if c["id"] in o["claims"])
+            o["inside"] = p["row"]
+            o["inside_word"] = "including" if re.search(r"\bincl", quotes) else "within"
+    return {"rule": "interval", "groups": out, "unplaced": []}
 
 
 def arithmetic(value: dict) -> dict | None:
@@ -283,37 +369,6 @@ def arithmetic(value: dict) -> dict | None:
     if not ok:
         line += f" The report states {value['width_m']}{'' if 'm' in str(value['width_m']) else ' m'}."
     return {"ok": ok, "computed_m": str(diff), "stated_m": str(value["width_m"]), "line": line}
-
-
-def group_intervals(claims: list[dict]) -> dict:
-    def close(a, b):
-        return (hole_key(a["value"]["hole"]) == hole_key(b["value"]["hole"])
-                and same_grades(a["value"], b["value"])
-                and depths_overlap(a["value"], b["value"]))
-
-    groups = single_link([c for c in claims if isinstance(c.get("value"), dict)], close)
-    out = []
-    for g in groups:
-        widths = [(metres(c["value"].get("width_m")), c["id"]) for c in g]
-        known = [w for w, _ in widths if w is not None]
-        disagree = bool(known) and (max(known) - min(known)) > WIDTH_TOL_M
-        sides = []
-        if disagree:
-            for w, cid in sorted(widths, key=lambda x: (x[0] is None, x[0] or 0)):
-                side = next((s for s in sides if w is not None and s["width_m"] is not None
-                             and abs(s["width_m"] - w) <= WIDTH_TOL_M), None)
-                if side:
-                    side["claims"].append(cid)
-                else:
-                    sides.append({"width_m": w, "claims": [cid]})
-        out.append({
-            "hole": g[0]["value"]["hole"],
-            "claims": sorted(c["id"] for c in g),
-            "disagree": disagree,
-            "sides": [{"width_m": str(s["width_m"]), "claims": s["claims"]} for s in sides],
-            "arithmetic": {c["id"]: a for c in g if (a := arithmetic(c["value"])) is not None},
-        })
-    return {"rule": "interval", "groups": out, "unplaced": []}
 
 
 # ---------------------------------------------------------------- caveats

@@ -1,95 +1,131 @@
 {
-  "written_by": "Claude (claude-opus-5-5), the data agent, after reading run 1's output and before run 2 started",
-  "full_runs": 2,
-  "why_two_runs": "Run 1 showed the checker throwing out real coordinate quotes and code flagging two false disagreements, so I fixed those, froze everything again and reran all 27 sessions; every number on the site comes from run 2.",
-  "first_run": {
-    "run": "2026-10-15-r1",
-    "proposed": 423,
-    "accepted": 390,
-    "rejected": 33,
-    "eval": {
-      "answer_accuracy": "8 of 8",
-      "correct_refusals": "4 of 4",
-      "false_refusals": "0 of 11",
-      "disagreements_flagged": "3 of 3",
-      "citation_precision": "41 of 50, before any scanned-page claim was checked against its image"
-    },
-    "note": "Scored with the run 1 scorer. The eval verdicts were already all passes, so run 2 was not run to raise them."
+ "written_by": "Claude (claude-opus-5-5), the data agent, after reading run 1's output and before run 2 started",
+ "full_runs": 2,
+ "why_two_runs": "Run 1 showed the checker throwing out real coordinate quotes and code flagging two false disagreements, so I fixed those, froze everything again and reran all 27 sessions; every number on the site comes from run 2.",
+ "first_run": {
+  "run": "2026-10-15-r1",
+  "proposed": 423,
+  "accepted": 390,
+  "rejected": 33,
+  "eval": {
+   "answer_accuracy": "8 of 8",
+   "correct_refusals": "4 of 4",
+   "false_refusals": "0 of 11",
+   "disagreements_flagged": "3 of 3",
+   "citation_precision": "41 of 50, before any scanned-page claim was checked against its image"
   },
-  "changes": [
-    {
-      "what": "The checker ignores degree signs and private-use font glyphs, and the agent now reads page text with broken font glyphs mapped.",
-      "why": "Some PDFs draw the degree sign with a Symbol-font character (U+F0B0). In run 1 the agent left it out every time it copied those coordinates, and the checker threw out 7 quotes that were really on the page.",
-      "files": [
-        "agent/textnorm.py",
-        "agent/corpus.py",
-        "agent/corpus_server.py",
-        "agent/rules.py"
-      ]
-    },
-    {
-      "what": "Two intervals only count as the same interval if their depths also overlap.",
-      "why": "In run 1, two different IL-22-015 intervals (74.88 to 75.52 m and 111.00 to 119.00 m) had the same rounded grades, so code grouped them and showed a false width disagreement.",
-      "files": [
-        "agent/rules.py"
-      ]
-    },
-    {
-      "what": "The to minus from check allows for how precisely each number is written.",
-      "why": "In run 1 it flagged 41800 p10, which rounds 318.25 to 342.29 m to 318.3 to 342.3 m and keeps 24.04 m. That is rounding, not a disagreement.",
-      "files": [
-        "agent/rules.py"
-      ]
-    },
-    {
-      "what": "The rejection message for an interval without a hole ID, and rule 4 of the system prompt, now say how to quote it: from the row that names the hole down to the row in question.",
-      "why": "In run 1 the checker rejected three intervals quoted without their hole ID and the agent didn't retry them.",
-      "files": [
-        "agent/checker.py",
-        "agent/prompts/system.md"
-      ]
-    },
-    {
-      "what": "The field instruction says to cover every report and every page that states something, not only every report.",
-      "why": "In run 1 the 2022 drilling session claimed only the Table 3 rows and none of the same intervals as stated in the text, so code had nothing to compare them with.",
-      "files": [
-        "agent/prompts/system.md"
-      ]
-    },
-    {
-      "what": "The session turn cap went from 40 to 60 model turns.",
-      "why": "With every page in scope, the longest field sessions needed more room. In run 1 the longest used 33.",
-      "files": [
-        "agent/runner.py"
-      ]
-    },
-    {
-      "what": "The scorer no longer treats page, table or figure numbers in an answer line (\"Table 3\") as values that need a claim.",
-      "why": "In run 1 it flagged the 3 in \"Table 3\" as a number not backed by a claim.",
-      "files": [
-        "agent/rules.py"
-      ]
-    },
-    {
-      "what": "Gold answer for q05: added the 38640 title page (Au, Pt, Pd), and 'Au, Pt, Pd' counts as naming the platinum group metals.",
-      "why": "Run 1's agent found the 38640 title form, which the gold had missed. Checked against the page image. The copper and gold expectations are unchanged.",
-      "files": [
-        "data/eval/gold.json"
-      ]
-    }
-  ],
-  "after_run_2": [
-    {
-      "what": "Code-only fixes to post-processing: centimetre widths now scale the arithmetic tolerance correctly, map areas are only read from a capital letter A to P after an NTS series number (82 to 114), and excerpts are trimmed to whole words.",
-      "why": "Found while checking run 2 output. None of them changes a field state, a group, a verdict or a score; the agent was not rerun."
-    },
-    {
-      "what": "Added an eval cross-check to the location and map sheet fields: the same rule run over the eval sessions' claims, listed separately.",
-      "why": "In run 2 the map sheet session never surfaced the two title pages that say 093N, while the q15 eval session found one of them. The field row stays as its session produced it; the cross-check makes the gap visible."
-    },
-    {
-      "what": "Gold answer for q02: added Au 29 ppb, Pt 13 ppb and Pd 31 ppb from Table 4 as expected values.",
-      "why": "The second reader's pass on the final gold said the answer to a question about grades was incomplete without them. Confirmed on 41800 p37. The q02 verdict is unchanged; the agent's answer already had them."
-    }
-  ]
+  "note": "Scored with the run 1 scorer. The eval verdicts were already all passes, so run 2 was not run to raise them."
+ },
+ "changes": [
+  {
+   "what": "The checker ignores degree signs and private-use font glyphs, and the agent now reads page text with broken font glyphs mapped.",
+   "why": "Some PDFs draw the degree sign with a Symbol-font character (U+F0B0). In run 1 the agent left it out every time it copied those coordinates, and the checker threw out 7 quotes that were really on the page.",
+   "files": [
+    "agent/textnorm.py",
+    "agent/corpus.py",
+    "agent/corpus_server.py",
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "Two intervals only count as the same interval if their depths also overlap.",
+   "why": "In run 1, two different IL-22-015 intervals (74.88 to 75.52 m and 111.00 to 119.00 m) had the same rounded grades, so code grouped them and showed a false width disagreement.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "The to minus from check allows for how precisely each number is written.",
+   "why": "In run 1 it flagged 41800 p10, which rounds 318.25 to 342.29 m to 318.3 to 342.3 m and keeps 24.04 m. That is rounding, not a disagreement.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "The rejection message for an interval without a hole ID, and rule 4 of the system prompt, now say how to quote it: from the row that names the hole down to the row in question.",
+   "why": "In run 1 the checker rejected three intervals quoted without their hole ID and the agent didn't retry them.",
+   "files": [
+    "agent/checker.py",
+    "agent/prompts/system.md"
+   ]
+  },
+  {
+   "what": "The field instruction says to cover every report and every page that states something, not only every report.",
+   "why": "In run 1 the 2022 drilling session claimed only the Table 3 rows and none of the same intervals as stated in the text, so code had nothing to compare them with.",
+   "files": [
+    "agent/prompts/system.md"
+   ]
+  },
+  {
+   "what": "The session turn cap went from 40 to 60 model turns.",
+   "why": "With every page in scope, the longest field sessions needed more room. In run 1 the longest used 33.",
+   "files": [
+    "agent/runner.py"
+   ]
+  },
+  {
+   "what": "The scorer no longer treats page, table or figure numbers in an answer line (\"Table 3\") as values that need a claim.",
+   "why": "In run 1 it flagged the 3 in \"Table 3\" as a number not backed by a claim.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "Gold answer for q05: added the 38640 title page (Au, Pt, Pd), and 'Au, Pt, Pd' counts as naming the platinum group metals.",
+   "why": "Run 1's agent found the 38640 title form, which the gold had missed. Checked against the page image. The copper and gold expectations are unchanged.",
+   "files": [
+    "data/eval/gold.json"
+   ]
+  }
+ ],
+ "after_run_2": [
+  {
+   "what": "Code-only fixes to post-processing: centimetre widths now scale the arithmetic tolerance correctly, map areas are only read from a capital letter A to P after an NTS series number (82 to 114), and excerpts are trimmed to whole words.",
+   "why": "Found while checking run 2 output. None of them changes a field state, a group, a verdict or a score; the agent was not rerun."
+  },
+  {
+   "what": "Added an eval cross-check to the location and map sheet fields: the same rule run over the eval sessions' claims, listed separately.",
+   "why": "In run 2 the map sheet session never surfaced the two title pages that say 093N, while the q15 eval session found one of them. The field row stays as its session produced it; the cross-check makes the gap visible."
+  },
+  {
+   "what": "Gold answer for q02: added Au 29 ppb, Pt 13 ppb and Pd 31 ppb from Table 4 as expected values.",
+   "why": "The second reader's pass on the final gold said the answer to a question about grades was incomplete without them. Confirmed on 41800 p37. The q02 verdict is unchanged; the agent's answer already had them."
+  },
+  {
+   "what": "The checker got stricter. A number no longer matches where the quote puts < or > in front of it, and each drill grade must sit with its own element: in its column of the table row, or next to its name in a sentence. Every claim from the run was checked again; none changed.",
+   "why": "Review found that a Pt value of 10 passed against a quote reading <10, and that swapping the Cu and Ni grades of a table row still passed."
+  },
+  {
+   "what": "Two drill intervals are the same interval when the hole matches and the depths overlap by at least 90% of the longer one. Code then compares their widths and every grade both give. An interval inside a longer one is listed under it.",
+   "why": "The old rule needed the copper and nickel grades to match before it would compare two intervals, so it could never find a grade disagreement. 41800 gives IL-23-25 copper as 0.002% in Table 4 and 6 ppm in the text; that now shows as a disagreement."
+  },
+  {
+   "what": "Text fields no longer carry a Settled label. Code doesn't compare them, so they show as quotes.",
+   "why": "Commodities read Settled while its own quotes list different metals."
+  },
+  {
+   "what": "What an eval session found that a field session missed now goes into the field's row, marked as found by the eval.",
+   "why": "The map sheet row read Settled on 092P while the q15 session had found 093N on 34595's title page."
+  },
+  {
+   "what": "The scorer counts an expected value only when the answer line states it, fails a question when the answer has a number no cited quote contains, and counts a missing answer line as a miss.",
+   "why": "Review showed an answer of \"Not much here.\" passed when the cited quotes held the expected values. Under the new rule q08 fails, because its answer paraphrases the report."
+  },
+  {
+   "what": "Gold answer for q15: the single 093N item became two, 34595's title page (093N034) and 36807's (093N043), as the gold answer already said.",
+   "why": "An answer naming 092P and 093N once passed. This makes q15 harder after the run, and the run 2 answer now misses it."
+  },
+  {
+   "what": "Each claim now ships at most 400 characters of its page, counting a quote as the agent wrote it. A longer quote is cut to the part around its value, and a page's excerpts stop at half its text unless the quotes alone run over.",
+   "why": "50 excerpts ran past the 400 characters the site promised, and overlapping excerpts covered up to 85% of some pages."
+  },
+  {
+   "what": "Added the summary: a separate claude session reads only the card and writes a cited evaluation one sentence at a time. Code keeps a sentence only if every number in it is in what it cites and it cites every side of any disagreement it touches. The points it should make were written before it ran.",
+   "why": "Review: the card was an index of quotes, not the property evaluation the brief asks for."
+  },
+  {
+   "what": "The summary prompt no longer asks for \"the best\" drill results, and it tells the session to name a source by ARIS number and page instead of calling it a cover or title page. The summary session ran again on the final card.",
+   "why": "The first summary session (2026-10-15-s1) called two intervals the best, which the report doesn't, and called 36807 p1 a cover page, though 36807's cover page agrees with the other reports. The first word came from the prompt; the second went past the quotes. The points the summary should make didn't change between the two sessions."
+  }
+ ]
 }

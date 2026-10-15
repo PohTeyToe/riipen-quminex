@@ -1,7 +1,7 @@
 {
  "run": "2026-10-15-r2",
  "default_utm_zone": 10,
- "text_field_note": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, metres and drill intervals.",
+ "text_field_note": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
  "fields": [
   {
    "id": "location",
@@ -322,7 +322,7 @@
    "distance_km": 62.0,
    "code_line": "The nearest points on the two sides are 62.0 km apart (more than 5 km).",
    "eval_cross_check": {
-    "note": "The same rule run over claims from the eval sessions. Listed only if they found something this field's session did not; the field's state above is unchanged.",
+    "note": "The same rule run over the eval sessions' claims. Anything they found that this field's own session missed is folded into the row and marked as found by the eval.",
     "found": []
    }
   },
@@ -330,7 +330,7 @@
    "id": "map_sheet",
    "name": "Map sheet",
    "definition": "The NTS or BCGS map sheet the reports give for the property.",
-   "state": "settled",
+   "state": "disagree",
    "rule": "map_sheet",
    "rule_text": "Map sheets are compared on the four-character NTS map area, such as 092P.",
    "claims": [
@@ -350,7 +350,8 @@
     "c-0355",
     "c-0356",
     "c-0357",
-    "c-0358"
+    "c-0358",
+    "c-0040"
    ],
    "caveat_claims": [],
    "unplaced": [],
@@ -436,10 +437,27 @@
      ],
      "source_count": 14,
      "report_count": 7
+    },
+    {
+     "key": "093N",
+     "claims": [
+      "c-0040"
+     ],
+     "sources": [
+      {
+       "aris": 34595,
+       "page": 1
+      }
+     ],
+     "source_count": 1,
+     "report_count": 1
     }
    ],
+   "from_eval": [
+    "c-0040"
+   ],
    "eval_cross_check": {
-    "note": "The same rule run over claims from the eval sessions. Listed only if they found something this field's session did not; the field's state above is unchanged.",
+    "note": "The same rule run over the eval sessions' claims. Anything they found that this field's own session missed is folded into the row and marked as found by the eval.",
     "found": [
      {
       "claim": "c-0040",
@@ -524,9 +542,9 @@
    "id": "access",
    "name": "Access",
    "definition": "How the reports say the property is reached.",
-   "state": "settled",
+   "state": "quotes",
    "rule": "none",
-   "rule_text": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, metres and drill intervals.",
+   "rule_text": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
    "claims": [
     "c-0042",
     "c-0043",
@@ -606,9 +624,9 @@
    "id": "commodities",
    "name": "Commodities",
    "definition": "Metals the reports say are sought or present on the property.",
-   "state": "settled",
+   "state": "quotes",
    "rule": "none",
-   "rule_text": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, metres and drill intervals.",
+   "rule_text": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
    "claims": [
     "c-0054",
     "c-0055",
@@ -740,9 +758,9 @@
    "id": "geological_setting",
    "name": "Geological setting",
    "definition": "Rock units, ages and structures the reports describe on the property.",
-   "state": "settled",
+   "state": "quotes",
    "rule": "none",
-   "rule_text": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, metres and drill intervals.",
+   "rule_text": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
    "claims": [
     "c-0116",
     "c-0117",
@@ -1088,9 +1106,9 @@
    "id": "mineralization",
    "name": "Mineralization",
    "definition": "Sulphide and metal-bearing minerals and zones the reports describe on the property.",
-   "state": "settled",
+   "state": "quotes",
    "rule": "none",
-   "rule_text": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, metres and drill intervals.",
+   "rule_text": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
    "claims": [
     "c-0359",
     "c-0360",
@@ -1608,9 +1626,9 @@
    "id": "geophysical_surveys",
    "name": "Geophysical surveys",
    "definition": "Geophysical surveys done on the property, with type, year and size as stated.",
-   "state": "settled",
+   "state": "quotes",
    "rule": "none",
-   "rule_text": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, metres and drill intervals.",
+   "rule_text": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
    "claims": [
     "c-0207",
     "c-0208",
@@ -2096,7 +2114,7 @@
      "name": "Significant intervals",
      "state": "disagree",
      "rule": "interval",
-     "rule_text": "Two intervals for the same hole with the same copper and nickel grades and overlapping depths describe the same interval. Their widths disagree if they differ by more than 0.05 m. Code also checks that to minus from equals the stated width, allowing for how precisely each number is written.",
+     "rule_text": "Two intervals for the same hole are the same interval when their depths overlap by at least 90% of the longer one. Code then compares them: widths more than 0.05 m apart disagree, and so does any grade both give that differs by more than the rounding of the numbers as written. An interval that lies inside a longer one is listed under it, the way reports write \"including\". Code also checks that to minus from equals the stated width, allowing for how precisely each number is written.",
      "claims": [
       "c-0083",
       "c-0084",
@@ -2129,7 +2147,10 @@
        "claims": [
         "c-0083"
        ],
+       "row": "c-0083",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0083": {
@@ -2146,14 +2167,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-001"
+       ]
       },
       {
        "hole": "IL-22-006",
        "claims": [
         "c-0084"
        ],
+       "row": "c-0084",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0084": {
@@ -2170,14 +2197,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-006"
+       ]
       },
       {
        "hole": "IL-22-006",
        "claims": [
         "c-0085"
        ],
+       "row": "c-0085",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0085": {
@@ -2187,6 +2220,8 @@
          "line": "133.02 − 123.82 = 9.20 m."
         }
        },
+       "inside": "c-0084",
+       "inside_word": "including",
        "sources": [
         {
          "aris": 41327,
@@ -2194,14 +2229,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-006"
+       ]
       },
       {
        "hole": "IL-22-006",
        "claims": [
         "c-0086"
        ],
+       "row": "c-0086",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0086": {
@@ -2218,14 +2259,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-006"
+       ]
       },
       {
        "hole": "IL-22-007",
        "claims": [
         "c-0087"
        ],
+       "row": "c-0087",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0087": {
@@ -2242,14 +2289,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-007"
+       ]
       },
       {
        "hole": "IL-22-007",
        "claims": [
         "c-0088"
        ],
+       "row": "c-0088",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0088": {
@@ -2266,14 +2319,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-007"
+       ]
       },
       {
        "hole": "IL-22-009",
        "claims": [
         "c-0089"
        ],
+       "row": "c-0089",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0089": {
@@ -2290,14 +2349,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-009"
+       ]
       },
       {
        "hole": "IL-22-013",
        "claims": [
         "c-0091"
        ],
+       "row": "c-0091",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0091": {
@@ -2314,14 +2379,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-013"
+       ]
       },
       {
        "hole": "IL-22-014",
        "claims": [
         "c-0092"
        ],
+       "row": "c-0092",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0092": {
@@ -2338,14 +2409,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-014"
+       ]
       },
       {
        "hole": "IL-22-014",
        "claims": [
         "c-0093"
        ],
+       "row": "c-0093",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0093": {
@@ -2362,14 +2439,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-014"
+       ]
       },
       {
        "hole": "IL-22-015",
        "claims": [
         "c-0094"
        ],
+       "row": "c-0094",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0094": {
@@ -2386,14 +2469,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-015"
+       ]
       },
       {
        "hole": "IL-22-015",
        "claims": [
         "c-0095"
        ],
+       "row": "c-0095",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0095": {
@@ -2410,14 +2499,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-015"
+       ]
       },
       {
        "hole": "IL-22-015",
        "claims": [
         "c-0096"
        ],
+       "row": "c-0096",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0096": {
@@ -2434,14 +2529,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-015"
+       ]
       },
       {
        "hole": "IL-22-015",
        "claims": [
         "c-0097"
        ],
+       "row": "c-0097",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0097": {
@@ -2458,14 +2559,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-015"
+       ]
       },
       {
        "hole": "IL-22-015",
        "claims": [
         "c-0098"
        ],
+       "row": "c-0098",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0098": {
@@ -2482,14 +2589,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-015"
+       ]
       },
       {
        "hole": "IL-22-018",
        "claims": [
         "c-0099"
        ],
+       "row": "c-0099",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0099": {
@@ -2506,14 +2619,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-018"
+       ]
       },
       {
        "hole": "IL-22-018",
        "claims": [
         "c-0100"
        ],
+       "row": "c-0100",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0100": {
@@ -2530,14 +2649,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-018"
+       ]
       },
       {
        "hole": "IL-22-20",
        "claims": [
         "c-0101"
        ],
+       "row": "c-0101",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0101": {
@@ -2554,7 +2679,10 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-20"
+       ]
       },
       {
        "hole": "IL-22-011",
@@ -2562,33 +2690,94 @@
         "c-0090",
         "c-0104"
        ],
+       "row": "c-0090",
        "disagree": true,
+       "disagree_on": [
+        "width"
+       ],
+       "compared": [
+        {
+         "what": "width",
+         "agree": false,
+         "line": "Widths 2.07 m and 2.36 m differ by 0.29 m. The rule allows 0.05 m.",
+         "values": [
+          {
+           "claim": "c-0090",
+           "written": "2.07",
+           "value": "2.07",
+           "allow": "0.05"
+          },
+          {
+           "claim": "c-0104",
+           "written": "2.36",
+           "value": "2.36",
+           "allow": "0.05"
+          }
+         ]
+        },
+        {
+         "what": "Cu",
+         "agree": true,
+         "line": "Cu: 0.30% and 0.30% agree within rounding.",
+         "values": [
+          {
+           "claim": "c-0090",
+           "written": "0.30%",
+           "value": "0.30",
+           "allow": "0.005"
+          },
+          {
+           "claim": "c-0104",
+           "written": "0.30%",
+           "value": "0.30",
+           "allow": "0.005"
+          }
+         ]
+        },
+        {
+         "what": "Ni",
+         "agree": true,
+         "line": "Ni: 0.049% and 0.049% agree within rounding.",
+         "values": [
+          {
+           "claim": "c-0090",
+           "written": "0.049%",
+           "value": "0.049",
+           "allow": "0.0005"
+          },
+          {
+           "claim": "c-0104",
+           "written": "0.049%",
+           "value": "0.049",
+           "allow": "0.0005"
+          }
+         ]
+        }
+       ],
        "sides": [
         {
-         "width_m": "2.07",
          "claims": [
           "c-0090"
          ]
         },
         {
-         "width_m": "2.36",
          "claims": [
           "c-0104"
          ]
         }
        ],
        "arithmetic": {
-        "c-0104": {
-         "ok": false,
-         "computed_m": "2.17",
-         "stated_m": "2.36",
-         "line": "177.53 − 175.36 = 2.17 m. The report states 2.36 m."
-        },
         "c-0090": {
          "ok": true,
          "computed_m": "2.07",
          "stated_m": "2.07",
          "line": "177.53 − 175.46 = 2.07 m."
+        },
+        "c-0104": {
+         "ok": false,
+         "computed_m": "2.17",
+         "stated_m": "2.36",
+         "line": "177.53 − 175.36 = 2.17 m. The report states 2.36 m."
         }
        },
        "sources": [
@@ -2602,7 +2791,10 @@
         }
        ],
        "source_count": 2,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-22-011"
+       ]
       }
      ],
      "unplaced": []
@@ -2672,9 +2864,9 @@
     {
      "id": "drilling_2023.intervals",
      "name": "Significant intervals",
-     "state": "settled",
+     "state": "disagree",
      "rule": "interval",
-     "rule_text": "Two intervals for the same hole with the same copper and nickel grades and overlapping depths describe the same interval. Their widths disagree if they differ by more than 0.05 m. Code also checks that to minus from equals the stated width, allowing for how precisely each number is written.",
+     "rule_text": "Two intervals for the same hole are the same interval when their depths overlap by at least 90% of the longer one. Code then compares them: widths more than 0.05 m apart disagree, and so does any grade both give that differs by more than the rounding of the numbers as written. An interval that lies inside a longer one is listed under it, the way reports write \"including\". Code also checks that to minus from equals the stated width, allowing for how precisely each number is written.",
      "claims": [
       "c-0108",
       "c-0109",
@@ -2693,7 +2885,10 @@
        "claims": [
         "c-0109"
        ],
+       "row": "c-0109",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0109": {
@@ -2703,6 +2898,8 @@
          "line": "571.31 − 570.81 = 0.50 m."
         }
        },
+       "inside": "c-0108",
+       "inside_word": "including",
        "sources": [
         {
          "aris": 41800,
@@ -2710,14 +2907,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-23-024"
+       ]
       },
       {
        "hole": "IL-23-25",
        "claims": [
         "c-0110"
        ],
+       "row": "c-0110",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0110": {
@@ -2734,38 +2937,20 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
-      },
-      {
-       "hole": "IL-23-25",
-       "claims": [
-        "c-0111"
-       ],
-       "disagree": false,
-       "sides": [],
-       "arithmetic": {
-        "c-0111": {
-         "ok": true,
-         "computed_m": "24.04",
-         "stated_m": "24.04",
-         "line": "342.29 − 318.25 = 24.04 m."
-        }
-       },
-       "sources": [
-        {
-         "aris": 41800,
-         "page": 37
-        }
-       ],
-       "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-23-25"
+       ]
       },
       {
        "hole": "IL-23-26",
        "claims": [
         "c-0112"
        ],
+       "row": "c-0112",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [],
        "sides": [],
        "arithmetic": {
         "c-0112": {
@@ -2782,16 +2967,100 @@
         }
        ],
        "source_count": 1,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-23-26"
+       ]
       },
       {
-       "hole": "IL-23-025",
+       "hole": "IL-23-25",
        "claims": [
+        "c-0111",
         "c-0114"
        ],
-       "disagree": false,
-       "sides": [],
+       "row": "c-0111",
+       "disagree": true,
+       "disagree_on": [
+        "Cu"
+       ],
+       "compared": [
+        {
+         "what": "width",
+         "agree": true,
+         "line": "Widths 24.04 m and 24.04 m agree.",
+         "values": [
+          {
+           "claim": "c-0111",
+           "written": "24.04",
+           "value": "24.04",
+           "allow": "0.05"
+          },
+          {
+           "claim": "c-0114",
+           "written": "24.04",
+           "value": "24.04",
+           "allow": "0.05"
+          }
+         ]
+        },
+        {
+         "what": "Cu",
+         "agree": false,
+         "line": "Cu: 0.002% and 6 ppm (0.0006%) differ by 0.0014%. Rounding allows 0.0005%.",
+         "values": [
+          {
+           "claim": "c-0111",
+           "written": "0.002%",
+           "value": "0.002",
+           "allow": "0.0005"
+          },
+          {
+           "claim": "c-0114",
+           "written": "6 ppm",
+           "value": "0.0006",
+           "allow": "0.00005"
+          }
+         ]
+        },
+        {
+         "what": "Ni",
+         "agree": true,
+         "line": "Ni: 0.100% and 1,002 ppm (0.1002%) agree within rounding.",
+         "values": [
+          {
+           "claim": "c-0111",
+           "written": "0.100%",
+           "value": "0.100",
+           "allow": "0.0005"
+          },
+          {
+           "claim": "c-0114",
+           "written": "1,002 ppm",
+           "value": "0.1002",
+           "allow": "0.00005"
+          }
+         ]
+        }
+       ],
+       "sides": [
+        {
+         "claims": [
+          "c-0111"
+         ]
+        },
+        {
+         "claims": [
+          "c-0114"
+         ]
+        }
+       ],
        "arithmetic": {
+        "c-0111": {
+         "ok": true,
+         "computed_m": "24.04",
+         "stated_m": "24.04",
+         "line": "342.29 − 318.25 = 24.04 m."
+        },
         "c-0114": {
          "ok": true,
          "computed_m": "24.0",
@@ -2799,14 +3068,24 @@
          "line": "342.3 − 318.3 = 24.0 m."
         }
        },
+       "inside": "c-0110",
+       "inside_word": "including",
        "sources": [
+        {
+         "aris": 41800,
+         "page": 37
+        },
         {
          "aris": 41800,
          "page": 10
         }
        ],
-       "source_count": 1,
-       "report_count": 1
+       "source_count": 2,
+       "report_count": 1,
+       "hole_written": [
+        "IL-23-025",
+        "IL-23-25"
+       ]
       },
       {
        "hole": "IL-23-024",
@@ -2814,20 +3093,81 @@
         "c-0108",
         "c-0115"
        ],
+       "row": "c-0108",
        "disagree": false,
+       "disagree_on": [],
+       "compared": [
+        {
+         "what": "width",
+         "agree": true,
+         "line": "Widths 9.46 m and 9.46 m agree.",
+         "values": [
+          {
+           "claim": "c-0108",
+           "written": "9.46",
+           "value": "9.46",
+           "allow": "0.05"
+          },
+          {
+           "claim": "c-0115",
+           "written": "9.46",
+           "value": "9.46",
+           "allow": "0.05"
+          }
+         ]
+        },
+        {
+         "what": "Cu",
+         "agree": true,
+         "line": "Cu: 0.42% and 0.42% agree within rounding.",
+         "values": [
+          {
+           "claim": "c-0108",
+           "written": "0.42%",
+           "value": "0.42",
+           "allow": "0.005"
+          },
+          {
+           "claim": "c-0115",
+           "written": "0.42%",
+           "value": "0.42",
+           "allow": "0.005"
+          }
+         ]
+        },
+        {
+         "what": "Ni",
+         "agree": true,
+         "line": "Ni: 0.034% and 341 ppm (0.0341%) agree within rounding.",
+         "values": [
+          {
+           "claim": "c-0108",
+           "written": "0.034%",
+           "value": "0.034",
+           "allow": "0.0005"
+          },
+          {
+           "claim": "c-0115",
+           "written": "341 ppm",
+           "value": "0.0341",
+           "allow": "0.00005"
+          }
+         ]
+        }
+       ],
        "sides": [],
        "arithmetic": {
-        "c-0115": {
-         "ok": true,
-         "computed_m": "9.46",
-         "stated_m": "9.46",
-         "line": "578.46 − 569 = 9.46 m."
-        },
         "c-0108": {
          "ok": true,
          "computed_m": "9.46",
          "stated_m": "9.46",
          "line": "578.46 − 569.00 = 9.46 m."
+        },
+        "c-0115": {
+         "ok": true,
+         "computed_m": "9.46",
+         "stated_m": "9.46",
+         "line": "578.46 − 569 = 9.46 m."
         }
        },
        "sources": [
@@ -2841,7 +3181,10 @@
         }
        ],
        "source_count": 2,
-       "report_count": 1
+       "report_count": 1,
+       "hole_written": [
+        "IL-23-024"
+       ]
       }
      ],
      "unplaced": []
@@ -2857,9 +3200,9 @@
    "id": "recommended_next_work",
    "name": "Recommended next work",
    "definition": "Work the reports recommend doing next on the property, with any budget stated.",
-   "state": "settled",
+   "state": "quotes",
    "rule": "none",
-   "rule_text": "No disagreement check on text fields. Disagreement checks run on locations, map sheets, divisions, metres and drill intervals.",
+   "rule_text": "Text fields show quotes only. Code doesn't compare them, so they carry no settled or disagree label.",
    "claims": [
     "c-0509",
     "c-0510",

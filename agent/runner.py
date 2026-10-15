@@ -1,4 +1,7 @@
-"""Run one agent session through the claude CLI with only the four corpus tools.
+"""Run one agent session through the claude CLI with only one MCP server's tools.
+
+The field and eval sessions get the four corpus tools. The summary session gets
+the three card tools (card_server.py) and never sees the report pages.
 
 Each session gets its own MCP config (so the server knows its session id and
 log file), runs from an empty scratch folder outside any repo, and saves the
@@ -47,15 +50,15 @@ def scratch_dir() -> Path:
     return base
 
 
-def command(mcp_config: Path) -> list[str]:
+def command(mcp_config: Path, tools: list[str] = TOOLS, system: Path = PROMPTS / "system.md") -> list[str]:
     return [
         "claude", "-p",
         "--model", MODEL,
         "--effort", EFFORT,
         "--tools", "",
         "--strict-mcp-config", "--mcp-config", str(mcp_config),
-        "--allowedTools", " ".join(TOOLS),
-        "--system-prompt-file", str(PROMPTS / "system.md"),
+        "--allowedTools", " ".join(tools),
+        "--system-prompt-file", str(system),
         "--setting-sources", "",
         "--disable-slash-commands",
         "--output-format", "stream-json", "--verbose",
@@ -64,19 +67,20 @@ def command(mcp_config: Path) -> list[str]:
     ]
 
 
-def run_session(run_dir: Path, session: str, prompt: str, timeout_s: int = 1800) -> dict:
+def run_session(run_dir: Path, session: str, prompt: str, timeout_s: int = 1800, server: str = "corpus",
+                tools: list[str] = TOOLS, system: Path = PROMPTS / "system.md") -> dict:
     run_dir.mkdir(parents=True, exist_ok=True)
     tools_log = run_dir / f"{session}.tools.jsonl"
     stream = run_dir / f"{session}.stream.jsonl"
     for f in (tools_log, stream):
         f.unlink(missing_ok=True)
-    cfg = {"mcpServers": {"corpus": {
-        "type": "stdio", "command": str(PYTHON), "args": [str(AGENT / "corpus_server.py")],
+    cfg = {"mcpServers": {server: {
+        "type": "stdio", "command": str(PYTHON), "args": [str(AGENT / f"{server}_server.py")],
         "env": {"CORPUS_SESSION": session, "CORPUS_LOG": str(tools_log), "PYTHONIOENCODING": "utf-8"}}}}
     cfg_path = run_dir / f"{session}.mcp.json"
     cfg_path.write_text(json.dumps(cfg, indent=1), encoding="utf-8")
 
-    cmd = command(cfg_path)
+    cmd = command(cfg_path, tools, system)
     started = dt.datetime.now(dt.timezone.utc)
     t0 = time.time()
     with stream.open("w", encoding="utf-8") as out:
