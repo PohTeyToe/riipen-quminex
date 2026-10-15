@@ -1,0 +1,187 @@
+{
+ "note_hand_written": "Written by hand from a real page to show the format. No track 2 or 3 agent exists.",
+ "examples": [
+  {
+   "track": 1,
+   "label": "Track 1: a real claim from the run",
+   "hand_written": false,
+   "claim": {
+    "id": "c-0317",
+    "track": 1,
+    "field": "location",
+    "kind": "value",
+    "value": "Latitude 51° 57' N, Longitude 120° 54' W",
+    "unit": null,
+    "censored": false,
+    "source": {
+     "aris": 36807,
+     "page": 3
+    },
+    "quote": "Latitude 51° 57' N, Longitude 120° 54' W",
+    "caveats": [],
+    "check": {
+     "by": "code",
+     "quote_on_page": true,
+     "value_in_quote": true,
+     "scanned": false
+    },
+    "also_in": [
+     {
+      "aris": 34595,
+      "page": 3
+     },
+     {
+      "aris": 36430,
+      "page": 1
+     },
+     {
+      "aris": 38640,
+      "page": 3
+     }
+    ],
+    "run": "2026-10-15-r2"
+   }
+  },
+  {
+   "track": 2,
+   "label": "Track 2: one geophysics fact",
+   "hand_written": true,
+   "note": "Written by hand from a real page to show the format. No track 2 or 3 agent exists.",
+   "claim": {
+    "id": "example-t2",
+    "track": 2,
+    "field": "geophysical_surveys",
+    "kind": "value",
+    "value": "205 line-km",
+    "unit": "line-km",
+    "source": {
+     "aris": 41800,
+     "page": 38
+    },
+    "quote": "The survey consisted of one block totalling 205 line-km with a traverse line spacing of 100 m (with some 50 m infill) and tie line spacing of 1,000 m.",
+    "censored": false,
+    "caveats": [],
+    "check": {
+     "by": "code",
+     "quote_on_page": true,
+     "value_in_quote": true
+    },
+    "also_in": [
+     {
+      "aris": 41800,
+      "page": 9
+     },
+     {
+      "aris": 41800,
+      "page": 30
+     }
+    ],
+    "accepted": true,
+    "run": null
+   }
+  },
+  {
+   "track": 3,
+   "label": "Track 3: the IL-22-011 interval and its disagreement",
+   "hand_written": true,
+   "note": "Written by hand from a real page to show the format. No track 2 or 3 agent exists.",
+   "claim": {
+    "id": "example-t3",
+    "track": 3,
+    "field": "drilling_2022.intervals",
+    "kind": "interval",
+    "value": {
+     "hole": "IL-22-011",
+     "from_m": "175.36",
+     "to_m": "177.53",
+     "width_m": "2.36",
+     "grades": {
+      "Cu (%)": "0.30",
+      "Ni (%)": "0.049"
+     }
+    },
+    "unit": null,
+    "source": {
+     "aris": 41327,
+     "page": 34
+    },
+    "quote": "IL-22-011 intersected massive sulphide mineralization between 175.36 and 177.53 m. The mineralization was similar to IL-22-009, consisting of massive net-textured magnetite, rarely replaced by hematite, along with bands and veinlets of pyrite, pyrrhotite and trace chalcopyrite. This zone returned 0.30% copper and 0.049% nickel over 2.36 m.",
+    "censored": false,
+    "caveats": [],
+    "check": {
+     "by": "code",
+     "quote_on_page": true,
+     "value_in_quote": true
+    },
+    "also_in": [],
+    "accepted": true,
+    "run": null
+   },
+   "compared_with": {
+    "id": "example-t3-table",
+    "track": 3,
+    "field": "drilling_2022.intervals",
+    "kind": "interval",
+    "value": {
+     "hole": "IL-22-011",
+     "from_m": "175.46",
+     "to_m": "177.53",
+     "width_m": "2.07",
+     "grades": {
+      "Cu (%)": "0.30",
+      "Ni (%)": "0.049"
+     }
+    },
+    "unit": null,
+    "source": {
+     "aris": 41327,
+     "page": 33
+    },
+    "quote": "IL-22-011 175.46 177.53 2.07 0.30 0.049",
+    "censored": false,
+    "caveats": [],
+    "check": {
+     "by": "code",
+     "quote_on_page": true,
+     "value_in_quote": true
+    },
+    "also_in": [],
+    "accepted": true,
+    "run": null
+   },
+   "code_result": {
+    "same_interval": true,
+    "widths_disagree": true,
+    "sides": [
+     {
+      "width_m": "2.07",
+      "claims": [
+       "example-t3-table"
+      ]
+     },
+     {
+      "width_m": "2.36",
+      "claims": [
+       "example-t3"
+      ]
+     }
+    ],
+    "arithmetic": {
+     "example-t3-table": {
+      "ok": true,
+      "computed_m": "2.07",
+      "stated_m": "2.07",
+      "line": "177.53 − 175.46 = 2.07 m."
+     },
+     "example-t3": {
+      "ok": false,
+      "computed_m": "2.17",
+      "stated_m": "2.36",
+      "line": "177.53 − 175.36 = 2.17 m. The report states 2.36 m."
+     }
+    },
+    "rule_text": "Two intervals for the same hole with the same copper and nickel grades and overlapping depths describe the same interval. Their widths disagree if they differ by more than 0.05 m. Code also checks that to minus from equals the stated width, allowing for how precisely each number is written."
+   }
+  }
+ ]
+}

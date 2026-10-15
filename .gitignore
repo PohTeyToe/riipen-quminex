@@ -1,0 +1,10 @@
+BRIEF.md
+data/private/
+.venv/
+__pycache__/
+.pytest_cache/
+node_modules/
+dist/
+_review_screenshots/
+.vercel/
+*.log

@@ -1,0 +1,533 @@
+{
+  "written": "2026-10-15",
+  "written_by": "Claude (claude-opus-5-5), the data agent, from the report pages, before the first agent run",
+  "matching": "An expected item is met when any of its alternatives appears in the agent's answer line or in one of its accepted claims (value or quote). Alternatives without letters are matched as a run of numbers (0.30 equals 0.3; symbols and units are ignored). Alternatives with letters are matched as text, ignoring case, spaces, hyphens and punctuation marks normalized by the checker. A required caveat is met when one accepted claim's quote contains every phrase listed.",
+  "questions": [
+    {
+      "id": "q01",
+      "answer": "5,001.30 m of diamond drilling in 23 holes (41327 p29). Other pages round it to 5,001 m.",
+      "expected": [
+        {
+          "label": "Total metres drilled in 2022",
+          "any_of": [
+            "5,001.30",
+            "5,001"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 41327,
+          "page": 29,
+          "quote": "In 2022, a total of 5,001.30 m of diamond drilling was completed in 23 holes"
+        },
+        {
+          "aris": 41800,
+          "page": 22,
+          "quote": "totalling 5,001.30 m of diamond drilling in 23 holes"
+        },
+        {
+          "aris": 41327,
+          "page": 9,
+          "quote": "A total of 5,001 m of diamond drilling was completed in 23 holes"
+        }
+      ]
+    },
+    {
+      "id": "q02",
+      "answer": "9.46 m from 569.00 to 578.46 m grading 0.42% Cu, 0.034% Ni, 29 ppb Au, 13 ppb Pt and 31 ppb Pd (Table 4; the text gives 341 ppm Ni). The report says all 2023 samples used an aqua regia digestion and may read lower than actual values.",
+      "expected": [
+        {
+          "label": "Width 9.46 m",
+          "any_of": [
+            "9.46"
+          ]
+        },
+        {
+          "label": "Copper 0.42%",
+          "any_of": [
+            "0.42"
+          ]
+        },
+        {
+          "label": "Nickel 0.034% or 341 ppm",
+          "any_of": [
+            "0.034",
+            "341"
+          ]
+        },
+        {
+          "label": "Gold 29 ppb",
+          "any_of": [
+            "29"
+          ]
+        },
+        {
+          "label": "Platinum 13 ppb",
+          "any_of": [
+            "13"
+          ]
+        },
+        {
+          "label": "Palladium 31 ppb",
+          "any_of": [
+            "31"
+          ]
+        }
+      ],
+      "required_caveats": [
+        {
+          "label": "Aqua regia digestion; values may read lower than actual",
+          "all_of": [
+            "aqua regia",
+            "lower than actual"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "aris": 41800,
+          "page": 37,
+          "quote": "IL-23-024 569.00 578.46 9.46 0.42 0.034 29 13 31"
+        },
+        {
+          "aris": 41800,
+          "page": 37,
+          "quote": "Assay results for a 9.46 m interval spanning across both of these massive sulphide intersections graded 0.42% copper and 341 ppm nickel, from 569.00 m to 578.46 m."
+        },
+        {
+          "aris": 41800,
+          "page": 37,
+          "quote": "All samples from Iron Lake in 2023 were analyzed using an aqua regia digestion and therefore may be expected to be lower than actual values.",
+          "role": "caveat"
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "answer": "Aqua regia digestion (41800 p35 and p37).",
+      "expected": [
+        {
+          "label": "Aqua regia",
+          "any_of": [
+            "aqua regia"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 41800,
+          "page": 37,
+          "quote": "All samples from Iron Lake in 2023 were analyzed using an aqua regia digestion"
+        },
+        {
+          "aris": 41800,
+          "page": 35,
+          "quote": "A 0.5 g sub-sample of the pulverized material was then digested in an aqua-regia solution"
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "answer": "Clinton Mining Division (every report's title or cover page).",
+      "expected": [
+        {
+          "label": "Clinton",
+          "any_of": [
+            "Clinton"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 34595,
+          "page": 1,
+          "quote": "MINING DIVISION: Clinton"
+        },
+        {
+          "aris": 41800,
+          "page": 5,
+          "quote": "IRON LAKE PROPERTY Clinton Mining Division, BC"
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "answer": "Copper, Gold, PGM on the title pages of 34595 (p1) and 36807 (p1, scanned). The 38640 title page (p1) lists Au, Pt, Pd.",
+      "expected": [
+        {
+          "label": "Copper",
+          "any_of": [
+            "copper"
+          ]
+        },
+        {
+          "label": "Gold",
+          "any_of": [
+            "gold"
+          ]
+        },
+        {
+          "label": "PGM",
+          "any_of": [
+            "PGM",
+            "platinum group",
+            "Au, Pt, Pd"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 34595,
+          "page": 1,
+          "quote": "COMMODITIES SOUGHT: Copper, Gold, PGM"
+        },
+        {
+          "aris": 36807,
+          "page": 1,
+          "scanned": true,
+          "read_on_page_image": "COMMODITIES SOUGHT: Copper, Gold, PGM",
+          "quote": "COMMODITIES SOUGHT: _C_o.!.,p.,_p_er....:.,_G_o_ld-','-P_G_M"
+        },
+        {
+          "aris": 38640,
+          "page": 1,
+          "quote": "374482, 516280\nAu, Pt, Pd\n092P 132",
+          "read_on_page_image": "COMMODITIES SOUGHT: Au, Pt, Pd",
+          "note": "The form's typed values sit at the end of the text layer, apart from their labels."
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "answer": "A helicopter-borne time domain electromagnetic (Xcite HTDEM) survey, March 6 to 8, 2023, one block of 205 line-km (41800 p38).",
+      "expected": [
+        {
+          "label": "Xcite HTDEM / time domain EM",
+          "any_of": [
+            "Xcite",
+            "HTDEM",
+            "time domain electromagnetic"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 41800,
+          "page": 38,
+          "quote": "A helicopter-borne Time Domain Electromagnetic (Xcite HTDEM) survey was conducted over a portion of the Property from March 6 to 8, 2023."
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "answer": "Activation Laboratories Ltd. (Actlabs) in Kamloops, BC (41327 p31).",
+      "expected": [
+        {
+          "label": "Activation Laboratories",
+          "any_of": [
+            "Activation Laboratories",
+            "Activation Labs",
+            "Actlabs"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 41327,
+          "page": 31,
+          "quote": "the samples were transported to Activation Laboratories Ltd. in Kamloops, BC by Archer Cathro employees."
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "answer": "41800 (dated November 30, 2023) recommends drilling on a northeast azimuth to better intersect the Discovery Zone massive sulphides and a deeper hole into the northwest conductive zone targeting the conductor and high magnetic susceptibility (p9 and p38). Its conclusion on p39 adds that further work will be required to test the Discovery Zone along strike and to follow up on significant drill intercepts elsewhere on the Project.",
+      "expected": [
+        {
+          "label": "Drill on a northeast azimuth",
+          "any_of": [
+            "azimuth of northeast"
+          ]
+        },
+        {
+          "label": "A deeper hole into the northwest conductive zone",
+          "any_of": [
+            "deeper drill hole",
+            "deep hole"
+          ]
+        },
+        {
+          "label": "Test the Discovery Zone along strike and follow up intercepts elsewhere (p39)",
+          "any_of": [
+            "test the Discovery Zone along strike"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 41800,
+          "page": 38,
+          "quote": "A drilling azimuth of northeast is recommended to better intersect the massive sulphides."
+        },
+        {
+          "aris": 41800,
+          "page": 38,
+          "quote": "a deeper drill hole targeting both the conductive zone and high magnetic susceptibility is recommended."
+        },
+        {
+          "aris": 41800,
+          "page": 39,
+          "quote": "uired to test the Discovery Zone along strike",
+          "read_on_page_image": "Further work will be required to test the Discovery Zone along strike and to follow-up on significant drill intercepts elsewhere on the Project.",
+          "note": "This page's text layer splits every line of the paragraph into two pieces, so only fragments can be quoted from it."
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "answer": "Not in these sources. The reports quote resources and reserves for other deposits (Kevitsa in Finland; zones of the nearby Takomkane batholith) and name land-status 'mineral reserves', but none gives a resource for Iron Lake.",
+      "expected": [],
+      "required_caveats": [],
+      "sources": [],
+      "search_terms": [
+        "resource estimate",
+        "mineral resource",
+        "inferred",
+        "indicated",
+        "measured",
+        "reserve",
+        "tonnes",
+        "NI 43-101"
+      ]
+    },
+    {
+      "id": "q10",
+      "answer": "Not in these sources. That study is ARIS report 43017, listed on ARIS with no file posted yet. No report in this corpus mentions it.",
+      "expected": [],
+      "required_caveats": [],
+      "sources": [
+        {
+          "external": "https://apps.nrs.gov.bc.ca/pub/aris/detail/43017",
+          "retrieved": "2026-10-15",
+          "note": "ARIS detail page: 'Assessment Report on 2025 Geochronology and Green Rock Analytical Study on the Iron Lake Property', report year 2025, off confidential 2026-08-12, no file listed, 'Pending review'. Not part of the corpus the agent reads."
+        }
+      ],
+      "search_terms": [
+        "green rock",
+        "geochronology",
+        "2025",
+        "age dating",
+        "U-Pb"
+      ]
+    },
+    {
+      "id": "q11",
+      "answer": "Not in these sources. The only 'recovery' is drill core recovery in the geotechnical logs, and 'metallurgic' appears only as an unfilled line on the work-cost forms.",
+      "expected": [],
+      "required_caveats": [],
+      "sources": [],
+      "search_terms": [
+        "metallurgical",
+        "metallurgic",
+        "recovery",
+        "recoveries",
+        "flotation",
+        "concentrate"
+      ]
+    },
+    {
+      "id": "q12",
+      "answer": "Not in these sources. The 2022 program drilled 23 holes, IL-22-001 to IL-22-023 (41327 p29 and Table 2 on p30). No hole IL-22-099 appears.",
+      "expected": [],
+      "required_caveats": [],
+      "sources": [],
+      "search_terms": [
+        "IL-22-099",
+        "IL-22-99",
+        "099"
+      ]
+    },
+    {
+      "id": "q13",
+      "answer": "Sources disagree. The title page of 36807 (scanned) gives 51°54'9\" N, 121°48'2\" W. Its own cover (p3), the 34595 title page and the 36430 and 38640 covers give 51°57' N, 120°54' W. The Tech-X reports give 51°56'20\" N, 120°51'13\" W, about 3.5 km from that, labelled centre of work in 40980 and centre of property in 41327 and 41800. The 36807 title page point is about 62 km west of all the others.",
+      "expected": [
+        {
+          "label": "36807 title page: 121°48'2\" W",
+          "any_of": [
+            "121°48'2"
+          ]
+        },
+        {
+          "label": "Other pages: 120°54' W or 120°51'13\" W",
+          "any_of": [
+            "120°54'",
+            "120°51'13"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 36807,
+          "page": 1,
+          "scanned": true,
+          "read_on_page_image": "LATITUDE: 51 ° 54 ' 9 \" LONGITUDE: 121 ° 48 ' 2 \" (at centre of work)",
+          "quote": "LONGITUDE: 121 o 48 '2"
+        },
+        {
+          "aris": 36807,
+          "page": 3,
+          "quote": "Latitude 51° 57' N, Longitude 120° 54' W"
+        },
+        {
+          "aris": 34595,
+          "page": 1,
+          "quote": "LATITUDE: _____51_____° __57________' LONGITUDE: ___120_______° ____54______' (at centre of work)"
+        },
+        {
+          "aris": 36430,
+          "page": 1,
+          "quote": "Latitude 51° 57' N, Longitude 120° 54' W"
+        },
+        {
+          "aris": 38640,
+          "page": 3,
+          "quote": "Latitude 51° 57' N, Longitude 120° 54' W"
+        },
+        {
+          "aris": 40980,
+          "page": 5,
+          "quote": "LATITUDE: 51° 56' 20\" N - centre of work LONGITUDE: 120° 51' 13\" W"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "answer": "Sources disagree. Table 3 gives 175.46 to 177.53 m, 2.07 m (41327 p33). The text gives 175.36 to 177.53 m and 2.36 m (p34). Both carry 0.30% Cu and 0.049% Ni.",
+      "expected": [
+        {
+          "label": "Table 3: 2.07 m",
+          "any_of": [
+            "2.07"
+          ]
+        },
+        {
+          "label": "Text: 2.36 m",
+          "any_of": [
+            "2.36"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 41327,
+          "page": 33,
+          "quote": "IL-22-011 175.46 177.53 2.07 0.30 0.049"
+        },
+        {
+          "aris": 41327,
+          "page": 34,
+          "quote": "intersected massive sulphide mineralization between 175.36 and 177.53 m."
+        },
+        {
+          "aris": 41327,
+          "page": 34,
+          "quote": "This zone returned 0.30% copper and 0.049% nickel over 2.36 m."
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "answer": "Sources disagree. The covers and later reports give 092P (092P096, 092P/15, BCGS 092P.086). The title pages of 34595 and 36807 give 093N (093N034 and 093N043).",
+      "expected": [
+        {
+          "label": "092P",
+          "any_of": [
+            "092P"
+          ]
+        },
+        {
+          "label": "093N",
+          "any_of": [
+            "093N"
+          ]
+        }
+      ],
+      "required_caveats": [],
+      "sources": [
+        {
+          "aris": 36807,
+          "page": 3,
+          "quote": "NTS: 092P096"
+        },
+        {
+          "aris": 41800,
+          "page": 5,
+          "quote": "NTS: 092P/15"
+        },
+        {
+          "aris": 34595,
+          "page": 1,
+          "quote": "NTS / BCGS: 093N034"
+        },
+        {
+          "aris": 36807,
+          "page": 1,
+          "scanned": true,
+          "read_on_page_image": "NTS/BCGS: 093N043",
+          "quote": "NTS/BCGS: 093N043"
+        }
+      ]
+    }
+  ],
+  "second_reader": {
+    "reader": "codex exec, gpt-6.1-sol, reasoning xhigh, read-only sandbox; given the questions, this gold, the cited page text, the full corpus text and the image of 36807 p1; nothing about the agent",
+    "run": "2026-10-15, before any eval session ran",
+    "result": "12 agree, 3 disputed. All three disputes resolved against the page as below.",
+    "resolutions": [
+      {
+        "id": "q08",
+        "dispute": "Answer incomplete: 41800 p39 also calls for testing the Discovery Zone along strike and following up intercepts elsewhere.",
+        "resolution": "Accepted. Confirmed on the page image of 41800 p39. Added to the answer and as a third expected item. The page's text layer splits each line in two, so only a fragment can be quoted."
+      },
+      {
+        "id": "q10",
+        "dispute": "The report number 43017 and 'no file posted' are not established by the corpus pages.",
+        "resolution": "Kept, with the source added: the ARIS detail page for 43017 (retrieved 2026-10-15) lists the 2025 study with no file and 'Pending review'. The second reader was not given that page. The question stays unanswerable."
+      },
+      {
+        "id": "q13",
+        "dispute": "41800 p5 labels its point 'centre of property', not 'centre of work'.",
+        "resolution": "Accepted. Cited 40980 p5, which labels the same Tech-X point 'centre of work', and the answer now names both labels. Expected values unchanged."
+      }
+    ]
+  },
+  "changed_after_run_1": [
+    {
+      "id": "q05",
+      "change": "Answer text now includes the 38640 title page (Au, Pt, Pd), and 'Au, Pt, Pd' counts as naming the platinum group metals.",
+      "why": "Run 1's agent found the 38640 title form, which the gold had missed. Checked against the page image of 38640 p1. The copper and gold expectations are unchanged."
+    }
+  ],
+  "second_reader_pass_2": {
+    "reader": "codex exec, gpt-6.1-sol, reasoning xhigh, read-only sandbox; given the questions, this gold, the cited page text, the full corpus text and the image of 36807 p1; nothing about the agent",
+    "run": "2026-10-15, after run 2, on the final gold; still given nothing about the agent",
+    "result": "14 agree, 1 disputed (q02), resolved against the page.",
+    "resolutions": [
+      {
+        "id": "q02",
+        "dispute": "Table 4 also gives 29 ppb Au, 13 ppb Pt and 31 ppb Pd for IL-23-024, so a gold answer about its grades is incomplete without them.",
+        "resolution": "Accepted. Confirmed on 41800 p37. Added to the answer and as three expected values. The run 2 verdict for q02 is unchanged: its answer already gave all three."
+      }
+    ]
+  }
+}

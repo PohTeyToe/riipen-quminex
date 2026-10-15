@@ -1,0 +1,17 @@
+[
+  {"id": "q01", "category": "answerable", "question": "How many metres of diamond drilling were completed on the Iron Lake property in 2022?"},
+  {"id": "q02", "category": "answerable", "question": "What width and grades did the significant interval in hole IL-23-024 return?"},
+  {"id": "q03", "category": "answerable", "question": "What digestion method was used for the 2023 drill core samples?"},
+  {"id": "q04", "category": "answerable", "question": "Which mining division is the Iron Lake property in?"},
+  {"id": "q05", "category": "answerable", "question": "Which commodities do the assessment report title pages list as sought on the Iron Lake property?"},
+  {"id": "q06", "category": "answerable", "question": "What type of airborne geophysical survey was flown over the property in 2023?"},
+  {"id": "q07", "category": "answerable", "question": "Which laboratory analyzed the 2022 drill core samples?"},
+  {"id": "q08", "category": "answerable", "question": "What further work does the most recent report recommend?"},
+  {"id": "q09", "category": "unanswerable", "question": "What is the mineral resource estimate for the Iron Lake property?"},
+  {"id": "q10", "category": "unanswerable", "question": "What did the 2025 geochronology and green rock study on the Iron Lake property find?"},
+  {"id": "q11", "category": "unanswerable", "question": "What metallurgical recoveries have been reported for Iron Lake mineralization?"},
+  {"id": "q12", "category": "unanswerable", "question": "What grades did drill hole IL-22-099 return?"},
+  {"id": "q13", "category": "conflict", "question": "Where is the centre of work on the Iron Lake property, as coordinates?"},
+  {"id": "q14", "category": "conflict", "question": "What width do the reports give for the massive sulphide interval in hole IL-22-011?"},
+  {"id": "q15", "category": "conflict", "question": "Which NTS map area is the Iron Lake property on?"}
+]

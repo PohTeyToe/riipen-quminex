@@ -1,0 +1,515 @@
+{
+ "run": "2026-10-15-r2",
+ "count": 22,
+ "rejected": [
+  {
+   "attempt_id": "eval-q08-006",
+   "session": "eval-q08",
+   "scope": "eval",
+   "call_index": 12,
+   "field_as_proposed": "answer",
+   "field": "answer",
+   "kind": "statement",
+   "value": "nd to follow-up on",
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 39
+   },
+   "quote": "and to follow-up on",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'nd to follow-up on'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0028"
+  },
+  {
+   "attempt_id": "eval-q08-007",
+   "session": "eval-q08",
+   "scope": "eval",
+   "call_index": 13,
+   "field_as_proposed": "answer",
+   "field": "answer",
+   "kind": "statement",
+   "value": "nd to follow-up on",
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 39
+   },
+   "quote": "nd A. Koffyberg, P.Geo \nne extends to depth \nam did not evaluate \nmpleted in 2021 and \nand to follow-up on",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'nd to follow-up on'",
+   "found_on": [],
+   "retry": "not retried",
+   "fixed_by": null
+  },
+  {
+   "attempt_id": "eval-q13-004",
+   "session": "eval-q13",
+   "scope": "eval",
+   "call_index": 16,
+   "field_as_proposed": "answer",
+   "field": "answer",
+   "kind": "value",
+   "value": "LONGITUDE: 121 o 48 '2 LATITUDE: 51 o 54 '9",
+   "unit": null,
+   "source": {
+    "aris": 36807,
+    "page": 1
+   },
+   "quote": "LONGITUDE: 121 \no 48 \n'2 \n- --\nLATITUDE: \n51 \no 54 \n'9 \n---\n(at centre of work)",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: \"LONGITUDE: 121 o 48 '2 LATITUDE: 51 o 54 '9\"",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0033"
+  },
+  {
+   "attempt_id": "field-access-006",
+   "session": "field-access",
+   "scope": "field",
+   "call_index": 18,
+   "field_as_proposed": "access",
+   "field": "access",
+   "kind": "statement",
+   "value": "Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner",
+   "unit": null,
+   "source": {
+    "aris": 40980,
+    "page": 11
+   },
+   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North \n(620) FSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-\ncentral part of the Property. The Boss Creek (620) FSR gives access to the northeast corner of \nthe Property.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks are best reached on foot or by ATV.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0049"
+  },
+  {
+   "attempt_id": "field-access-008",
+   "session": "field-access",
+   "scope": "field",
+   "call_index": 20,
+   "field_as_proposed": "access",
+   "field": "access",
+   "kind": "statement",
+   "value": "Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner",
+   "unit": null,
+   "source": {
+    "aris": 41327,
+    "page": 11
+   },
+   "quote": "Further east, along the main Canim-Hendrix Lake Road, the Lang North (620) \nFSR heads north from the Canim-Hendrix Lake Road, which allows access to the north-central \npart of the Property. The Boss Creek (620) FSR gives access to the northeast corner of the \nProperty.  \n \nWithin the Property, logging roads, both active and deactivated, provide access to most areas. \nSome areas along cut blocks are best reached on foot or by ATV.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0049"
+  },
+  {
+   "attempt_id": "field-access-010",
+   "session": "field-access",
+   "scope": "field",
+   "call_index": 22,
+   "field_as_proposed": "access",
+   "field": "access",
+   "kind": "statement",
+   "value": "Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner",
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 11
+   },
+   "quote": "Further east, along the main Canim-Hendrix Lake \nRoad, the Lang North (620) FSR heads north from the Canim-Hendrix Lake Road, which allows \naccess to the north-central part of the Property. The Boss Creek (620) FSR gives access to the \nnortheast corner of the Property.  \n \nWithin the Property, logging roads, both active and de-activated, provide access to most areas. \nSome areas along cutblocks are best reached on foot or by ATV.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'Lang North (620) FSR ... Boss Creek (620) FSR gives access to the northeast corner'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0049"
+  },
+  {
+   "attempt_id": "field-commodities-005",
+   "session": "field-commodities",
+   "scope": "field",
+   "call_index": 10,
+   "field_as_proposed": "commodities",
+   "field": "commodities",
+   "kind": "value",
+   "value": "Au, Pt, Pd",
+   "unit": null,
+   "source": {
+    "aris": 38640,
+    "page": 1
+   },
+   "quote": "Au, Pt, Pd",
+   "failure": "quote_too_short",
+   "failure_label": "Quote too short to check",
+   "reason": "Quote is too short to check (under 12 characters)",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0058"
+  },
+  {
+   "attempt_id": "field-drilling_2022-026",
+   "session": "field-drilling_2022",
+   "scope": "field",
+   "call_index": 39,
+   "field_as_proposed": "drilling_2022.intervals",
+   "field": "drilling_2022.intervals",
+   "kind": "interval",
+   "value": {
+    "hole": "IL-22-006",
+    "width_m": "1.50",
+    "grades": {
+     "copper (%)": "0.42",
+     "nickel (%)": "0.042"
+    }
+   },
+   "unit": null,
+   "source": {
+    "aris": 41327,
+    "page": 33
+   },
+   "quote": "IL-22-006 was collared from the same pad as IL-22-001, but oriented northward to an azimuth \nof 310° to probe for the mineralized horizon between IL-22-001 and IL-22-002. The hole cut wide \nintervals of breccia, consisting of sub-angular clinopyroxenite fragments hosted in a matrix of \nepidote-altered gabbro. It intercepted the horizon between 124.96 to 136.98 m, which comprised \nseveral bands of semi-massive and brecciated to massive pyrrhotite, pyrite, chalcopyrite, \nmagnetite and hematite, up to 1.58 m wide, separated by weakly chlorite-epidote-carbonate \naltered pyroxenite with clots and gashes of pyrrhotite, pyrite and chalcopyrite. Rare, late stage, \ncolloform quartz-carbonate-pyrite veins were observed to cut sections of semi-massive sulphides. \nThe zone returned 0.18% copper and 0.027% nickel over 13.16 m, including 0.42% copper and \n0.042% nickel over 1.50 m.",
+   "failure": "quote_too_long",
+   "failure_label": "Quote over 600 characters",
+   "reason": "Quote is 880 characters; the limit is 600",
+   "found_on": [],
+   "retry": "not retried",
+   "fixed_by": null
+  },
+  {
+   "attempt_id": "field-drilling_2023-010",
+   "session": "field-drilling_2023",
+   "scope": "field",
+   "call_index": 19,
+   "field_as_proposed": "drilling_2023.intervals",
+   "field": "drilling_2023.intervals",
+   "kind": "interval",
+   "value": {
+    "hole": "IL-23-024",
+    "from_m": "569.0",
+    "to_m": "578.5",
+    "width_m": "9.46",
+    "grades": {
+     "Cu (%)": "0.42",
+     "Ni (ppm)": "341"
+    }
+   },
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 10
+   },
+   "quote": "Assay results \nfor a 9.46 m interval spanning across both of these massive sulphide intersections graded \n0.42% copper and 341 ppm nickel, from 569.0 m to 578.5 m.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'IL-23-024'",
+   "found_on": [],
+   "retry": "not retried",
+   "fixed_by": null
+  },
+  {
+   "attempt_id": "field-drilling_2023-013",
+   "session": "field-drilling_2023",
+   "scope": "field",
+   "call_index": 22,
+   "field_as_proposed": "drilling_2023.intervals",
+   "field": "drilling_2023.intervals",
+   "kind": "interval",
+   "value": {
+    "hole": "IL-23-024",
+    "from_m": "569.00",
+    "to_m": "578.46",
+    "width_m": "9.46",
+    "grades": {
+     "Cu (%)": "0.42",
+     "Ni (ppm)": "341"
+    }
+   },
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 37
+   },
+   "quote": "Hole IL-23-024 was drilled at the Discovery Zone to test a conductivity anomaly to a depth of \n570 m down-dip of sulphide intersections in holes IL-22-012 and IL-22-013, drilled in 2022.  \nThe hole was extended to 606 m after intersecting two narrow massive sulphide layers at 530 \nm and 537 m. These layers were 16 cm and 21 cm wide respectively. Two additional massive \nsulphide layers were intersected at 572.17 m and 576.94 m. These were a 1.8 m pyrrhotite-rich \ninterval and a 1.59 m wide pyrite-dominated interval, respectively. \n \nAssay results for a 9.46 m interval spanning across both of these massive sulphide intersections \ngraded 0.42% copper and 341 ppm nickel, from 569.00 m to 578.46 m.",
+   "failure": "quote_too_long",
+   "failure_label": "Quote over 600 characters",
+   "reason": "Quote is 702 characters; the limit is 600",
+   "found_on": [],
+   "retry": "not retried",
+   "fixed_by": null
+  },
+  {
+   "attempt_id": "field-geological_setting-007",
+   "session": "field-geological_setting",
+   "scope": "field",
+   "call_index": 10,
+   "field_as_proposed": "geological_setting",
+   "field": "geological_setting",
+   "kind": "statement",
+   "value": "parallel sheets ... giving some evidence of magmatic layering",
+   "unit": null,
+   "source": {
+    "aris": 34595,
+    "page": 13
+   },
+   "quote": "Near the northwest corner of the ultramafic unit Schiaizza notes hornblende pyroxenite, \nhornblende-feldspar pyroxenite, gabbro and diorite occur as parallel sheets defined partly by \nmodal layering and partly by dikes, giving some evidence of magmatic layering.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'parallel sheets ... giving some evidence of magmatic layering'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0123"
+  },
+  {
+   "attempt_id": "field-geological_setting-011",
+   "session": "field-geological_setting",
+   "scope": "field",
+   "call_index": 18,
+   "field_as_proposed": "geological_setting",
+   "field": "geological_setting",
+   "kind": "statement",
+   "value": "centered on the Iron Lake Complex which is comprised of ultramafic and mafic plutonic rocks",
+   "unit": null,
+   "source": {
+    "aris": 36430,
+    "page": 15
+   },
+   "quote": "The Iron Lake property is centered on the Iron Lake Complex which is comprised of \nultramafic and mafic plutonic rocks. These rocks intrude the Nicola volcaniclastic \nsuccession and are in contact with the Schoolhouse Lake unit of the Takomkane \nBatholith across poorly exposed but probably intrusive contacts to the north and \nnorthwest.  The Iron Lake Complex is divided into ultramafic and mafic units. The \nultramafic unit consists mainly of clinopyroxenite and hornblende clinopyroxenite, but \nalso includes olivine clinopyroxenite, wehrlite, hornblendite, gabbro, diorite and \nintrusion breccia.",
+   "failure": "quote_too_long",
+   "failure_label": "Quote over 600 characters",
+   "reason": "Quote is 601 characters; the limit is 600",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0129"
+  },
+  {
+   "attempt_id": "field-geophysical_surveys-001",
+   "session": "field-geophysical_surveys",
+   "scope": "field",
+   "call_index": 6,
+   "field_as_proposed": "geophysical_surveys",
+   "field": "geophysical_surveys",
+   "kind": "statement",
+   "value": "one block totalling 205 line-km",
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 30
+   },
+   "quote": "A helicopter-borne Time Domain Electromagnetic (Xcite HTDEM) survey was conducted over a \nportion of the Property from March 6 to 8, 2023.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'one block totalling 205 line-km'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0209"
+  },
+  {
+   "attempt_id": "field-geophysical_surveys-022",
+   "session": "field-geophysical_surveys",
+   "scope": "field",
+   "call_index": 41,
+   "field_as_proposed": "geophysical_surveys",
+   "field": "geophysical_surveys",
+   "kind": "value",
+   "value": "48.3",
+   "unit": "km",
+   "source": {
+    "aris": 40980,
+    "page": 28
+   },
+   "quote": "An Induced Polarization geophysical survey was conducted along three grids on the Property \nfrom March 3 to 20 and from May 15 to June 27, 2022.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: '48.3'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0227"
+  },
+  {
+   "attempt_id": "field-geophysical_surveys-023",
+   "session": "field-geophysical_surveys",
+   "scope": "field",
+   "call_index": 42,
+   "field_as_proposed": "geophysical_surveys",
+   "field": "geophysical_surveys",
+   "kind": "value",
+   "value": "48.3 line-km",
+   "unit": "line-km",
+   "source": {
+    "aris": 40980,
+    "page": 2
+   },
+   "quote": " 48.3 line-km",
+   "failure": "quote_too_short",
+   "failure_label": "Quote too short to check",
+   "reason": "Quote is too short to check (under 12 characters)",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0229"
+  },
+  {
+   "attempt_id": "field-mineralization-008",
+   "session": "field-mineralization",
+   "scope": "field",
+   "call_index": 12,
+   "field_as_proposed": "mineralization",
+   "field": "mineralization",
+   "kind": "statement",
+   "value": "2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite",
+   "unit": null,
+   "source": {
+    "aris": 41327,
+    "page": 26
+   },
+   "quote": "Shear-hosted Cu-Au mineralization within quartz-carbonate veins occurs at the Cate showing (BC \nMinfile 092P 182), in the southeast part of the Property, northeast of Succour Lake.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: '2-cm wide sulphide vein', 'consisting of pyrrhotite', 'arsenopyrite', 'pyrite and chalcopyrite'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0366"
+  },
+  {
+   "attempt_id": "field-mineralization-038",
+   "session": "field-mineralization",
+   "scope": "field",
+   "call_index": 54,
+   "field_as_proposed": "mineralization",
+   "field": "mineralization",
+   "kind": "statement",
+   "value": "Shear-hosted Cu-Au mineralization within quartz-carbonate veins occurs at the Cate and Lisa showings",
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 9
+   },
+   "quote": "Several styles of mineralization are found on the Property. The Iron Lake occurrence comprises \nmassive sulphide mineralization within ultramafic rocks of the Iron Lake complex, near Island \nLake. Semi-massive to massive sulphides were intersected in the 2005-6 drilling program, \nconsisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite. Significant, \ndisseminated magmatic Cu-Au-Pt-Pd mineralization has also been found within ultramafic float, \nwithin large, angular boulders. Shear-hosted Cu-Au mineralization within quartz-carbonate \nveins occurs at the Cate and Lisa showings, northeast of Succour Lake.",
+   "failure": "quote_too_long",
+   "failure_label": "Quote over 600 characters",
+   "reason": "Quote is 637 characters; the limit is 600",
+   "found_on": [],
+   "retry": "not retried",
+   "fixed_by": null
+  },
+  {
+   "attempt_id": "field-mineralization-056",
+   "session": "field-mineralization",
+   "scope": "field",
+   "call_index": 78,
+   "field_as_proposed": "mineralization",
+   "field": "mineralization",
+   "kind": "statement",
+   "value": "Drilling at the Discovery Zone intersected significant pegmatite-hosted nickel and copper mineralization approximately 280 m down-dip",
+   "unit": null,
+   "source": {
+    "aris": 41800,
+    "page": 38
+   },
+   "quote": "The Iron Lake property covers porphyry-type copper-gold as well as Alaskan-type, ultramafic \nhosted, nickel-copper-gold-cobalt-platinum-palladium prospects. A significant occurrence on the \nProperty, of the latter type, is referred to as the Discovery Zone.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'Drilling at the Discovery Zone intersected significant pegmatite-hosted nickel and copper mineralization approximately 280 m down-dip'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0412"
+  },
+  {
+   "attempt_id": "field-mineralization-067",
+   "session": "field-mineralization",
+   "scope": "field",
+   "call_index": 96,
+   "field_as_proposed": "mineralization",
+   "field": "mineralization",
+   "kind": "statement",
+   "value": "scattered \noccurrences of disseminated chalcopyrite and malachite",
+   "unit": null,
+   "source": {
+    "aris": 40980,
+    "page": 10
+   },
+   "quote": "occurrences of disseminated chalcopyrite and malachite, within highly sheared and fractured \ndiorite, monzodiorite and monzonite of the Iron Lake complex.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'scattered \\noccurrences of disseminated chalcopyrite and malachite'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0425"
+  },
+  {
+   "attempt_id": "field-mineralization-071",
+   "session": "field-mineralization",
+   "scope": "field",
+   "call_index": 100,
+   "field_as_proposed": "mineralization",
+   "field": "mineralization",
+   "kind": "statement",
+   "value": "the mineralization and alteration at the Beer showing is essentially a continuation of the widespread \nbut sparse, low-grade mineralization of the July showing",
+   "unit": null,
+   "source": {
+    "aris": 40980,
+    "page": 28
+   },
+   "quote": "mineralization and alteration at the Beer showing is essentially a continuation of the widespread \nbut sparse, low-grade mineralization of the July showing.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'the mineralization and alteration at the Beer showing is essentially a continuation of the widespread \\nbut sparse'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0426"
+  },
+  {
+   "attempt_id": "field-mineralization-115",
+   "session": "field-mineralization",
+   "scope": "field",
+   "call_index": 169,
+   "field_as_proposed": "mineralization",
+   "field": "mineralization",
+   "kind": "statement",
+   "value": "discrete massive sulfide beds within pyroxenite \nwith strongly disseminated sulfides, locally to 60%",
+   "unit": null,
+   "source": {
+    "aris": 36807,
+    "page": 19
+   },
+   "quote": "Pyroxenite hosted massive sulfide was discovered in the 2005 drilling some 250 metres \nsouth of the aforementioned mineralized rubble, with additional intercepts obtained in \n2006.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'discrete massive sulfide beds within pyroxenite \\nwith strongly disseminated sulfides', 'locally to 60%'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0470"
+  },
+  {
+   "attempt_id": "field-mineralization-118",
+   "session": "field-mineralization",
+   "scope": "field",
+   "call_index": 172,
+   "field_as_proposed": "mineralization",
+   "field": "mineralization",
+   "kind": "statement",
+   "value": "A third mineralization \nstyle, auriferous quartz veins",
+   "unit": null,
+   "source": {
+    "aris": 36807,
+    "page": 6
+   },
+   "quote": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a \nprobable magmatic source that is significant for its copper, gold, platinum, palladium \nand to a lesser extent nickel content.",
+   "failure": "value_not_in_quote",
+   "failure_label": "Value not in the quote",
+   "reason": "Not in the quote: 'A third mineralization \\nstyle', 'auriferous quartz veins'",
+   "found_on": [],
+   "retry": "fixed on retry",
+   "fixed_by": "c-0471"
+  }
+ ]
+}

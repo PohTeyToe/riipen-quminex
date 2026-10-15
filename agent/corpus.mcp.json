@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "corpus": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["agent/corpus_server.py"],
+      "env": {"CORPUS_SESSION": "dev", "CORPUS_LOG": ""}
+    }
+  }
+}

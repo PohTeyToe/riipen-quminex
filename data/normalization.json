@@ -1,0 +1,515 @@
+{
+ "rules": [
+  "Odd glyphs, quotes, dashes, degree marks and spaces are mapped first (table below)",
+  "Unicode NFKC",
+  "Runs of 2+ underscores or 3+ hyphens (form blanks) become a space",
+  "A hyphen followed by a line break or spaces, between two letters or digits, is closed up (IL-22-\n011 becomes il-22-011)",
+  "A hyphen between two letters is dropped (copper-nickel becomes coppernickel)",
+  "Whitespace collapsed to one space",
+  "Spaces before a degree, minute or second mark that follows a digit, and after a degree mark, are dropped",
+  "Lowercase"
+ ],
+ "sequences": [
+  {
+   "from": "âˆ’",
+   "to": "-",
+   "why": "multi-character sequence"
+  }
+ ],
+ "characters": [
+  {
+   "char": " ",
+   "code": "U+00A0",
+   "name": "NO-BREAK SPACE",
+   "count": 29430,
+   "reports": [
+    36430,
+    36807,
+    38640,
+    40980
+   ],
+   "example": "36430 p1: SUMMARY REPORT  ON THE  IRON",
+   "action": "mapped (space) to ' '"
+  },
+  {
+   "char": "‐",
+   "code": "U+2010",
+   "name": "HYPHEN",
+   "count": 772,
+   "reports": [
+    36430,
+    36807,
+    38640,
+    40980,
+    41327
+   ],
+   "example": "36430 p1: ONSULTANTS LTD.  110‐325 Howe Street  Van",
+   "action": "mapped (dash) to '-'"
+  },
+  {
+   "char": "—",
+   "code": "U+2014",
+   "name": "EM DASH",
+   "count": 440,
+   "reports": [
+    38640,
+    40980
+   ],
+   "example": "38640 p59: 1 25 — 2 25 — 3 25 — 4 25 ",
+   "action": "mapped (dash) to '-'"
+  },
+  {
+   "char": "•",
+   "code": "U+2022",
+   "name": "BULLET",
+   "count": 123,
+   "reports": [
+    36807,
+    40980
+   ],
+   "example": "36807 p9: ur Filled  1·.,..,; • •  n  I  I  [Y\" ·  ",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "“",
+   "code": "U+201C",
+   "name": "LEFT DOUBLE QUOTATION MARK",
+   "count": 115,
+   "reports": [
+    34595,
+    36430,
+    36807,
+    38640,
+    40980,
+    41327,
+    41800
+   ],
+   "example": "34595 p12: ith. Two new strong “IP” anomalies with c",
+   "action": "mapped (quote) to '\"'"
+  },
+  {
+   "char": "°",
+   "code": "U+00B0",
+   "name": "DEGREE SIGN",
+   "count": 101,
+   "reports": [
+    34595,
+    36430,
+    36807,
+    38640,
+    40980,
+    41327,
+    41800
+   ],
+   "example": "34595 p1: TITUDE: _____51_____° __57________’   LON",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "”",
+   "code": "U+201D",
+   "name": "RIGHT DOUBLE QUOTATION MARK",
+   "count": 71,
+   "reports": [
+    34595,
+    36430,
+    36807,
+    38640,
+    40980,
+    41327,
+    41800
+   ],
+   "example": "34595 p12: . Two new strong “IP” anomalies with corr",
+   "action": "mapped (quote) to '\"'"
+  },
+  {
+   "char": "’",
+   "code": "U+2019",
+   "name": "RIGHT SINGLE QUOTATION MARK",
+   "count": 61,
+   "reports": [
+    34595,
+    36430,
+    36807,
+    38640,
+    40980,
+    41327,
+    41800
+   ],
+   "example": "34595 p1: 1_____° __57________’   LONGITUDE: ___120",
+   "action": "mapped (quote) to \"'\""
+  },
+  {
+   "char": "",
+   "code": "U+F0B7",
+   "name": "?",
+   "count": 51,
+   "reports": [
+    40980,
+    41327,
+    41800
+   ],
+   "example": "40980 p31: sions can be made:    The Induced Polari",
+   "action": "mapped (odd glyph) to '•'"
+  },
+  {
+   "char": "–",
+   "code": "U+2013",
+   "name": "EN DASH",
+   "count": 44,
+   "reports": [
+    34595,
+    36430,
+    36807,
+    38640,
+    40980,
+    41327,
+    41800
+   ],
+   "example": "34595 p12: lic porphyry copper – gold and porphyry c",
+   "action": "mapped (dash) to '-'"
+  },
+  {
+   "char": "±",
+   "code": "U+00B1",
+   "name": "PLUS-MINUS SIGN",
+   "count": 38,
+   "reports": [
+    34595,
+    36430,
+    36807,
+    38640,
+    40980,
+    41327,
+    41800
+   ],
+   "example": "34595 p9: in close proximity (±10 km) to the projec",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "·",
+   "code": "U+00B7",
+   "name": "MIDDLE DOT",
+   "count": 35,
+   "reports": [
+    36807
+   ],
+   "example": "36807 p9: 92-4  8S  14  l~-,M~·y··. 4 ~~ 117)  I  0",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "Ɵ",
+   "code": "U+019F",
+   "name": "LATIN CAPITAL LETTER O WITH MIDDLE TILDE",
+   "count": 27,
+   "reports": [
+    36807
+   ],
+   "example": "36807 p3: C.  NTS: 092P096  LaƟtude 51° 57' N, Long",
+   "action": "mapped (odd glyph) to 'ti'"
+  },
+  {
+   "char": "",
+   "code": "U+F0B0",
+   "name": "?",
+   "count": 10,
+   "reports": [
+    36430,
+    36807,
+    38640
+   ],
+   "example": "36430 p1: 092P096  Latitude 51 57' N, Longitude 12",
+   "action": "mapped (odd glyph) to '°'"
+  },
+  {
+   "char": "Ω",
+   "code": "U+03A9",
+   "name": "GREEK CAPITAL LETTER OMEGA",
+   "count": 9,
+   "reports": [
+    38640,
+    40980
+   ],
+   "example": "38640 p67: 0 2000 Resistivity (Ωm) ",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "º",
+   "code": "U+00BA",
+   "name": "MASCULINE ORDINAL INDICATOR",
+   "count": 7,
+   "reports": [
+    34595
+   ],
+   "example": "34595 p21: Hole  Name  Azmuth  º (decl.  22.5º )  Di",
+   "action": "mapped (degree) to '°'"
+  },
+  {
+   "char": "˚",
+   "code": "U+02DA",
+   "name": "RING ABOVE",
+   "count": 6,
+   "reports": [
+    40980,
+    41327,
+    41800
+   ],
+   "example": "40980 p11:  lies at latitude 51˚56' 20\" N, and longi",
+   "action": "mapped (degree) to '°'"
+  },
+  {
+   "char": "Ω",
+   "code": "U+2126",
+   "name": "OHM SIGN",
+   "count": 5,
+   "reports": [
+    40980
+   ],
+   "example": "40980 p10: tween 3500 and 4500 Ωm. They may correlat",
+   "action": "NFKC to 'Ω'"
+  },
+  {
+   "char": "é",
+   "code": "U+00E9",
+   "name": "LATIN SMALL LETTER E WITH ACUTE",
+   "count": 5,
+   "reports": [
+    40980
+   ],
+   "example": "40980 p91: echnician  Nathan Pépin-Coulombe: Techni",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "´",
+   "code": "U+00B4",
+   "name": "ACUTE ACCENT",
+   "count": 4,
+   "reports": [
+    34595
+   ],
+   "example": "34595 p15: k. Eagle Creek 52°00´ 121°00´ 120°24´ 51°",
+   "action": "mapped (quote) to \"'\""
+  },
+  {
+   "char": "§",
+   "code": "U+00A7",
+   "name": "SECTION SIGN",
+   "count": 4,
+   "reports": [
+    36807
+   ],
+   "example": "36807 p31:   v ,  ----- ~ ;.:;7§  ",
+   "action": "left as is: OCR noise on scanned map pages in 36807"
+  },
+  {
+   "char": "μ",
+   "code": "U+03BC",
+   "name": "GREEK SMALL LETTER MU",
+   "count": 4,
+   "reports": [
+    38640,
+    41327
+   ],
+   "example": "38640 p17: 00  grammes to ‐180 μm (80 mesh). Rock sa",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "£",
+   "code": "U+00A3",
+   "name": "POUND SIGN",
+   "count": 3,
+   "reports": [
+    36807
+   ],
+   "example": "36807 p34:  Lake Project  8,--.£..016 & 2017 Soil St",
+   "action": "left as is: OCR noise on scanned map pages in 36807"
+  },
+  {
+   "char": "≥",
+   "code": "U+2265",
+   "name": "GREATER-THAN OR EQUAL TO",
+   "count": 3,
+   "reports": [
+    38640,
+    41327
+   ],
+   "example": "38640 p17: le being crushed to ≥70% passing 2mm, and",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "σ",
+   "code": "U+03C3",
+   "name": "GREEK SMALL LETTER SIGMA",
+   "count": 3,
+   "reports": [
+    40980
+   ],
+   "example": "40980 p92: ion of Ohm’s law: J=σE Where J is the cur",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "ρ",
+   "code": "U+03C1",
+   "name": "GREEK SMALL LETTER RHO",
+   "count": 3,
+   "reports": [
+    40980
+   ],
+   "example": "40980 p92: ments, resistivity, ρ, the reciprocal of ",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "Ϯ",
+   "code": "U+03EE",
+   "name": "COPTIC CAPITAL LETTER DEI",
+   "count": 2,
+   "reports": [
+    36430
+   ],
+   "example": "36430 p46:            !tt9b5Ló Ϯ                    ",
+   "action": "left as is: 36430 p46 (appendix divider page): broken font encoding, not recoverable"
+  },
+  {
+   "char": "ﬁ",
+   "code": "U+FB01",
+   "name": "LATIN SMALL LIGATURE FI",
+   "count": 2,
+   "reports": [
+    36807
+   ],
+   "example": "36807 p4: . Statement of QualiﬁcaƟons              ",
+   "action": "NFKC to 'fi'"
+  },
+  {
+   "char": "…",
+   "code": "U+2026",
+   "name": "HORIZONTAL ELLIPSIS",
+   "count": 1,
+   "reports": [
+    34595
+   ],
+   "example": "34595 p2: amples analysed for …)                Soi",
+   "action": "NFKC to '...'"
+  },
+  {
+   "char": "≈",
+   "code": "U+2248",
+   "name": "ALMOST EQUAL TO",
+   "count": 1,
+   "reports": [
+    34595
+   ],
+   "example": "34595 p18: de (32.9- 49.9  m; (≈60% MS interspersed ",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "ó",
+   "code": "U+00F3",
+   "name": "LATIN SMALL LETTER O WITH ACUTE",
+   "count": 1,
+   "reports": [
+    36430
+   ],
+   "example": "36430 p46: 38           !tt9b5Ló Ϯ                  ",
+   "action": "left as is: 36430 p46 (appendix divider page): broken font encoding, not recoverable"
+  },
+  {
+   "char": "Ϭ",
+   "code": "U+03EC",
+   "name": "COPTIC CAPITAL LETTER SHIMA",
+   "count": 1,
+   "reports": [
+    36430
+   ],
+   "example": "36430 p46:                    ϮϬϭϲ {hL[ {!at[9 5!Ç!.",
+   "action": "left as is: 36430 p46 (appendix divider page): broken font encoding, not recoverable"
+  },
+  {
+   "char": "ϭ",
+   "code": "U+03ED",
+   "name": "COPTIC SMALL LETTER SHIMA",
+   "count": 1,
+   "reports": [
+    36430
+   ],
+   "example": "36430 p46:                   ϮϬϭϲ {hL[ {!at[9 5!Ç!.!",
+   "action": "left as is: 36430 p46 (appendix divider page): broken font encoding, not recoverable"
+  },
+  {
+   "char": "ϲ",
+   "code": "U+03F2",
+   "name": "GREEK LUNATE SIGMA SYMBOL",
+   "count": 1,
+   "reports": [
+    36430
+   ],
+   "example": "36430 p46:                  ϮϬϭϲ {hL[ {!at[9 5!Ç!.!{",
+   "action": "left as is: 36430 p46 (appendix divider page): broken font encoding, not recoverable"
+  },
+  {
+   "char": "Ç",
+   "code": "U+00C7",
+   "name": "LATIN CAPITAL LETTER C WITH CEDILLA",
+   "count": 1,
+   "reports": [
+    36430
+   ],
+   "example": "36430 p46:  ϮϬϭϲ {hL[ {!at[9 5!Ç!.!{9  ",
+   "action": "left as is: 36430 p46 (appendix divider page): broken font encoding, not recoverable"
+  },
+  {
+   "char": "ƫ",
+   "code": "U+01AB",
+   "name": "LATIN SMALL LETTER T WITH PALATAL HOOK",
+   "count": 1,
+   "reports": [
+    36807
+   ],
+   "example": "36807 p4:  8  5. Geological Seƫng                  ",
+   "action": "mapped (odd glyph) to 'tti'"
+  },
+  {
+   "char": "â",
+   "code": "U+00E2",
+   "name": "LATIN SMALL LETTER A WITH CIRCUMFLEX",
+   "count": 1,
+   "reports": [
+    38640
+   ],
+   "example": "38640 p57: ey Stacked Profiles âˆ’ Cut Lines Iron La",
+   "action": "mapped as part of the sequence 'âˆ’' to '-'"
+  },
+  {
+   "char": "ˆ",
+   "code": "U+02C6",
+   "name": "MODIFIER LETTER CIRCUMFLEX ACCENT",
+   "count": 1,
+   "reports": [
+    38640
+   ],
+   "example": "38640 p57: y Stacked Profiles âˆ’ Cut Lines Iron Lak",
+   "action": "mapped as part of the sequence 'âˆ’' to '-'"
+  },
+  {
+   "char": "φ",
+   "code": "U+03C6",
+   "name": "GREEK SMALL LETTER PHI",
+   "count": 1,
+   "reports": [
+    40980
+   ],
+   "example": "40980 p92: ic field potential, φ, is measured rather",
+   "action": "kept (real character)"
+  },
+  {
+   "char": "∞",
+   "code": "U+221E",
+   "name": "INFINITY",
+   "count": 1,
+   "reports": [
+    40980
+   ],
+   "example": "40980 p93: a remote location (C∞ in the schematic ab",
+   "action": "kept (real character)"
+  }
+ ]
+}

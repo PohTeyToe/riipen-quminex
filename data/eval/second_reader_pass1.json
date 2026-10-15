@@ -1,0 +1,96 @@
+{
+ "reader": "codex exec, gpt-6.1-sol, reasoning xhigh, read-only sandbox",
+ "returncode": 0,
+ "verdicts": [
+  {
+   "id": "q01",
+   "verdict": "agree",
+   "notes": "41327 p29 and 41800 p22 report 5,001.30 m in 23 holes; 41327 p9 rounds this to 5,001 m.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q02",
+   "verdict": "agree",
+   "notes": "41800 p37 confirms 569.00–578.46 m, a 9.46 m interval grading 0.42% Cu and 0.034% Ni, with 341 ppm Ni in the narrative. The aqua regia caveat is correctly included.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q03",
+   "verdict": "agree",
+   "notes": "41800 pp35 and 37 confirm aqua regia digestion for the multi-element analysis. Page 35 separately describes fire assay for gold, platinum and palladium.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q04",
+   "verdict": "agree",
+   "notes": "34595 p1 and 41800 p5 identify Clinton Mining Division, as does the scanned form in 36807 p1.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q05",
+   "verdict": "agree",
+   "notes": "34595 p1 and the image of 36807 p1 both clearly list Copper, Gold, PGM as commodities sought.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q06",
+   "verdict": "agree",
+   "notes": "41800 p38 confirms a helicopter-borne Xcite HTDEM survey flown March 6–8, 2023, comprising one block totalling 205 line-km.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q07",
+   "verdict": "agree",
+   "notes": "41327 p31 identifies Activation Laboratories Ltd. in Kamloops, BC, and describes its analysis of the drill core samples.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q08",
+   "verdict": "dispute",
+   "notes": "Both stated recommendations are supported by 41800 p38, but the answer is incomplete. Page 39 also calls for testing the Discovery Zone along strike and following up significant drill intercepts elsewhere on the project.",
+   "suggested_fix": "Add the further work described on 41800 p39 to the answer, expected values and citations."
+  },
+  {
+   "id": "q09",
+   "verdict": "agree",
+   "notes": "Independent corpus searches found no Iron Lake resource estimate. The figures in 36807 pp18–19 concern Kevitsa, Aguablanca and Woodjam; 41800 p14 defines mineral reserves as land excluded from staking and exploration.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q10",
+   "verdict": "dispute",
+   "notes": "Corpus searches support unanswerability: 41800 pp23–24 discuss earlier dating, while the 2025 dates in 40980 p15 concern claim tenure. The supplied pages do not establish the identification as report 43017 or its download availability.",
+   "suggested_fix": "Keep the unanswerable classification, but remove the report-number and file-availability claims unless separately sourced."
+  },
+  {
+   "id": "q11",
+   "verdict": "agree",
+   "notes": "Independent searches found no metallurgical recovery results. Recovery in 41327 p30 and 41800 p35 concerns drill core, while Metallurgic appears as an unfilled work category on forms such as 34595 p2.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q12",
+   "verdict": "agree",
+   "notes": "Independent searches found no IL-22-099 or reasonable identifier variant. 41327 pp29–30 describe 23 holes and list IL-22-001 through IL-22-023.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q13",
+   "verdict": "dispute",
+   "notes": "The scanned 36807 p1 coordinates are correctly read as 51°54'9\" N, 121°48'2\" W, and the other coordinates are correctly transcribed. However, 41800 p5 explicitly labels its point centre of property, which needs distinguishing from centre of work.",
+   "suggested_fix": "Add that location-definition caveat; cite 40980 p5 for the same Tech-X coordinates explicitly labelled centre of work."
+  },
+  {
+   "id": "q14",
+   "verdict": "agree",
+   "notes": "41327 p33 gives 2.07 m from 175.46 to 177.53 m, while p34 states 2.36 m and endpoints of 175.36–177.53 m. The gold accurately preserves the disagreement, including the narrative's internally inconsistent length.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q15",
+   "verdict": "agree",
+   "notes": "36807 p3 gives 092P096 and 41800 p5 gives NTS 092P/15 with BCGS sheets in 092P. The conflicting title-form entries are correctly recorded as 093N034 in 34595 p1 and 093N043 in the image of 36807 p1.",
+   "suggested_fix": ""
+  }
+ ]
+}

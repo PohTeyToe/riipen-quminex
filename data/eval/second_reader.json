@@ -1,0 +1,96 @@
+{
+ "reader": "codex exec, gpt-6.1-sol, reasoning xhigh, read-only sandbox",
+ "returncode": 0,
+ "verdicts": [
+  {
+   "id": "q01",
+   "verdict": "agree",
+   "notes": "41327 p29 reports 5,001.30 m in 23 holes, corroborated by 41800 p22. The rounded 5,001 m appears in 41327 p9.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q02",
+   "verdict": "dispute",
+   "notes": "41800 p37 confirms the interval, Cu and Ni grades, and digestion caveat. However, Table 4 also reports 29 ppb Au, 13 ppb Pt and 31 ppb Pd, which the unrestricted question about grades leaves the gold incomplete.",
+   "suggested_fix": "Add the Au, Pt and Pd grades to the answer and expected values, or narrow the question to copper and nickel grades."
+  },
+  {
+   "id": "q03",
+   "verdict": "agree",
+   "notes": "41800 p35 explicitly describes aqua-regia digestion of a 0.5 g subsample, and p37 confirms its use for the 2023 samples. Separate fire assays for precious metals do not contradict this digestion method.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q04",
+   "verdict": "agree",
+   "notes": "34595 p1 and 41800 p5 identify Clinton Mining Division. The attached 36807 p1 and 38640 p1 images also clearly read Clinton.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q05",
+   "verdict": "agree",
+   "notes": "34595 p1 and the 36807 p1 image list Copper, Gold, PGM. The 38640 p1 image places Au, Pt, Pd beside COMMODITIES SOUGHT, confirming the gold's interpretation of the separated text.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q06",
+   "verdict": "agree",
+   "notes": "41800 p38 confirms the helicopter-borne Xcite HTDEM survey, March 6 to 8, 2023, covering one block totalling 205 line-km.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q07",
+   "verdict": "agree",
+   "notes": "41327 p31 identifies Activation Laboratories Ltd. in Kamloops, BC, and describes the analyses performed there. The expected laboratory names are correct.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q08",
+   "verdict": "agree",
+   "notes": "41800 p38 supports both drilling recommendations. The p39 image confirms testing the Discovery Zone along strike and following up significant intercepts elsewhere; 41800 is the latest report available in the supplied corpus.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q09",
+   "verdict": "agree",
+   "notes": "Independent corpus searches found no Iron Lake mineral resource estimate. Resource and reserve figures in 36807 pp18-19 concern Kevitsa, Aguablanca and Woodjam, while 41800 p14 discusses land-status mineral reserves.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q10",
+   "verdict": "agree",
+   "notes": "Independent searches found older age-dating information, such as 41800 p24, but no findings from the 2025 study. The supplied unpaginated ARIS 43017 entry confirms the study title, an empty file listing and Pending review status.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q11",
+   "verdict": "agree",
+   "notes": "Independent searches found no metallurgical recovery figures. 41800 p17 mentions historical Davis Tube iron analyses without reporting recoveries, and p35 uses recovery for drill core.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q12",
+   "verdict": "agree",
+   "notes": "Independent searches found no IL-22-099 or IL-22-99. Table 2 in 41327 p30 lists IL-22-001 through IL-22-023, consistent with the 23-hole program described on p29.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q13",
+   "verdict": "agree",
+   "notes": "The 36807 p1 image reads 51°54'9\" latitude and 121°48'2\" longitude, conflicting with its p3 cover coordinates. 40980 p5 and 41327/41800 p5 support the later coordinate pair and the distinction between centre of work and centre of property.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q14",
+   "verdict": "agree",
+   "notes": "41327 p33 gives 2.07 m, while p34 explicitly states 2.36 m with the same Cu and Ni grades. The gold correctly preserves the conflict; p34's endpoints additionally subtract to 2.17 m.",
+   "suggested_fix": ""
+  },
+  {
+   "id": "q15",
+   "verdict": "agree",
+   "notes": "34595 p1 gives 093N034, and the 36807 p1 image clearly gives 093N043. These conflict with 092P096 on 36807 p3 and NTS 092P/15 on 41800 p5, as the gold states.",
+   "suggested_fix": ""
+  }
+ ]
+}

@@ -1,0 +1,200 @@
+{
+ "method": "PyMuPDF: a page counts as scanned when one image covers at least 85% of the page and the page has a text layer. invisible_ocr_text is true when that layer is drawn invisibly (render mode 3), the usual sign of OCR. Claims on these pages are never counted as code-checked; each cited one is checked against a rendering of the page image.",
+ "pages": [
+  {
+   "aris": 34595,
+   "page": 14,
+   "image_cover": 1.0,
+   "invisible_ocr_text": false,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 1,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [
+    "c-0015",
+    "c-0033",
+    "c-0056",
+    "c-0057",
+    "c-0337",
+    "c-0504"
+   ],
+   "image_checks": [
+    {
+     "claim": "c-0015",
+     "image_check": "confirmed",
+     "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
+     "checked_by": "claude-opus-5-5",
+     "checked_on": "2026-10-15",
+     "note": "Same line as field-commodities-003."
+    },
+    {
+     "claim": "c-0033",
+     "image_check": "confirmed",
+     "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
+     "checked_by": "claude-opus-5-5",
+     "checked_on": "2026-10-15",
+     "note": "Same line as field-location-025."
+    },
+    {
+     "claim": "c-0056",
+     "image_check": "confirmed",
+     "image_reads": "COMMODITIES SOUGHT: Copper, Gold, PGM",
+     "checked_by": "claude-opus-5-5",
+     "checked_on": "2026-10-15",
+     "note": "The OCR text of this line is garbled. The image shows it clearly."
+    },
+    {
+     "claim": "c-0057",
+     "image_check": "confirmed",
+     "image_reads": "Copper, gold, platinum, palladium, nickel",
+     "checked_by": "claude-opus-5-5",
+     "checked_on": "2026-10-15",
+     "note": "Second line of the property geology keywords box."
+    },
+    {
+     "claim": "c-0337",
+     "image_check": "confirmed",
+     "image_reads": "LATITUDE: 51° 54' 9\"  LONGITUDE: 121° 48' 2\"  (at centre of work)",
+     "checked_by": "claude-opus-5-5",
+     "checked_on": "2026-10-15",
+     "note": "The OCR text puts longitude before latitude and reads the degree signs as 'o'. Codex (gpt-6.1-sol), as second reader of the gold, read the same values from the image independently."
+    },
+    {
+     "claim": "c-0504",
+     "image_check": "confirmed",
+     "image_reads": "MINING DIVISION: Clinton",
+     "checked_by": "claude-opus-5-5",
+     "checked_on": "2026-10-15",
+     "note": ""
+    }
+   ]
+  },
+  {
+   "aris": 36807,
+   "page": 9,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [
+    "c-0340"
+   ],
+   "image_checks": [
+    {
+     "claim": "c-0340",
+     "image_check": "confirmed",
+     "image_reads": "Center: 51°56'3\", -120°49'40\"",
+     "checked_by": "claude-opus-5-5",
+     "checked_on": "2026-10-15",
+     "note": "The centre of the printed map view on a Mineral Titles Online map titled 'Iron Lake Claims', not a stated centre of work."
+    }
+   ]
+  },
+  {
+   "aris": 36807,
+   "page": 16,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 31,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 34,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 35,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 36,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 37,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 38,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 39,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 40,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 41,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 42,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 36807,
+   "page": 46,
+   "image_cover": 1.0,
+   "invisible_ocr_text": true,
+   "cited_by": [],
+   "image_checks": []
+  },
+  {
+   "aris": 40980,
+   "page": 1,
+   "image_cover": 0.991,
+   "invisible_ocr_text": false,
+   "cited_by": [],
+   "image_checks": []
+  }
+ ]
+}

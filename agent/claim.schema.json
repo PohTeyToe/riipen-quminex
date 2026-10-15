@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "claim.schema.json",
+  "title": "Claim",
+  "description": "One statement from one page of one report, with the exact quote that supports it. The same format for every track: an agent proposes claims, code checks them, and code compares them across sources.",
+  "type": "object",
+  "required": ["id", "track", "field", "kind", "value", "source", "quote", "check"],
+  "properties": {
+    "id": {"type": "string", "description": "Stable id, such as c-0412."},
+    "track": {"type": "integer", "enum": [1, 2, 3], "description": "Which track's agent proposed it."},
+    "field": {"type": "string", "description": "Property-evaluation field or part, such as location or drilling_2022.intervals."},
+    "kind": {"type": "string", "enum": ["value", "interval", "statement", "caveat", "refusal"]},
+    "value": {
+      "description": "Exactly as written on the page. An interval is an object. A statement or caveat may be null.",
+      "oneOf": [
+        {"type": "string"},
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": ["hole", "grades"],
+          "properties": {
+            "hole": {"type": "string"},
+            "from_m": {"type": "string"},
+            "to_m": {"type": "string"},
+            "width_m": {"type": "string"},
+            "grades": {"type": "object", "additionalProperties": {"type": "string"},
+                       "description": "Element and unit as the key, the grade as written as the value, for example {\"Cu (%)\": \"0.30\"}."}
+          }
+        }
+      ]
+    },
+    "unit": {"type": ["string", "null"]},
+    "censored": {"type": "boolean", "description": "True for a value below detection such as <10. The value stays as written; it never becomes 0."},
+    "detection_limit": {"type": "string"},
+    "value_norm": {"type": ["number", "null"], "description": "Added by code for comparisons only. Never shown in place of the value."},
+    "source": {
+      "type": "object",
+      "required": ["aris", "page"],
+      "properties": {
+        "aris": {"type": "integer", "description": "BC ARIS assessment report number."},
+        "page": {"type": "integer", "description": "PDF page number, not the printed page number."}
+      }
+    },
+    "quote": {"type": "string", "maxLength": 600, "description": "Copied from the cited page, one contiguous span."},
+    "caveats": {"type": "array", "items": {"type": "string"}, "description": "Ids of caveat claims attached by rule."},
+    "check": {
+      "type": "object",
+      "required": ["by", "quote_on_page"],
+      "properties": {
+        "by": {"type": "string", "enum": ["code", "page image"], "description": "A claim on a scanned page is checked against the page image and never counts as code-checked."},
+        "quote_on_page": {"type": "boolean"},
+        "value_in_quote": {"type": ["boolean", "null"]},
+        "scanned": {"type": "boolean"},
+        "image_check": {"type": "string", "enum": ["confirmed", "not confirmed", "pending"]},
+        "checked_by": {"type": ["string", "null"]},
+        "checked_on": {"type": ["string", "null"]}
+      }
+    },
+    "also_in": {"type": "array", "items": {"type": "object", "properties": {"aris": {"type": "integer"}, "page": {"type": "integer"}}},
+                "description": "Other pages with the exact same normalized quote. Information only."},
+    "run": {"type": "string"}
+  }
+}

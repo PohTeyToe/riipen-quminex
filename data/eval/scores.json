@@ -1,0 +1,177 @@
+{
+ "run": "2026-10-15-r2",
+ "citation_precision": {
+  "n": 41,
+  "of": 44,
+  "definition": "Cited quotes the checker confirmed on the cited page, out of every quote the agent cited while answering, including ones it later fixed. A quote on a scanned page counts only once it is confirmed against the page image."
+ },
+ "answer_accuracy": {
+  "n": 8,
+  "of": 8,
+  "definition": "Answerable questions whose answer has every expected value and every required caveat, out of 8."
+ },
+ "correct_refusals": {
+  "n": 4,
+  "of": 4,
+  "definition": "Unanswerable questions the agent refused, out of 4."
+ },
+ "false_refusals": {
+  "n": 0,
+  "of": 11,
+  "definition": "Answerable or conflict questions the agent refused anyway, out of 11."
+ },
+ "disagreements_flagged": {
+  "n": 3,
+  "of": 3,
+  "definition": "Conflict questions whose answer carries every stated value, out of 3."
+ },
+ "failure_counts": [
+  {
+   "code": "quote_not_found",
+   "label": "Quote not found anywhere",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "wrong_page",
+   "label": "Real quote, wrong page",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "value_not_in_quote",
+   "label": "Value not in the quote",
+   "count": 16,
+   "from_answers": 0,
+   "from_checker": 16
+  },
+  {
+   "code": "number_unbacked",
+   "label": "Number not backed by a claim",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "false_refusal",
+   "label": "Refused when the answer was there",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "should_have_refused",
+   "label": "Answered when it should have refused",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "missed_caveat",
+   "label": "Missed a required caveat",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "missed_disagreement",
+   "label": "Missed a disagreement",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "missing_value",
+   "label": "Answer missed an expected value",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "quote_too_long",
+   "label": "Quote over 600 characters",
+   "count": 4,
+   "from_answers": 0,
+   "from_checker": 4
+  },
+  {
+   "code": "quote_too_short",
+   "label": "Quote too short to check",
+   "count": 2,
+   "from_answers": 0,
+   "from_checker": 2
+  },
+  {
+   "code": "page_not_in_corpus",
+   "label": "Cited a page outside these reports",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  }
+ ],
+ "failure_counts_note": "Checker counts cover every rejected claim in the run, field sessions and eval sessions. Answer counts cover the 15 eval answers.",
+ "changes_after_first_eval": [
+  {
+   "what": "The checker ignores degree signs and private-use font glyphs, and the agent now reads page text with broken font glyphs mapped.",
+   "why": "Some PDFs draw the degree sign with a Symbol-font character (U+F0B0). In run 1 the agent left it out every time it copied those coordinates, and the checker threw out 7 quotes that were really on the page.",
+   "files": [
+    "agent/textnorm.py",
+    "agent/corpus.py",
+    "agent/corpus_server.py",
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "Two intervals only count as the same interval if their depths also overlap.",
+   "why": "In run 1, two different IL-22-015 intervals (74.88 to 75.52 m and 111.00 to 119.00 m) had the same rounded grades, so code grouped them and showed a false width disagreement.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "The to minus from check allows for how precisely each number is written.",
+   "why": "In run 1 it flagged 41800 p10, which rounds 318.25 to 342.29 m to 318.3 to 342.3 m and keeps 24.04 m. That is rounding, not a disagreement.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "The rejection message for an interval without a hole ID, and rule 4 of the system prompt, now say how to quote it: from the row that names the hole down to the row in question.",
+   "why": "In run 1 the checker rejected three intervals quoted without their hole ID and the agent didn't retry them.",
+   "files": [
+    "agent/checker.py",
+    "agent/prompts/system.md"
+   ]
+  },
+  {
+   "what": "The field instruction says to cover every report and every page that states something, not only every report.",
+   "why": "In run 1 the 2022 drilling session claimed only the Table 3 rows and none of the same intervals as stated in the text, so code had nothing to compare them with.",
+   "files": [
+    "agent/prompts/system.md"
+   ]
+  },
+  {
+   "what": "The session turn cap went from 40 to 60 model turns.",
+   "why": "With every page in scope, the longest field sessions needed more room. In run 1 the longest used 33.",
+   "files": [
+    "agent/runner.py"
+   ]
+  },
+  {
+   "what": "The scorer no longer treats page, table or figure numbers in an answer line (\"Table 3\") as values that need a claim.",
+   "why": "In run 1 it flagged the 3 in \"Table 3\" as a number not backed by a claim.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "Gold answer for q05: added the 38640 title page (Au, Pt, Pd), and 'Au, Pt, Pd' counts as naming the platinum group metals.",
+   "why": "Run 1's agent found the 38640 title form, which the gold had missed. Checked against the page image. The copper and gold expectations are unchanged.",
+   "files": [
+    "data/eval/gold.json"
+   ]
+  }
+ ]
+}

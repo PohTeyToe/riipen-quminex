@@ -1,0 +1,165 @@
+{
+ "reports": [
+  {
+   "aris": 34595,
+   "title": "Summary Report on the Iron Lake Property",
+   "report_year": 2014,
+   "operator": "Eastfield Resources Ltd. (FMC #107399)",
+   "author": "Morton, James William (Bill)",
+   "pages_total": 74,
+   "pages_used": [
+    1,
+    74
+   ],
+   "pages_used_count": 74,
+   "scanned_pages": [
+    14
+   ],
+   "pdf_url": "https://apps.nrs.gov.bc.ca/pub/aris/Report/34595.pdf/",
+   "pdf_bytes": 10942188,
+   "pdf_size_label": "PDF, 11 MB",
+   "pdf_sha256": "6b714d6fcc4e9f1d6605cc6066930ebc8dcf63792859a246715919f3f73649e5",
+   "detail_url": "https://apps.nrs.gov.bc.ca/pub/aris/detail/34595",
+   "page_link": "https://apps.nrs.gov.bc.ca/pub/aris/Report/34595.pdf/#page={page}"
+  },
+  {
+   "aris": 36430,
+   "title": "Summary Report on the Iron Lake Property",
+   "report_year": 2017,
+   "operator": "Eastfield Resources Ltd. (FMC #107399)",
+   "author": "Johnston, Robert J. (Bob); Morton, James William (Bill)",
+   "pages_total": 132,
+   "pages_used": [
+    1,
+    132
+   ],
+   "pages_used_count": 132,
+   "scanned_pages": [],
+   "pdf_url": "https://apps.nrs.gov.bc.ca/pub/aris/Report/36430.pdf/",
+   "pdf_bytes": 13474963,
+   "pdf_size_label": "PDF, 13 MB",
+   "pdf_sha256": "b5353f7ed543f63504c0ac8439f3353382266fe4293a4e2a65f124636dc445cf",
+   "detail_url": "https://apps.nrs.gov.bc.ca/pub/aris/detail/36430",
+   "page_link": "https://apps.nrs.gov.bc.ca/pub/aris/Report/36430.pdf/#page={page}"
+  },
+  {
+   "aris": 36807,
+   "title": "Summary Report Iron Lake",
+   "report_year": 2017,
+   "operator": "Eastfield Resources Ltd. (FMC #107399)",
+   "author": "Morton, James William (Bill)",
+   "pages_total": 101,
+   "pages_used": [
+    1,
+    101
+   ],
+   "pages_used_count": 101,
+   "scanned_pages": [
+    1,
+    9,
+    16,
+    31,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    46
+   ],
+   "pdf_url": "https://apps.nrs.gov.bc.ca/pub/aris/Report/36807.pdf/",
+   "pdf_bytes": 22262730,
+   "pdf_size_label": "PDF, 22 MB",
+   "pdf_sha256": "75abcc1d85b3de85fe0412abad67f47dc343755a91826fee44330f73b135a247",
+   "detail_url": "https://apps.nrs.gov.bc.ca/pub/aris/detail/36807",
+   "page_link": "https://apps.nrs.gov.bc.ca/pub/aris/Report/36807.pdf/#page={page}"
+  },
+  {
+   "aris": 38640,
+   "title": "Assessment Report on 2019 Exploration on the Iron Lake Property",
+   "report_year": 2019,
+   "operator": "GK Resources Inc.",
+   "author": "Johnston, Robert J. (Bob)",
+   "pages_total": 71,
+   "pages_used": [
+    1,
+    71
+   ],
+   "pages_used_count": 71,
+   "scanned_pages": [],
+   "pdf_url": "https://apps.nrs.gov.bc.ca/pub/aris/Report/38640.pdf/",
+   "pdf_bytes": 16447553,
+   "pdf_size_label": "PDF, 16 MB",
+   "pdf_sha256": "084514b6ea106fa7aaab459be4da7eae0971f581c5aa2f7d54e2949fdac6662e",
+   "detail_url": "https://apps.nrs.gov.bc.ca/pub/aris/detail/38640",
+   "page_link": "https://apps.nrs.gov.bc.ca/pub/aris/Report/38640.pdf/#page={page}"
+  },
+  {
+   "aris": 40980,
+   "title": "Assessment Report on the 2022 Induced Polarization Survey",
+   "report_year": 2023,
+   "operator": "Tech-X Resources Inc. (279064)",
+   "author": "Koffyberg, Agnes M.",
+   "pages_total": 102,
+   "pages_used": [
+    1,
+    102
+   ],
+   "pages_used_count": 102,
+   "scanned_pages": [
+    1
+   ],
+   "pdf_url": "https://apps.nrs.gov.bc.ca/pub/aris/Report/40980.pdf/",
+   "pdf_bytes": 19143691,
+   "pdf_size_label": "PDF, 19 MB",
+   "pdf_sha256": "a16fb05103f830fdf69c8c983d0f7bea18368e0ec25146b795b6828ffa7c7d13",
+   "detail_url": "https://apps.nrs.gov.bc.ca/pub/aris/detail/40980",
+   "page_link": "https://apps.nrs.gov.bc.ca/pub/aris/Report/40980.pdf/#page={page}"
+  },
+  {
+   "aris": 41327,
+   "title": "Assessment Report on the 2022 Core Drilling Program and Geological Mapping and Geochemical Program",
+   "report_year": 2023,
+   "operator": "Tech-X Resources Inc. (279064)",
+   "author": "Koffyberg, Agnes M.; Morton, Jack",
+   "pages_total": 1437,
+   "pages_used": [
+    5,
+    49
+   ],
+   "pages_used_count": 45,
+   "scanned_pages": [],
+   "pdf_url": "https://apps.nrs.gov.bc.ca/pub/aris/Report/41327.pdf/",
+   "pdf_bytes": 51340885,
+   "pdf_size_label": "PDF, 51 MB",
+   "pdf_sha256": "875b2c9db9ce4bdd24731dafa24f1680bdb1a341aea04e6b2e282167152c147d",
+   "detail_url": "https://apps.nrs.gov.bc.ca/pub/aris/detail/41327",
+   "page_link": "https://apps.nrs.gov.bc.ca/pub/aris/Report/41327.pdf/#page={page}"
+  },
+  {
+   "aris": 41800,
+   "title": "Assessment Report on the 2023 Xcite HTDEM Geophysical Survey and Core Drilling Program on Iron Lake Property",
+   "report_year": 2024,
+   "operator": "Tech-X Resources Inc. (279064)",
+   "author": "Dumala, Matthew R.; Koffyberg, Agnes M.",
+   "pages_total": 788,
+   "pages_used": [
+    5,
+    45
+   ],
+   "pages_used_count": 41,
+   "scanned_pages": [],
+   "pdf_url": "https://apps.nrs.gov.bc.ca/pub/aris/Report/41800.pdf/",
+   "pdf_bytes": 35736440,
+   "pdf_size_label": "PDF, 36 MB",
+   "pdf_sha256": "681af23efce3c28618870128ab7dca94c5eb8c1418362012659bcbf18a9ea734",
+   "detail_url": "https://apps.nrs.gov.bc.ca/pub/aris/detail/41800",
+   "page_link": "https://apps.nrs.gov.bc.ca/pub/aris/Report/41800.pdf/#page={page}"
+  }
+ ],
+ "pages_used_total": 566,
+ "page_numbers": "PDF page numbers (the page in the PDF file), not the numbers printed on the pages."
+}

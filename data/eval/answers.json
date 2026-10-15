@@ -1,0 +1,440 @@
+{
+ "run": "2026-10-15-r2",
+ "answers": [
+  {
+   "id": "q01",
+   "category": "answerable",
+   "question": "How many metres of diamond drilling were completed on the Iron Lake property in 2022?",
+   "answer": "In 2022, 5,001.30 m of diamond drilling was completed in 23 holes, in two phases of 2,628.3 m (13 holes) and 2,373 m (ten holes); reports 41327 and 41800 give the same total.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0001",
+    "c-0002",
+    "c-0003",
+    "c-0004"
+   ],
+   "rejected": [],
+   "session": "eval-q01",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Total metres drilled in 2022",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q02",
+   "category": "answerable",
+   "question": "What width and grades did the significant interval in hole IL-23-024 return?",
+   "answer": "Hole IL-23-024 returned 9.46 m (569.00–578.46 m) of 0.42% Cu, 0.034% Ni, 29 ppb Au, 13 ppb Pt and 31 ppb Pd. The text gives the nickel as 341 ppm. This includes 0.50 m (570.81–571.31 m) of 1.17% Cu, 0.056% Ni, 39 ppb Au, 15 ppb Pt and 16 ppb Pd (ARIS 41800). The report warns that the aqua regia digestion may give values lower than actual.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0005",
+    "c-0006",
+    "c-0007",
+    "c-0008"
+   ],
+   "rejected": [],
+   "session": "eval-q02",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Width 9.46 m",
+     "met": true
+    },
+    {
+     "label": "Copper 0.42%",
+     "met": true
+    },
+    {
+     "label": "Nickel 0.034% or 341 ppm",
+     "met": true
+    },
+    {
+     "label": "Gold 29 ppb",
+     "met": true
+    },
+    {
+     "label": "Platinum 13 ppb",
+     "met": true
+    },
+    {
+     "label": "Palladium 31 ppb",
+     "met": true
+    }
+   ],
+   "caveats": [
+    {
+     "label": "Aqua regia digestion; values may read lower than actual",
+     "met": true
+    }
+   ],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value and the required caveat."
+  },
+  {
+   "id": "q03",
+   "category": "answerable",
+   "question": "What digestion method was used for the 2023 drill core samples?",
+   "answer": "Aqua regia: a 0.5 g pulp sub-sample was digested in aqua-regia solution for 63-element ICP-OES (Actlabs UT1), and the report warns results may read lower than actual values. Au, Pt and Pd were done separately by 30 g fire assay with OES (1C-OES).",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0009",
+    "c-0010",
+    "c-0011"
+   ],
+   "rejected": [],
+   "session": "eval-q03",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Aqua regia",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q04",
+   "category": "answerable",
+   "question": "Which mining division is the Iron Lake property in?",
+   "answer": "The Iron Lake property is in the Clinton Mining Division, British Columbia.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0012",
+    "c-0013"
+   ],
+   "rejected": [],
+   "session": "eval-q04",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Clinton",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q05",
+   "category": "answerable",
+   "question": "Which commodities do the assessment report title pages list as sought on the Iron Lake property?",
+   "answer": "The title pages don't all agree: ARIS 34595 and 36807 list Copper, Gold and PGM, while ARIS 38640 lists Au, Pt and Pd; the other four reports' title pages state no commodities or aren't in this corpus.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0014",
+    "c-0015",
+    "c-0016"
+   ],
+   "rejected": [],
+   "session": "eval-q05",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Copper",
+     "met": true
+    },
+    {
+     "label": "Gold",
+     "met": true
+    },
+    {
+     "label": "PGM",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q06",
+   "category": "answerable",
+   "question": "What type of airborne geophysical survey was flown over the property in 2023?",
+   "answer": "A helicopter-borne time-domain electromagnetic (Xcite HTDEM, 30Hz) survey that collected electromagnetic and magnetic data together, flown March 6–8, 2023 as one 205 line-km block (ARIS 41800).",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0017",
+    "c-0018",
+    "c-0019"
+   ],
+   "rejected": [],
+   "session": "eval-q06",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Xcite HTDEM / time domain EM",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q07",
+   "category": "answerable",
+   "question": "Which laboratory analyzed the 2022 drill core samples?",
+   "answer": "Activation Laboratories Ltd. (Actlabs) in Kamloops, BC analyzed the 2022 drill core samples (ARIS 41327).",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0020",
+    "c-0021",
+    "c-0022"
+   ],
+   "rejected": [],
+   "session": "eval-q07",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Activation Laboratories",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q08",
+   "category": "answerable",
+   "question": "What further work does the most recent report recommend?",
+   "answer": "Report 41800 (November 30, 2023) recommends drilling the Discovery Zone toward the northeast, drilling a deeper hole into the northwest conductive zone that targets the conductive zone and high magnetic susceptibility, and doing more work to test the Discovery Zone along strike and to follow up on significant drill intercepts elsewhere on the property.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0023",
+    "c-0024",
+    "c-0025",
+    "c-0026",
+    "c-0027",
+    "c-0028"
+   ],
+   "rejected": [
+    "eval-q08-006",
+    "eval-q08-007"
+   ],
+   "session": "eval-q08",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Drill on a northeast azimuth",
+     "met": true
+    },
+    {
+     "label": "A deeper hole into the northwest conductive zone",
+     "met": true
+    },
+    {
+     "label": "Test the Discovery Zone along strike and follow up intercepts elsewhere (p39)",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q09",
+   "category": "unanswerable",
+   "question": "What is the mineral resource estimate for the Iron Lake property?",
+   "answer": "Not in these sources",
+   "answer_missing": false,
+   "refused": true,
+   "claims": [],
+   "rejected": [],
+   "session": "eval-q09",
+   "passed": true,
+   "refusal": true,
+   "items": [],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Refused, and nothing in these reports answers it."
+  },
+  {
+   "id": "q10",
+   "category": "unanswerable",
+   "question": "What did the 2025 geochronology and green rock study on the Iron Lake property find?",
+   "answer": "Not in these sources",
+   "answer_missing": false,
+   "refused": true,
+   "claims": [],
+   "rejected": [],
+   "session": "eval-q10",
+   "passed": true,
+   "refusal": true,
+   "items": [],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Refused, and nothing in these reports answers it."
+  },
+  {
+   "id": "q11",
+   "category": "unanswerable",
+   "question": "What metallurgical recoveries have been reported for Iron Lake mineralization?",
+   "answer": "Not in these sources",
+   "answer_missing": false,
+   "refused": true,
+   "claims": [],
+   "rejected": [],
+   "session": "eval-q11",
+   "passed": true,
+   "refusal": true,
+   "items": [],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Refused, and nothing in these reports answers it."
+  },
+  {
+   "id": "q12",
+   "category": "unanswerable",
+   "question": "What grades did drill hole IL-22-099 return?",
+   "answer": "Not in these sources",
+   "answer_missing": false,
+   "refused": true,
+   "claims": [],
+   "rejected": [],
+   "session": "eval-q12",
+   "passed": true,
+   "refusal": true,
+   "items": [],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Refused, and nothing in these reports answers it."
+  },
+  {
+   "id": "q13",
+   "category": "conflict",
+   "question": "Where is the centre of work on the Iron Lake property, as coordinates?",
+   "answer": "The reports disagree: 34595 and 38640 give 51° 57′ N, 120° 54′ W (34595 adds NAD 83 645500E, 5757000N); 40980 gives 51° 56′ 20″ N, 120° 51′ 13″ W; 36807's scanned page reads longitude 121° 48′ 2, latitude 51° 54′ 9 (not yet checked against the page image).",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0029",
+    "c-0030",
+    "c-0031",
+    "c-0032",
+    "c-0033"
+   ],
+   "rejected": [
+    "eval-q13-004"
+   ],
+   "session": "eval-q13",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "36807 title page: 121°48'2\" W",
+     "met": true
+    },
+    {
+     "label": "Other pages: 120°54' W or 120°51'13\" W",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q14",
+   "category": "conflict",
+   "question": "What width do the reports give for the massive sulphide interval in hole IL-22-011?",
+   "answer": "Report 41327 disagrees with itself: the text on p.34 gives 2.36 m (175.36–177.53 m, 0.30% Cu, 0.049% Ni), but Table 3 on p.33 gives 2.07 m (175.46–177.53 m, same grades).",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0034",
+    "c-0035"
+   ],
+   "rejected": [],
+   "session": "eval-q14",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "Table 3: 2.07 m",
+     "met": true
+    },
+    {
+     "label": "Text: 2.36 m",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  },
+  {
+   "id": "q15",
+   "category": "conflict",
+   "question": "Which NTS map area is the Iron Lake property on?",
+   "answer": "Most reports put the Iron Lake property on NTS 092P096 (34595, 36430, 36807 and 38640), but the summary form in report 34595 says 093N034, so the sources disagree; report 41327 gives BCGS 092P.086, 087, 096, 097 instead.",
+   "answer_missing": false,
+   "refused": false,
+   "claims": [
+    "c-0036",
+    "c-0037",
+    "c-0038",
+    "c-0039",
+    "c-0040",
+    "c-0041"
+   ],
+   "rejected": [],
+   "session": "eval-q15",
+   "passed": true,
+   "refusal": false,
+   "items": [
+    {
+     "label": "092P",
+     "met": true
+    },
+    {
+     "label": "093N",
+     "met": true
+    }
+   ],
+   "caveats": [],
+   "unbacked_numbers": [],
+   "failures": [],
+   "reason": "Has every expected value."
+  }
+ ]
+}

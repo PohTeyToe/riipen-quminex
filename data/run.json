@@ -1,0 +1,345 @@
+{
+ "run": "2026-10-15-r2",
+ "date": "2026-10-15",
+ "model": [
+  "claude-opus-5-5"
+ ],
+ "cli_version": [
+  "2.1.299"
+ ],
+ "effort": "high",
+ "max_turns_flag": 60,
+ "model_turns": {
+  "min": 4,
+  "max": 46,
+  "note": "Assistant messages per session; one message can carry several tool calls."
+ },
+ "tools_listed_in_first_event": [
+  "mcp__corpus__open_page",
+  "mcp__corpus__propose_claim",
+  "mcp__corpus__refuse",
+  "mcp__corpus__search"
+ ],
+ "only_corpus_tools_every_session": true,
+ "sessions": {
+  "fields": 12,
+  "eval": 15
+ },
+ "session_results": {
+  "eval-q01": {
+   "result": "success",
+   "model_turns": 6,
+   "tool_calls": 8,
+   "seconds": 23.6
+  },
+  "eval-q02": {
+   "result": "success",
+   "model_turns": 4,
+   "tool_calls": 8,
+   "seconds": 23.4
+  },
+  "eval-q03": {
+   "result": "success",
+   "model_turns": 5,
+   "tool_calls": 9,
+   "seconds": 26.2
+  },
+  "eval-q04": {
+   "result": "success",
+   "model_turns": 7,
+   "tool_calls": 8,
+   "seconds": 22.4
+  },
+  "eval-q05": {
+   "result": "success",
+   "model_turns": 7,
+   "tool_calls": 17,
+   "seconds": 31.6
+  },
+  "eval-q06": {
+   "result": "success",
+   "model_turns": 4,
+   "tool_calls": 7,
+   "seconds": 20.1
+  },
+  "eval-q07": {
+   "result": "success",
+   "model_turns": 6,
+   "tool_calls": 7,
+   "seconds": 26.7
+  },
+  "eval-q08": {
+   "result": "success",
+   "model_turns": 10,
+   "tool_calls": 15,
+   "seconds": 39.1
+  },
+  "eval-q09": {
+   "result": "success",
+   "model_turns": 5,
+   "tool_calls": 7,
+   "seconds": 19.0
+  },
+  "eval-q10": {
+   "result": "success",
+   "model_turns": 6,
+   "tool_calls": 10,
+   "seconds": 21.3
+  },
+  "eval-q11": {
+   "result": "success",
+   "model_turns": 6,
+   "tool_calls": 11,
+   "seconds": 20.7
+  },
+  "eval-q12": {
+   "result": "success",
+   "model_turns": 9,
+   "tool_calls": 12,
+   "seconds": 25.1
+  },
+  "eval-q13": {
+   "result": "success",
+   "model_turns": 8,
+   "tool_calls": 19,
+   "seconds": 36.6
+  },
+  "eval-q14": {
+   "result": "success",
+   "model_turns": 6,
+   "tool_calls": 8,
+   "seconds": 22.0
+  },
+  "eval-q15": {
+   "result": "success",
+   "model_turns": 7,
+   "tool_calls": 19,
+   "seconds": 31.1
+  },
+  "field-access": {
+   "result": "success",
+   "model_turns": 12,
+   "tool_calls": 33,
+   "seconds": 69.4
+  },
+  "field-commodities": {
+   "result": "success",
+   "model_turns": 19,
+   "tool_calls": 55,
+   "seconds": 89.1
+  },
+  "field-drilling_2022": {
+   "result": "success",
+   "model_turns": 11,
+   "tool_calls": 40,
+   "seconds": 95.8
+  },
+  "field-drilling_2023": {
+   "result": "success",
+   "model_turns": 7,
+   "tool_calls": 23,
+   "seconds": 60.0
+  },
+  "field-geological_setting": {
+   "result": "success",
+   "model_turns": 31,
+   "tool_calls": 144,
+   "seconds": 273.9
+  },
+  "field-geophysical_surveys": {
+   "result": "success",
+   "model_turns": 34,
+   "tool_calls": 184,
+   "seconds": 279.5
+  },
+  "field-location": {
+   "result": "success",
+   "model_turns": 17,
+   "tool_calls": 60,
+   "seconds": 85.4
+  },
+  "field-map_sheet": {
+   "result": "success",
+   "model_turns": 14,
+   "tool_calls": 41,
+   "seconds": 58.7
+  },
+  "field-mineralization": {
+   "result": "success",
+   "model_turns": 46,
+   "tool_calls": 220,
+   "seconds": 382.4
+  },
+  "field-mining_division": {
+   "result": "success",
+   "model_turns": 7,
+   "tool_calls": 19,
+   "seconds": 35.8
+  },
+  "field-recommended_next_work": {
+   "result": "success",
+   "model_turns": 16,
+   "tool_calls": 51,
+   "seconds": 91.5
+  },
+  "field-resource_estimate": {
+   "result": "success",
+   "model_turns": 6,
+   "tool_calls": 10,
+   "seconds": 20.2
+  }
+ },
+ "prompt_and_tool_hashes": {
+  "eval": {
+   "prompts/system.md": "c6628d4deda06518d8a45afb818af4e57627d3dad11b599803705220680e9397",
+   "prompts/field.md": "26ed2406804be0a2446f3f6dbb09b2accbc06151977a066abdf90c4ca25cb34a",
+   "prompts/question.md": "e9bdcee7edeb87ec9ffe8323da58c7d1edc6097699b6d8850fac00e618f3ca78",
+   "prompts/fields.json": "fdeada59a6dcbed9563ec26f3a33449e99903d34c243c35f97154eb7e9f66cd6",
+   "corpus_server.py": "ec7a4d9ec5d08eb1dfac7bb4d000411a082783e38eae605ac4beb90770f7adca",
+   "checker.py": "9a450ac80f4ef28088dc9a8a8d52bc888f1e19b97fc25547a450f4a3c5aa8002",
+   "corpus.py": "e47e41c3e46115be02f365a0270fa68e562d80743adc103fb209037a0741bf8b",
+   "textnorm.py": "4a07f188b3b44c6e547dfa71743e32ee2ca311799ab52b6b16b73f52dc2a21ea"
+  },
+  "fields": {
+   "prompts/system.md": "c6628d4deda06518d8a45afb818af4e57627d3dad11b599803705220680e9397",
+   "prompts/field.md": "26ed2406804be0a2446f3f6dbb09b2accbc06151977a066abdf90c4ca25cb34a",
+   "prompts/question.md": "e9bdcee7edeb87ec9ffe8323da58c7d1edc6097699b6d8850fac00e618f3ca78",
+   "prompts/fields.json": "fdeada59a6dcbed9563ec26f3a33449e99903d34c243c35f97154eb7e9f66cd6",
+   "corpus_server.py": "ec7a4d9ec5d08eb1dfac7bb4d000411a082783e38eae605ac4beb90770f7adca",
+   "checker.py": "9a450ac80f4ef28088dc9a8a8d52bc888f1e19b97fc25547a450f4a3c5aa8002",
+   "corpus.py": "e47e41c3e46115be02f365a0270fa68e562d80743adc103fb209037a0741bf8b",
+   "textnorm.py": "4a07f188b3b44c6e547dfa71743e32ee2ca311799ab52b6b16b73f52dc2a21ea"
+  }
+ },
+ "hashes_identical_across_field_and_eval_runs": true,
+ "gold_frozen_before_eval": [
+  "f5b5ce576f3b56b17f9d58726692bdedfbc41d81e5b987613e8f14b3e56d1960 *gold.json",
+  "f1a9ed7825e3da5e817ec2de199077edc2505c5016124a893b75387b590c741f *questions.json",
+  "2026-10-15T18:36:22Z"
+ ],
+ "full_runs": 2,
+ "full_runs_note": "Run 1 showed the checker throwing out real coordinate quotes and code flagging two false disagreements, so I fixed those, froze everything again and reran all 27 sessions; every number on the site comes from run 2.",
+ "first_run": {
+  "run": "2026-10-15-r1",
+  "proposed": 423,
+  "accepted": 390,
+  "rejected": 33,
+  "eval": {
+   "answer_accuracy": "8 of 8",
+   "correct_refusals": "4 of 4",
+   "false_refusals": "0 of 11",
+   "disagreements_flagged": "3 of 3",
+   "citation_precision": "41 of 50, before any scanned-page claim was checked against its image"
+  },
+  "note": "Scored with the run 1 scorer. The eval verdicts were already all passes, so run 2 was not run to raise them."
+ },
+ "changes_after_first_eval": [
+  {
+   "what": "The checker ignores degree signs and private-use font glyphs, and the agent now reads page text with broken font glyphs mapped.",
+   "why": "Some PDFs draw the degree sign with a Symbol-font character (U+F0B0). In run 1 the agent left it out every time it copied those coordinates, and the checker threw out 7 quotes that were really on the page.",
+   "files": [
+    "agent/textnorm.py",
+    "agent/corpus.py",
+    "agent/corpus_server.py",
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "Two intervals only count as the same interval if their depths also overlap.",
+   "why": "In run 1, two different IL-22-015 intervals (74.88 to 75.52 m and 111.00 to 119.00 m) had the same rounded grades, so code grouped them and showed a false width disagreement.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "The to minus from check allows for how precisely each number is written.",
+   "why": "In run 1 it flagged 41800 p10, which rounds 318.25 to 342.29 m to 318.3 to 342.3 m and keeps 24.04 m. That is rounding, not a disagreement.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "The rejection message for an interval without a hole ID, and rule 4 of the system prompt, now say how to quote it: from the row that names the hole down to the row in question.",
+   "why": "In run 1 the checker rejected three intervals quoted without their hole ID and the agent didn't retry them.",
+   "files": [
+    "agent/checker.py",
+    "agent/prompts/system.md"
+   ]
+  },
+  {
+   "what": "The field instruction says to cover every report and every page that states something, not only every report.",
+   "why": "In run 1 the 2022 drilling session claimed only the Table 3 rows and none of the same intervals as stated in the text, so code had nothing to compare them with.",
+   "files": [
+    "agent/prompts/system.md"
+   ]
+  },
+  {
+   "what": "The session turn cap went from 40 to 60 model turns.",
+   "why": "With every page in scope, the longest field sessions needed more room. In run 1 the longest used 33.",
+   "files": [
+    "agent/runner.py"
+   ]
+  },
+  {
+   "what": "The scorer no longer treats page, table or figure numbers in an answer line (\"Table 3\") as values that need a claim.",
+   "why": "In run 1 it flagged the 3 in \"Table 3\" as a number not backed by a claim.",
+   "files": [
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "Gold answer for q05: added the 38640 title page (Au, Pt, Pd), and 'Au, Pt, Pd' counts as naming the platinum group metals.",
+   "why": "Run 1's agent found the 38640 title form, which the gold had missed. Checked against the page image. The copper and gold expectations are unchanged.",
+   "files": [
+    "data/eval/gold.json"
+   ]
+  }
+ ],
+ "claims_accepted": 528,
+ "claims_rejected": 22,
+ "command": [
+  "claude",
+  "-p",
+  "--model",
+  "claude-opus-5-5",
+  "--effort",
+  "high",
+  "--tools",
+  "",
+  "--strict-mcp-config",
+  "--mcp-config",
+  "eval-q01.mcp.json",
+  "--allowedTools",
+  "mcp__corpus__search mcp__corpus__open_page mcp__corpus__propose_claim mcp__corpus__refuse",
+  "--system-prompt-file",
+  "agent/prompts/system.md",
+  "--setting-sources",
+  "",
+  "--disable-slash-commands",
+  "--output-format",
+  "stream-json",
+  "--verbose",
+  "--no-session-persistence",
+  "--max-turns",
+  "60"
+ ],
+ "post_processing_hashes": {
+  "rules.py": "74a005ab516cc08afcfe26c2b4b6fa7e97192e5071f664dea8c928f9e936ed1d",
+  "score.py": "ffc1273b8618e291c3a264180b28593f910062e76a75e79a1f2929f62536effe",
+  "build_data.py": "0d47c901c077d7801f5fce1c34ff47b9c099be7f0bc293f182c800fac790257a"
+ },
+ "changes_after_run_2": [
+  {
+   "what": "Code-only fixes to post-processing: centimetre widths now scale the arithmetic tolerance correctly, map areas are only read from a capital letter A to P after an NTS series number (82 to 114), and excerpts are trimmed to whole words.",
+   "why": "Found while checking run 2 output. None of them changes a field state, a group, a verdict or a score; the agent was not rerun."
+  },
+  {
+   "what": "Added an eval cross-check to the location and map sheet fields: the same rule run over the eval sessions' claims, listed separately.",
+   "why": "In run 2 the map sheet session never surfaced the two title pages that say 093N, while the q15 eval session found one of them. The field row stays as its session produced it; the cross-check makes the gap visible."
+  },
+  {
+   "what": "Gold answer for q02: added Au 29 ppb, Pt 13 ppb and Pd 31 ppb from Table 4 as expected values.",
+   "why": "The second reader's pass on the final gold said the answer to a question about grades was incomplete without them. Confirmed on 41800 p37. The q02 verdict is unchanged; the agent's answer already had them."
+  }
+ ]
+}
