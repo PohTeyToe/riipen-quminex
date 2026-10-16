@@ -18,7 +18,9 @@ from textnorm import normalize
 ROOT = Path(__file__).resolve().parent.parent
 MIN_RUN = 24   # letters and digits in a row; shorter runs are too common to count as copied text
 STEP = 8       # page runs are indexed every STEP characters, so any copied run of MIN_RUN + STEP is found
-IMPORT_RE = re.compile(r"""from\s+['"]((?:\.\./)+[^'"]+\.json)['"]""")
+# static imports (from '../../data/x.json') and the ones the site loads on demand (import('../../data/x.json'))
+IMPORT_RE = re.compile(r"""(?:from\s+|import\(\s*)['"]((?:\.\./)+[^'"]+\.json)['"]""")
+PAGE_SHARE = 0.5  # no page ships more than this share of its text across all its claims
 
 Page = tuple[int, int]
 Span = tuple[int, int]
@@ -114,3 +116,39 @@ def audit(m: Matcher, texts: list[str], body: set[Page] | None = None) -> dict:
         "report_share": {str(a): round(s / n, 3) if n else 0 for a, (s, n) in sorted(by_report.items())},
         "page_share": {f"{a} p{p}": round(cov[(a, p)] / m.chars[(a, p)], 2) for a, p in sorted(cov) if m.chars[(a, p)]},
     }
+
+
+def write(m: Matcher, body: set[Page]) -> dict:
+    """Count what the site ships against every page and write data/shipped.json."""
+    files = imported_json()
+    counts = audit(m, site_strings(), body=body)
+    over = {k: v for k, v in counts["page_share"].items() if v > PAGE_SHARE}
+    out = {
+        "note": "Letters and digits of each report's pages that appear in a run of at least "
+                f"{MIN_RUN} in any file the site imports, on every page that carries the same words. "
+                "report_share counts the report text the agent reads; pages_over_half also covers the drill tables "
+                f"code reads. A page over {PAGE_SHARE:.0%} is over with every excerpt on it at its shortest.",
+        "files": [str(f.relative_to(ROOT)).replace("\\", "/") for f in files],
+        "report_share": counts["report_share"],
+        "pages_over_half": over,
+    }
+    (ROOT / "data" / "shipped.json").write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n", encoding="utf-8",
+                                               newline="\n")
+    return out
+
+
+def main() -> None:
+    """Recount after a change to what the site imports, without rebuilding the run's data."""
+    import build_data
+    import corpus
+    from textnorm import display_text
+
+    tables = build_data.load_tables()
+    pages = {(a, n): display_text(corpus.page(a, n)["text"]) for a, n in corpus.all_pages()}
+    pages |= {k: display_text(v) for k, v in tables["pages"].items() if k not in pages}
+    out = write(Matcher(pages), body=set(corpus.all_pages()))
+    print(f"{len(out['files'])} files; {out['report_share']}; {len(out['pages_over_half'])} pages over {PAGE_SHARE:.0%}")
+
+
+if __name__ == "__main__":
+    main()

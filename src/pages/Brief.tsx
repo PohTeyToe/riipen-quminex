@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
-import { DemoLayout } from '../components/Layout'
+import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { PageHead } from '../components/Layout'
+import { Rule } from '../components/Rule'
 import { ChevronIcon } from '../components/Icons'
 import schemaJson from '../../agent/claim.schema.json'
 import briefExamplesJson from '../../data/brief_examples.json'
@@ -26,28 +27,12 @@ const briefExamples = briefExamplesJson as unknown as {
 }
 
 const DELIVERABLES: [string, string, string][] = [
-  ['Track 1 agent prototype', 'A field-by-field agent with four tools, run offline', 'Live runs on your reports, your framework'],
-  ['Data, tool and agent framework package', 'Corpus loader, page search, claim schema, quote checker, disagreement rules, with tests', 'Packaging, tools for tracks 2 and 3'],
-  ['Eval scripts', '15 questions and a scored summary, every miss listed', 'A larger set with answers your geologists write'],
+  ['Track 1 agent prototype', 'Field-by-field agent with four tools, run offline', 'Live runs on your reports, in your framework'],
+  ['Data, tool and agent framework package', 'Corpus loader, page search, claim schema, quote checker, disagreement rules, tests', 'Packaging, and tools for tracks 2 and 3'],
+  ['Eval scripts', '15 questions, scored, every miss listed', 'A larger set your geologists write'],
   ['Technical report with hallucination risks', 'Failure counts by type from a real run', 'The written report'],
   ['Presentation', 'Not started', 'Not started'],
-  ['Synthesis into property evaluations', "A cited summary written from the card. Code checks its numbers and that it gives every side of a disagreement, and settles disagreements from the reports' own drill tables", 'Claims from tracks 2 and 3'],
-]
-
-const PLAN: [string, string, string][] = [
-  ['Oct 26 to 30 (check-in Oct 30)', 'Agree on the starting reports with you. Agent running on them.', 'Propose the claim format. The three of us settle it.'],
-  ['Nov 2 to 13', 'Framework package: loaders, tools, claim schema, quote checker, tests. The demo already has a first version of each.', 'Other tracks can call the same checker.'],
-  ['Nov 16 to 27', "Eval set with answers your team writes. Hallucination-risk notes from real misses, starting from this demo's.", 'Share the eval format.'],
-  ['Nov 30 to Dec 11 (spotlight Dec 11)', "One property evaluation from all three tracks' claims, disagreements flagged by code and settled where the data allows.", 'Joint.'],
-  ['Dec 14 to 18 (submit Dec 18)', 'Technical report, presentation, handover.', 'Same.'],
-]
-
-const QUESTIONS = [
-  "For track 1, should the corpus start from NI 43-101s on SEDAR+, government assessment reports, or client files we won't see?",
-  'Do you already have a claim format, or should the three tracks agree on one in week one?',
-  "What should accuracy be scored against: a geologist's own property summary, or checked questions like these?",
-  'Do you already use LangGraph, AutoGen or CrewAI, or is the choice ours?',
-  'When sources disagree, should the evaluation carry both values with a flag, or stop and ask a geologist?',
+  ['Synthesis into property evaluations', "A cited summary written from the file, with disagreements settled by the reports' drill tables", 'Claims from tracks 2 and 3'],
 ]
 
 const schema = schemaJson as unknown as {
@@ -165,18 +150,14 @@ function Examples() {
       </div>
       <div id="ex-panel" role="tabpanel" aria-labelledby={`ex-tab-${tab}`} className="ex-panel">
         <p className="ex-label">{ex.label}</p>
-        {ex.hand_written ? (
-          <p className="hand-note small">{ex.note ?? briefExamples.note_hand_written}</p>
-        ) : (
-          <p className="small muted">Copied from the run's output, unedited.</p>
-        )}
-        <p className="small">
+        <p className={ex.hand_written ? 'hand-note' : 'hint'}>{ex.hand_written ? ex.note ?? briefExamples.note_hand_written : "Copied from the run's output, unedited."}</p>
+        <p className="hint">
           Checker: quote on the cited page {check?.quote_on_page ? 'confirmed' : 'not confirmed'}, value in the quote {check?.value_in_quote ? 'confirmed' : 'not confirmed'}.
         </p>
         <Json value={ex.claim} />
         {ex.compared_with && (
           <>
-            <p className="small">Compared with the Table 3 row for the same hole, also written by hand from the page:</p>
+            <p className="hint">Compared with the Table 3 row for the same hole, also written by hand:</p>
             <Json value={ex.compared_with} />
           </>
         )}
@@ -187,9 +168,10 @@ function Examples() {
                 {a.line}
               </p>
             ))}
-            <p className="rule small">
-              Same interval: {ex.code_result.same_interval ? 'yes' : 'no'}. Widths disagree: {ex.code_result.widths_disagree ? 'yes' : 'no'}. Rule, in code: {ex.code_result.rule_text}
+            <p className="hint">
+              Same interval: {ex.code_result.same_interval ? 'yes' : 'no'}. Widths disagree: {ex.code_result.widths_disagree ? 'yes' : 'no'}.
             </p>
+            <Rule text={ex.code_result.rule_text} />
           </div>
         )}
       </div>
@@ -199,17 +181,12 @@ function Examples() {
 
 export default function BriefPage() {
   useHashScroll(true)
-  useEffect(() => {
-    document.title = 'Your brief, mapped · Iron Lake property file'
-    return () => {
-      document.title = 'Iron Lake property file'
-    }
-  }, [])
   const [keysOpen, setKeysOpen] = useState(false)
   return (
-    <DemoLayout title="Your brief, mapped">
+    <div className="doc-page">
+      <PageHead title="Your brief, mapped" meta="Riipen deliverables against what this demo has" />
       <section className="block" aria-labelledby="map-h">
-        <h2 id="map-h" className="section-title">
+        <h2 id="map-h" className="sr-only">
           What exists, and what doesn't yet
         </h2>
         <table className="data-table stack deliverables">
@@ -238,99 +215,49 @@ export default function BriefPage() {
         </table>
       </section>
 
-      <section className="block" aria-labelledby="format-h">
-        <h2 id="format-h" className="section-title">
-          One claim format for all three tracks
-        </h2>
-        <p className="lede">
-          Every track's agent writes the same record: one statement from one page, with the exact quote. Code checks the quote and compares claims across sources, so a
-          disagreement between a track 2 survey and a track 3 drill table shows up the same way as one inside a single report.
-        </p>
+      <section className="block" id="format" aria-labelledby="format-h">
+        <div className="block-head">
+          <h2 id="format-h">One claim format for all three tracks</h2>
+          <p className="hint">One value, one page, the exact quote. Same checker.</p>
+        </div>
         <Examples />
-        <button type="button" className="disclosure small schema-toggle" aria-expanded={keysOpen} onClick={() => setKeysOpen((v) => !v)}>
+        <button type="button" className="disclosure" aria-expanded={keysOpen} onClick={() => setKeysOpen((v) => !v)}>
           <ChevronIcon />
           Every key and what it means
         </button>
         {keysOpen && (
-        <div className="table-scroll">
-          <table className="data-table schema">
-            <thead>
-              <tr>
-                <th scope="col">Key</th>
-                <th scope="col">Type</th>
-                <th scope="col">Meaning</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(schema.properties).map(([key, p]) => (
-                <tr key={key}>
-                  <th scope="row" className="mono">
-                    {key}
-                    {schema.required.includes(key) ? '' : '?'}
-                  </th>
-                  <td className="mono small">{typeOf(p)}</td>
-                  <td className="small">{p.description ?? ''}</td>
+          <div className="table-scroll">
+            <table className="data-table schema">
+              <thead>
+                <tr>
+                  <th scope="col">Key</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Meaning</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {Object.entries(schema.properties).map(([key, p]) => (
+                  <tr key={key}>
+                    <th scope="row" className="mono">
+                      {key}
+                      {schema.required.includes(key) ? '' : '?'}
+                    </th>
+                    <td className="mono">{typeOf(p)}</td>
+                    <td>{p.description ?? ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="hint">Keys marked ? are optional.</p>
+          </div>
         )}
-        <p className="small muted">
-          {keysOpen ? 'Keys marked ? are optional. ' : ''}The full schema is <span className="mono">agent/claim.schema.json</span>
-          {LINKS.repo ? (
-            <>
-              {' '}in the{' '}
-              <a className="text-link" href={`${LINKS.repo}/blob/main/agent/claim.schema.json`} target="_blank" rel="noopener noreferrer">
-                repo
-              </a>
-              .
-            </>
-          ) : (
-            ' in the code.'
-          )}
+        <p className="hint">
+          Full schema:{' '}
+          <a className="text-link mono" href={`${LINKS.repo}/blob/main/agent/claim.schema.json`} target="_blank" rel="noopener noreferrer">
+            agent/claim.schema.json
+          </a>
         </p>
       </section>
-
-      <section className="block" aria-labelledby="plan-h">
-        <h2 id="plan-h" className="section-title">
-          How I'd run track 1
-        </h2>
-        <table className="data-table stack plan">
-          <thead>
-            <tr>
-              <th scope="col">Weeks</th>
-              <th scope="col">Track 1</th>
-              <th scope="col">With tracks 2 and 3</th>
-            </tr>
-          </thead>
-          <tbody>
-            {PLAN.map(([w, t1, t23]) => (
-              <tr key={w}>
-                <th scope="row" data-label="Weeks" className="num">
-                  {w}
-                </th>
-                <td data-label="Track 1">{t1}</td>
-                <td data-label="With tracks 2 and 3">{t23}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="small">
-          Each student leads their own track. This is how I'd run mine. The framework is your call. This demo uses plain Claude tool calls so every part stays visible.
-        </p>
-      </section>
-
-      <section className="block" aria-labelledby="ask-h">
-        <h2 id="ask-h" className="section-title">
-          Questions I'd bring to our first call
-        </h2>
-        <ol className="ask">
-          {QUESTIONS.map((q) => (
-            <li key={q}>{q}</li>
-          ))}
-        </ol>
-      </section>
-    </DemoLayout>
+    </div>
   )
 }

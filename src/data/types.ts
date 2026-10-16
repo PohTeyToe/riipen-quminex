@@ -54,6 +54,8 @@ export interface Claim {
 export interface Rejected {
   attempt_id: string
   session: string
+  /** The call's index in its session: its step in traces.json and its tick in timeline.json. */
+  call_index: number
   scope: 'field' | 'eval'
   field: string
   kind: string

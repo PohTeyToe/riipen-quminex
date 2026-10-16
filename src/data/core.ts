@@ -1,4 +1,4 @@
-// Small data files, used by every page including the walkthrough.
+// Small data files, used by every page.
 import runJson from '../../data/run.json'
 import indexJson from '../../data/index.json'
 import corpusJson from '../../data/corpus.json'
@@ -51,8 +51,6 @@ export function pageLink(aris: number, page: number): string {
   return r.page_link.replace('{page}', String(page))
 }
 
-export const corpusPages = corpus.reports.reduce((n, r) => n + r.pages_used_count, 0)
-
 export const model = run.model[0]
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -63,23 +61,3 @@ export function longDate(iso: string): string {
   return `${MONTHS[m - 1]} ${d}, ${y}`
 }
 
-/** The location field's disagreement, in the numbers the walkthrough quotes. */
-export function locationSummary() {
-  const f = fields.find((x) => x.id === 'location')
-  const groups = f?.groups ?? []
-  const sorted = [...groups].sort((a, b) => a.source_count - b.source_count)
-  const lone = sorted[0]
-  const rest = sorted[sorted.length - 1]
-  const s = f?.settled_by
-  return {
-    state: f?.state,
-    km: f?.distance_km,
-    lone,
-    restPages: rest?.source_count ?? 0,
-    restReports: rest?.report_count ?? 0,
-    settled:
-      s && s.side !== undefined && groups[s.side] === rest
-        ? { collars: s.collars?.length ?? 0, farthest_km: s.farthest_km, other_km: s.other_km }
-        : null,
-  }
-}

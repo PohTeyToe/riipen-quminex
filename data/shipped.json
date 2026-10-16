@@ -5,6 +5,7 @@
   "data/brief_examples.json",
   "data/claims.json",
   "data/corpus.json",
+  "data/drill.json",
   "data/eval/answers.json",
   "data/eval/changes.json",
   "data/eval/gold.json",
@@ -15,9 +16,11 @@
   "data/fields.json",
   "data/image_checks.json",
   "data/index.json",
+  "data/page_maps.json",
   "data/rejected.json",
   "data/run.json",
   "data/summary.json",
+  "data/timeline.json",
   "data/traces.json"
  ],
  "report_share": {

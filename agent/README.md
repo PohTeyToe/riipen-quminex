@@ -17,6 +17,10 @@ python agent/build_data.py <run_id>   # claims, rejections, traces, excerpts, fi
 python agent/run_summary.py <id>      # one claude session that reads only the card and writes the summary
 python agent/build_data.py <run_id>   # again: rechecks and scores the summary
 python agent/brief_examples.py        # one example claim per track, all through the same checker
+python agent/build_timeline.py        # the run in time, from the server's call log -> data/timeline.json
+python agent/build_drill.py           # collars, lab samples and every interval's lab check -> data/drill.json
+python agent/build_page_maps.py       # where each quote sits on its page, geometry only -> data/page_maps.json
+python agent/shipped.py               # recount what the site ships of each page -> data/shipped.json
 python -m pytest agent/tests          # runs on a small fixture corpus, no PDFs needed
 ```
 

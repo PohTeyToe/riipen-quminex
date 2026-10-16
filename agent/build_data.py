@@ -29,7 +29,7 @@ from textnorm import display_text, normalize
 DATA = corpus.DATA
 PRIVATE = corpus.PRIVATE
 EXCERPT_MAX = 400   # characters of page text shipped per claim, quote included
-PAGE_SHARE = 0.5    # no page ships more than this share of its text across all its claims
+PAGE_SHARE = shipped.PAGE_SHARE  # no page ships more than this share of its text across all its claims
 CORE_PAD = 60       # when a page is over its share, a text claim keeps its value and this much either side
 
 
@@ -934,18 +934,8 @@ def main(run_id: str) -> None:
     jdump(DATA / "run.json", run)
 
     # What the site ships of each report, counted over every file it imports.
-    files = shipped.imported_json()
-    counts = shipped.audit(matcher, shipped.site_strings(), body=set(corpus.all_pages()))
-    over = {k: v for k, v in counts["page_share"].items() if v > PAGE_SHARE}
-    jdump(DATA / "shipped.json", {
-        "note": "Letters and digits of each report's pages that appear in a run of at least "
-                f"{shipped.MIN_RUN} in any file the site imports, on every page that carries the same words. "
-                "report_share counts the report text the agent reads; pages_over_half also covers the drill tables "
-                f"code reads. A page over {PAGE_SHARE:.0%} is over with every excerpt on it at its shortest.",
-        "files": [str(f.relative_to(corpus.ROOT)).replace("\\", "/") for f in files],
-        "report_share": counts["report_share"],
-        "pages_over_half": over,
-    })
+    shipped_out = shipped.write(matcher, body=set(corpus.all_pages()))
+    counts, over = shipped_out, shipped_out["pages_over_half"]
     print(f"claims {len(claims)}, rejected {len(rejected)}, excerpts missing {len(missing)}")
     print(f"  shipped: {counts['report_share']}, {len(over)} pages over {PAGE_SHARE:.0%}")
     for fs in field_out:

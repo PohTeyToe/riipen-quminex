@@ -10,8 +10,7 @@ import scoresJson from '../../data/eval/scores.json'
 import changesJson from '../../data/eval/changes.json'
 import missesNoteJson from '../../data/eval/misses_note.json'
 import summaryJson from '../../data/summary.json'
-import summaryReviewJson from '../../data/eval/summary_review.json'
-import { fields } from './core'
+import { longDate } from './core'
 import type {
   Answer,
   Change,
@@ -70,23 +69,8 @@ export const changes = changesJson as unknown as {
 
 export const missesNote = missesNoteJson as unknown as { written_by: string; sentences: string[] }
 export const summary = summaryJson as unknown as Summary
-export const summaryReview = summaryReviewJson as unknown as { written_by: string; checked: string; notes: { sentence: string; note: string }[] }
 
 const claimsById = new Map(claims.map((c) => [c.id, c]))
-
-// The claims code grouped with each claim on the card, so a linked value (?claim=) opens with the same group a
-// click on the card gives it. Text fields aren't compared, so their claims have no group.
-const groupByClaim = new Map<string, string[]>()
-for (const f of fields) {
-  for (const part of f.parts ?? [f]) {
-    if (part.rule === 'none') continue
-    for (const g of part.groups ?? []) for (const id of g.claims) if (!groupByClaim.has(id)) groupByClaim.set(id, g.claims)
-  }
-}
-
-export function groupOf(id: string): string[] | undefined {
-  return groupByClaim.get(id)
-}
 
 export function claim(id: string): Claim | undefined {
   return claimsById.get(id)
@@ -94,11 +78,6 @@ export function claim(id: string): Claim | undefined {
 
 export function excerpt(id: string) {
   return excerpts[id]
-}
-
-export function traceSteps(c: Claim): TraceStep[] {
-  const all = sessions[c.trace.session] ?? []
-  return c.trace.steps.map((i) => all[i]).filter(Boolean)
 }
 
 export function sessionSteps(session: string): TraceStep[] {
@@ -116,18 +95,6 @@ export function clean(s: string): string {
 
 export function isInterval(v: Claim['value']): v is IntervalValue {
   return typeof v === 'object' && v !== null && 'hole' in v
-}
-
-const GRADE_KEY = /^(.*?)\s*\(([^)]+)\)\s*$/
-
-/** One grade as written. A value below detection reads "<10 ppb, below detection" and never 0. */
-export function gradeText(key: string, value: string, censored: boolean): string {
-  const m = GRADE_KEY.exec(key)
-  const name = m ? m[1] : key
-  const unit = m ? m[2] : ''
-  const v = unit === '%' ? `${value}%` : unit ? `${value} ${unit}` : value
-  const below = censored || value.trim().startsWith('<')
-  return `${name} ${v}${below ? ', below detection' : ''}`
 }
 
 export function valueText(c: Pick<Claim, 'value' | 'unit' | 'censored'>): string {
@@ -160,8 +127,8 @@ export function checkWords(c: Claim): { text: string; scanned: boolean; imageRea
     if (check.image_check === 'confirmed') {
       return {
         text:
-          `Scanned page. Code can't read it reliably, so Claude (${check.checked_by}) checked it against the page image on ${check.checked_on}.` +
-          (check.second_read_by ? ` ${check.second_read_by} read the same page image separately and got the same values.` : ''),
+          `Scanned page. Code matched its OCR text, and Claude checked the page image${check.checked_on ? ` on ${longDate(check.checked_on)}` : ''}.` +
+          (check.second_read_by ? ' Codex read the same values from the image without seeing the agent.' : ''),
         scanned: true,
         imageReads: check.image_reads,
       }

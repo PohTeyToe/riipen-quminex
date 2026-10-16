@@ -55,16 +55,27 @@ export function Link({ to, onClick, ...rest }: LinkProps) {
   return <a href={to} onClick={handle} {...rest} />
 }
 
-/** Scroll to the element named in the hash once it exists, and move focus there, so the next Tab starts from it. */
+/**
+ * Scroll to the element named in the hash once it exists, and move focus there, so the next Tab starts from it.
+ * A target inside a field that opens because of the hash appears a frame later, so this waits a few frames.
+ */
 export function useHashScroll(ready: boolean) {
   const { hash, path } = useLocation()
   useEffect(() => {
     if (!ready || !hash) return
-    const el = document.getElementById(hash)
-    if (el) {
+    let frame = 0
+    let tries = 0
+    const go = () => {
+      const el = document.getElementById(hash)
+      if (!el) {
+        if (tries++ < 10) frame = requestAnimationFrame(go)
+        return
+      }
       el.scrollIntoView({ block: 'start' })
       if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
       el.focus({ preventScroll: true })
     }
+    go()
+    return () => cancelAnimationFrame(frame)
   }, [hash, path, ready])
 }

@@ -1,52 +1,47 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { useLocation, Link } from './router'
-import Walkthrough from './pages/Walkthrough'
+import { Shell } from './components/Layout'
 
-// The property card and eval share the run data, so they load together, after the walkthrough. The brief shows
-// no claims, so it loads on its own without the run data.
+// The run page and the eval share the run's claims, traces and excerpts, so they load as one chunk. The brief
+// shows no claims, so it loads without them.
 const Demo = lazy(() => import('./pages/Demo'))
 const Brief = lazy(() => import('./pages/Brief'))
 
+const NAME = 'Iron Lake property file'
+const TITLES: Record<string, string> = {
+  '/': NAME,
+  '/demo': NAME,
+  '/demo/eval': `Eval · ${NAME}`,
+  '/demo/brief': `Brief · ${NAME}`,
+}
+
 function NotFound() {
-  useEffect(() => {
-    document.title = 'Page not found · Iron Lake property file'
-    return () => {
-      document.title = 'Iron Lake property file'
-    }
-  }, [])
   return (
-    <main className="walk not-found">
+    <div className="not-found">
       <h1>Nothing at this address</h1>
       <p>
         <Link to="/" className="text-link">
-          Start at the walkthrough
-        </Link>{' '}
-        or{' '}
-        <Link to="/demo" className="text-link">
-          open the property file
+          Open the run
         </Link>
-        .
       </p>
-    </main>
+    </div>
   )
 }
 
 export default function App() {
   const { path } = useLocation()
-  if (path === '/') return <Walkthrough />
-  if (path === '/demo/brief') {
-    return (
-      <Suspense fallback={<div className="loading" aria-busy="true" />}>
-        <Brief />
-      </Suspense>
-    )
-  }
-  if (path === '/demo' || path.startsWith('/demo/')) {
-    return (
-      <Suspense fallback={<div className="loading" aria-busy="true" />}>
-        <Demo path={path} fallback={<NotFound />} />
-      </Suspense>
-    )
-  }
-  return <NotFound />
+  useEffect(() => {
+    document.title = TITLES[path] ?? `Page not found · ${NAME}`
+  }, [path])
+
+  let page
+  if (path === '/demo/brief') page = <Brief />
+  else if (path === '/' || path === '/demo' || path === '/demo/eval') page = <Demo path={path} />
+  else page = <NotFound />
+
+  return (
+    <Shell>
+      <Suspense fallback={<div className="loading" aria-busy="true" />}>{page}</Suspense>
+    </Shell>
+  )
 }
