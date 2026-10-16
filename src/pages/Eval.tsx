@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { PageHead } from '../components/Layout'
+import { PageHead, SiteFooter } from '../components/Layout'
 import { Inspector } from '../components/Inspector'
 import { CheckIcon, CrossIcon, PageChip, Who } from '../components/bits'
 import { longDate, run } from '../data/core'
@@ -63,8 +63,18 @@ function ScoreStrip({ onPick }: { onPick: (id: string) => void }) {
   )
 }
 
+/** Sentences of the after-run note that start with a question id ("q08 is a scorer miss…") go on that card. */
+const CARD_NOTE = /^(q\d\d) /
+const cardNotes = new Map(
+  missesNote.sentences.flatMap((t): [string, string][] => {
+    const m = CARD_NOTE.exec(t)
+    return m ? [[m[1], `this${t.slice(m[0].length - 1)}`]] : []
+  }),
+)
+
 function Question({ a, open, onToggle }: { a: Answer; open: boolean; onToggle: () => void }) {
   const ins = useInspect()
+  const note = cardNotes.get(a.id)
   const g = goldById.get(a.id)
   const s = evalSession(a.id)
   const reason = a.refused ? sessionSteps(a.session).find((x) => x.tool === 'refuse')?.reason : undefined
@@ -123,6 +133,11 @@ function Question({ a, open, onToggle }: { a: Answer; open: boolean; onToggle: (
           <p className={`q-reason${a.passed ? '' : ' is-miss'}`}>
             <Who who="Code" /> {a.reason}
           </p>
+          {note && (
+            <p className="q-note">
+              <Who who="Claude" /> After the run: {note}
+            </p>
+          )}
           {s && (
             <button type="button" className="btn-quiet" onClick={() => ins.show({ kind: 'session', id: s.id })}>
               Its {s.calls.length} calls
@@ -180,7 +195,7 @@ function Notes() {
         <>
           <p className="hint">Written by Claude after the run.</p>
           <ul className="plain-list">
-            {missesNote.sentences.map((t) => (
+            {missesNote.sentences.filter((t) => !CARD_NOTE.test(t)).map((t) => (
               <li key={t}>{t}</li>
             ))}
           </ul>
@@ -223,59 +238,62 @@ export default function EvalPage() {
   const pass1 = /(\d+) agree, (\d+) disputed/.exec(goldMeta.second_reader.result)
   return (
     <div className={`work is-doc${top ? ' has-insp' : ''}`}>
-      <div className="doc-col">
-        <PageHead
-          title={`${right} of ${total} right`}
-          meta={
-            <>
-              {answers.length} questions set before the run · recorded {longDate(run.date)}
-            </>
-          }
-        />
-        <ScoreStrip onPick={pick} />
-        <p className="scoreline">
-          <span>
-            Cited quotes confirmed{' '}
-            <b className="num">
-              {scores.citation_precision.n}/{scores.citation_precision.of}
-            </b>
-          </span>
-          <span>
-            False refusals{' '}
-            <b className="num">
-              {scores.false_refusals.n}/{scores.false_refusals.of}
-            </b>
-          </span>
-        </p>
-        <p className="caveat">
-          Claude wrote the expected answers before the run. Codex checked each on its page{pass1 ? `: ${pass1[1]} agreed, ${pass1[2]} disputed, all settled` : ''}. No
-          geologist has yet.
-        </p>
-        <section className="block" aria-labelledby="q-h">
-          <div className="block-head">
-            <h2 id="q-h">Misses first</h2>
-            <p className="hint">Each session saw only its question</p>
-          </div>
-          <ol className="qs">
-            {list.map((a) => (
-              <Question
-                key={a.id}
-                a={a}
-                open={open.has(a.id)}
-                onToggle={() =>
-                  setOpen((s) => {
-                    const n = new Set(s)
-                    if (n.has(a.id)) n.delete(a.id)
-                    else n.add(a.id)
-                    return n
-                  })
-                }
-              />
-            ))}
-          </ol>
-        </section>
-        <SummaryScore />
-        <Notes />
+      <div className="work-main">
+        <div className="doc-col">
+          <PageHead
+            title={`${right} of ${total} right`}
+            meta={
+              <>
+                {answers.length} questions set before the run · recorded {longDate(run.date)}
+              </>
+            }
+          />
+          <ScoreStrip onPick={pick} />
+          <p className="scoreline">
+            <span>
+              Cited quotes confirmed{' '}
+              <b className="num">
+                {scores.citation_precision.n}/{scores.citation_precision.of}
+              </b>
+            </span>
+            <span>
+              False refusals{' '}
+              <b className="num">
+                {scores.false_refusals.n}/{scores.false_refusals.of}
+              </b>
+            </span>
+          </p>
+          <p className="caveat">
+            Claude wrote the expected answers before the run. Codex checked each on its page{pass1 ? `: ${pass1[1]} agreed, ${pass1[2]} disputed, all settled` : ''}. No
+            geologist has yet.
+          </p>
+          <section className="block" aria-labelledby="q-h">
+            <div className="block-head">
+              <h2 id="q-h">Misses first</h2>
+              <p className="hint">Each session saw only its question</p>
+            </div>
+            <ol className="qs">
+              {list.map((a) => (
+                <Question
+                  key={a.id}
+                  a={a}
+                  open={open.has(a.id)}
+                  onToggle={() =>
+                    setOpen((s) => {
+                      const n = new Set(s)
+                      if (n.has(a.id)) n.delete(a.id)
+                      else n.add(a.id)
+                      return n
+                    })
+                  }
+                />
+              ))}
+            </ol>
+          </section>
+          <SummaryScore />
+          <Notes />
+        </div>
+        <SiteFooter />
       </div>
       <Inspector hideEmpty />
     </div>

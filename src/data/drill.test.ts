@@ -3,7 +3,7 @@ import drillJson from '../../data/drill.json'
 import { fields } from './core'
 import { claims, rejected } from './run'
 import { holeKey, parseGrade, toHoles, type DrillFile } from './drill'
-import { intervalsOf, cuWritten } from './intervals'
+import { intervalsOf, gradeLabel, gradeWritten } from './intervals'
 import pageMapsJson from '../../data/page_maps.json'
 import type { PageMaps } from './pageMaps'
 import { markPieces } from '../components/views/ClaimView'
@@ -68,10 +68,22 @@ describe('lab checks on the intervals the agent copied', () => {
 
   test("IL-22-20: the table's 0.02% copper against its lab's 0.326%, and a width its depths don't give", () => {
     const r = rows.find((x) => holeKey(x.value.hole) === holeKey('IL-22-20'))!
-    expect(cuWritten(r.value)).toBe('0.02%')
+    expect(gradeWritten(r.value, 'cu')).toBe('0.02%')
     const c = checks[r.claim.id]
     expect(c.grades.find((g) => g.what === 'Cu')).toMatchObject({ written: '0.02%', lab: '0.326%', agree: false })
     expect(c.width_off).toBe(true)
+  })
+
+  test('an interval list names the element it prints, so a nickel view never shows copper unlabelled', () => {
+    const r = rows.find((x) => holeKey(x.value.hole) === holeKey('IL-22-20'))!
+    expect(gradeLabel(r.value, 'cu')).toBe('Cu 0.02%')
+    expect(gradeLabel(r.value, 'ni')).toBe('Ni 0.001%')
+    // the one row that spells the elements out still finds both
+    const spelled = rows.find((x) => Object.keys(x.value.grades ?? {}).some((k) => /^copper/i.test(k)))
+    if (spelled) {
+      expect(gradeLabel(spelled.value, 'cu')).toMatch(/^Cu /)
+      expect(gradeLabel(spelled.value, 'ni')).toMatch(/^Ni /)
+    }
   })
 
   test('the hole view leads with copper mismatches', () => {

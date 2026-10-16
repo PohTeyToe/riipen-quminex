@@ -39,8 +39,8 @@ function HowItWorks({ onClose }: { onClose: () => void }) {
           <b>Code settles disagreements</b> from the reports' own collar tables and lab certificates, and backs a side only when the numbers fit.
         </li>
         <li>
-          <b>A second session</b> writes the summary from the finished file. Claude wrote the eval answers before the run and Codex checked them. No
-          geologist has yet.
+          <b>A second session</b> writes the summary from the finished file. Claude wrote the expected answers before the run and Codex checked
+          them. No geologist has yet.
         </li>
       </ol>
     </div>
@@ -84,10 +84,19 @@ export function Shell({ children }: { children: ReactNode }) {
       <main id="main" className={`page page-${path === '/' || path === '/demo' ? 'run' : 'doc'}`}>
         {children}
       </main>
-      <footer className="footer">
-        <p>Pages from BC's ARIS archive; text belongs to its authors. Not made or endorsed by Quminex or any company named in the reports.</p>
-      </footer>
+      {!OWN_FOOTER.has(path) && <SiteFooter />}
     </>
+  )
+}
+
+/** Pages with the inspector put the footer in their main column, so the sticky inspector reaches the page's foot. */
+const OWN_FOOTER = new Set(['/', '/demo', '/demo/eval'])
+
+export function SiteFooter() {
+  return (
+    <footer className="footer">
+      <p>Pages from BC's ARIS archive; text belongs to its authors. Not made or endorsed by Quminex or any company named in the reports.</p>
+    </footer>
   )
 }
 

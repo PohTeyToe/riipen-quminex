@@ -8,6 +8,7 @@ import { useReplay } from '../replay'
 import { RunConsole } from '../components/RunConsole'
 import { FileTable } from '../components/FileTable'
 import { Inspector } from '../components/Inspector'
+import { SiteFooter } from '../components/Layout'
 import type { ChartPick } from '../components/RunChart'
 
 const FIELD_IDS = new Set(fields.map((f) => f.id))
@@ -71,7 +72,10 @@ export default function RunPage() {
         onPick={pick}
       />
       <div className="work">
-        <FileTable t={replay.t} fresh={replay.playing ? replay.speed * 1.2 : 0} />
+        <div className="work-main">
+          <FileTable t={replay.t} fresh={replay.playing ? replay.speed * 1.2 : 0} />
+          <SiteFooter />
+        </div>
         <Inspector empty="Pick a field, a bar or a tick." />
       </div>
     </>

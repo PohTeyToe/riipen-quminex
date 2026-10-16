@@ -4,7 +4,7 @@ import { claim, clean, sessionSteps, valueText } from '../../data/run'
 import { claimsOf, distinctValues, leadGroup, messiness, sourceCounts, srcKey } from '../../data/fieldModel'
 import { clock, fieldSession } from '../../data/timeline'
 import { loadDrill, type Drill } from '../../data/drill'
-import { cuWritten, intervalsOf, type IntervalRow } from '../../data/intervals'
+import { gradeLabel, intervalsOf, type IntervalRow } from '../../data/intervals'
 import type { Field, FieldPart, Group, Settled } from '../../data/types'
 import { useInspect } from '../../inspect'
 import { useCalls } from '../../calls'
@@ -338,7 +338,7 @@ function DrillingField({ f }: { f: Field }) {
                     <span className="mono">
                       {r.value.from_m}–{r.value.to_m} m
                     </span>
-                    <span className="mono ival-cu">{cuWritten(r.value) ?? ''}</span>
+                    <span className="mono ival-cu">{gradeLabel(r.value, el)}</span>
                   </span>
                   {calls[r.claim.id] && <span className="lab-st ls-call">Your call: the {calls[r.claim.id] === 'lab' ? "lab's" : "report's"} figures</span>}
                   <span className={`lab-st ls-${st}`}>

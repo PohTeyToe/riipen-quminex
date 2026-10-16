@@ -546,6 +546,155 @@ a {
 .playhead circle {
   fill: var(--night-ink);
 }
+.pulse {
+  fill: none;
+  stroke-width: 2;
+  pointer-events: none;
+}
+.pulse.k-x {
+  stroke: var(--red-night);
+}
+.pulse.k-r {
+  stroke: var(--blue-night);
+}
+
+/* the feed under the chart: the checker's log, then the latest call */
+.feed {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  margin-top: 6px;
+  font-size: var(--t-sm);
+  color: var(--night-ink-2);
+}
+.feed-h {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--night-ink-3);
+  text-align: right;
+  padding: 4px 8px 0 0;
+}
+.feed-log {
+  list-style: none;
+  max-height: 72px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--night-rule) transparent;
+  border-top: 1px solid var(--night-rule);
+}
+.feed-log + .feed-h,
+.feed-log + .feed-h + .fl-now {
+  border-top: 1px solid var(--night-rule);
+}
+.fl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 24px;
+}
+.feed-log .fl {
+  animation: fl-in 260ms var(--ease);
+}
+@keyframes fl-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+}
+.fl-main,
+.fl-now {
+  display: grid;
+  grid-template-columns: 50px 22px 126px 92px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0 6px;
+  min-width: 0;
+  padding: 3px 4px;
+  border-radius: var(--r-sm);
+  text-align: left;
+  color: inherit;
+}
+.fl-now {
+  width: 100%;
+  min-height: 26px;
+  border-radius: 0;
+}
+.fl-main:hover,
+.fl-now:hover {
+  background: var(--night-2);
+}
+.fl-t {
+  color: var(--night-ink-3);
+  font-size: var(--t-xs);
+}
+.fl-lane {
+  color: var(--night-ink-3);
+  font-size: var(--t-xs);
+}
+.fl-who {
+  color: var(--night-ink);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fl-verdict,
+.fl-tool {
+  white-space: nowrap;
+}
+.fl-tool {
+  font-size: var(--t-xs);
+  color: var(--night-ink-3);
+}
+.k-x .fl-verdict {
+  color: var(--red-night);
+}
+.k-r .fl-verdict {
+  color: var(--blue-night);
+}
+.fl-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fl-text b {
+  font-weight: 650;
+  margin-right: 2px;
+}
+.fl-now.k-p .fl-text b {
+  color: var(--blue-night);
+}
+.fl-now.k-x .fl-text b {
+  color: var(--red-night);
+}
+.fl-end {
+  font-size: var(--t-xs);
+  white-space: nowrap;
+  padding: 0 4px 0 10px;
+}
+.fl-end.is-muted {
+  color: var(--night-ink-3);
+}
+.fl-end.is-wait {
+  color: var(--night-ink-2);
+}
+.fl-fix {
+  color: var(--blue-night);
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  padding: 3px 6px;
+  margin-left: 4px;
+}
+.fl-fix:hover {
+  background: var(--night-2);
+  text-decoration: underline;
+}
+.fl.is-empty {
+  display: block;
+  padding: 4px;
+  color: var(--night-ink-3);
+}
+.only-narrow {
+  display: none;
+}
 .scrub {
   position: absolute;
   height: 16px;
@@ -773,6 +922,16 @@ a {
   grid-template-columns: minmax(0, 1fr) clamp(380px, 33vw, 480px);
   align-items: start;
 }
+/* the main column carries the footer, so the sticky inspector beside it always reaches the page's foot */
+.work-main {
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.work-main > .footer {
+  margin-top: auto;
+}
 .file {
   padding: 18px var(--gutter) 40px;
   min-width: 0;
@@ -845,9 +1004,6 @@ a {
 }
 .frow:not(.is-fresh) {
   transition: background 600ms var(--ease);
-}
-.frow.is-sel th {
-  box-shadow: inset 2px 0 0 var(--blue);
 }
 .fname {
   font-weight: 650;
@@ -1048,6 +1204,8 @@ a {
   color: var(--ink);
 }
 .insp-body {
+  /* positioned, so absolutely placed bits inside (screen-reader labels) scroll with it and never stretch the page */
+  position: relative;
   flex: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -1257,12 +1415,37 @@ button.chip-page:hover {
   font-size: var(--t-sm);
   color: var(--ink-2);
 }
+.pagemap-fig {
+  display: grid;
+  gap: 4px;
+  width: 150px;
+}
+.pagemap-fig figcaption {
+  font-size: var(--t-xs);
+  line-height: 1.35;
+}
+.src.has-big-map {
+  grid-template-columns: minmax(0, 1fr);
+}
+.pagemap-fig.is-big {
+  width: 100%;
+}
+.pagemap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .pagemap {
   display: block;
+  width: 100%;
+  cursor: zoom-in;
   line-height: 0;
   border-radius: 2px;
   box-shadow: 0 1px 2px rgb(15 22 35 / 0.12), 0 0 0 1px var(--rule-2);
   transition: box-shadow 120ms;
+}
+.is-big .pagemap {
+  cursor: zoom-out;
 }
 .pagemap:hover {
   box-shadow: 0 2px 8px rgb(15 22 35 / 0.18), 0 0 0 1px var(--blue);
@@ -2391,6 +2574,11 @@ button.chip-page:hover {
 .q-reason.is-miss {
   color: var(--red-ink);
 }
+.q-note {
+  max-width: 80ch;
+  font-size: var(--t-md);
+  color: var(--ink-2);
+}
 .q-body .btn-quiet {
   justify-self: start;
 }
@@ -2687,9 +2875,6 @@ button.chip-page:hover {
   .ftable .slot-col {
     display: none;
   }
-  .frow.is-sel th {
-    box-shadow: none;
-  }
   .state-by {
     display: none;
   }
@@ -2783,6 +2968,54 @@ button.chip-page:hover {
   }
   .cell {
     width: 34px;
+  }
+}
+
+@media (max-width: 639px) {
+  .only-wide {
+    display: none;
+  }
+  .only-narrow {
+    display: inline;
+  }
+  /* the drill step's caveat (lab gaps) must stay readable on a phone */
+  .step-line {
+    white-space: normal;
+  }
+  .feed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .feed-h {
+    display: none;
+  }
+  /* two lines a call on a phone: when, who and what kind, then the words */
+  .feed-log {
+    max-height: 82px;
+  }
+  .fl-main,
+  .fl-now {
+    grid-template-columns: 46px auto minmax(0, 1fr);
+    grid-template-areas: 't who kind' '. text text';
+    padding: 4px 2px;
+  }
+  .fl-t {
+    grid-area: t;
+  }
+  .fl-who {
+    grid-area: who;
+  }
+  .fl-verdict,
+  .fl-tool {
+    grid-area: kind;
+  }
+  .fl-text {
+    grid-area: text;
+  }
+  .fl-lane {
+    display: none;
+  }
+  .fl-end {
+    padding-left: 6px;
   }
 }
 

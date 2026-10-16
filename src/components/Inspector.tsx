@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from 'react'
+import { memo, useEffect, useLayoutEffect, useRef } from 'react'
 import { fields } from '../data/core'
 import { claim, valueText } from '../data/run'
 import { sessionById } from '../data/timeline'
@@ -53,7 +53,8 @@ export const Inspector = memo(function Inspector({ empty, hideEmpty }: { empty?:
   const narrow = useMedia('(max-width: 899px)')
   const key = top ? JSON.stringify(top) : 'empty'
   const prevKind = useRef<string | null>(null)
-  useEffect(() => {
+  // A layout effect, so it runs before a view's own effects (a session view scrolls to its picked call).
+  useLayoutEffect(() => {
     // a new subject starts at its top; picking another call in the same session keeps the list where it is
     const kind = top ? `${top.kind}:${'id' in top ? top.id : ''}` : null
     if (kind !== prevKind.current) body.current?.scrollTo({ top: 0 })

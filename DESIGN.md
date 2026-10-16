@@ -215,6 +215,9 @@ Mono `41327 p33`, sheet, 1px Rule border. Scanned pages add the word "scan". A c
 ### The Run Chart (signature)
 Eight lanes on night: four field workers, four eval workers, time left to right across 7:32. A session is a Night 3 bar labelled with its field or question. Each tool call is a 2px tick at its logged time: read-grey and short for search and open_page, blue and taller for an accepted claim, red, full height with a cap for a rejection, a blue ring for a refusal. Replay sweeps a playhead; ticks past it are clipped, not re-rendered. Picking a filter (rejections, refusals) dims every other tick to 15%.
 
+### Feed
+Under the chart, on night, aligned to the lanes. The checker's log: every thrown-out claim (red "Thrown out", the checker's reason, then "Retrying…" until the playhead reaches the retry, then "Fixed 4.2 s later" as a link to the kept claim) and every refusal (blue "Refused" and its reason). Below it, the latest call any worker made at the playhead; while playing it samples the playhead five times a second so it can be read. During a replay each throw-out and refusal rings its tick for one second. Every line opens its call. On phones each line takes two rows.
+
 ### Pipeline
 One row of steps under the chart: Claude sessions, the quote checker (joined to the sessions by a two-way glyph, since it runs inside every claim call), drill tables, the summary session, the eval. Each step: who chip, name, one number, one short line. Steps are buttons that open their detail in the inspector; the checker step also dims every tick but the thrown-out ones.
 
@@ -222,7 +225,7 @@ One row of steps under the chart: Claude sessions, the quote checker (joined to 
 Right column on desktop, bottom sheet under 900px. It shows one thing at a time (a field, a session, a call, a claim, a drill hole, a pipeline step) with a back button to the previous one. A claim shows its page map, the quote with its value marked, the checker's verdict, the ARIS link, and the calls that produced it with their times.
 
 ### Page map
-The cited page drawn as geometry: every text line a grey bar at its real place, the quote's lines boxed in blue, the value underlined. No page text and no page image ships (README, "Why there are no page images"); the map links to the page on ARIS.
+The cited page drawn as geometry: every text line a grey bar at its real place, the quote's lines boxed in blue, the value underlined. No page text and no page image ships (README, "Why there are no page images"). It sits 150px wide beside the quote and a click draws it across the inspector; "Open the page" goes to ARIS.
 
 ### Your call
 Where a table row and its own lab disagree and code can't settle it, one bordered box asks which figures the file carries: two joined buttons, the pick kept in the viewer's browser and labelled so. The only question the site asks.

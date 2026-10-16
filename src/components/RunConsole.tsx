@@ -1,10 +1,11 @@
 import { fields, longDate, model, run } from '../data/core'
 import { scores } from '../data/run'
 import { allConflicts, labTotals } from '../data/fieldModel'
-import { WALL, clock, countsAt, sessions, timeline, type Filter } from '../data/timeline'
+import { WALL, clock, countsAt, sessions, spentAt, type Filter } from '../data/timeline'
 import { SPEEDS, type Replay } from '../replay'
 import { useInspect, type StageId } from '../inspect'
 import { RunChart, type ChartPick } from './RunChart'
+import { RunFeed } from './RunFeed'
 import { Who } from './bits'
 
 const nf = new Intl.NumberFormat('en-CA')
@@ -56,6 +57,7 @@ export function RunConsole({
   const { t, playing } = replay
   const live = t < WALL
   const c = countsAt(t)
+  const spent = spentAt(t)
   const stage = top?.kind === 'stage' ? top.id : null
 
   const steps: { id: StageId; who: 'Claude' | 'Code'; name: string; n: string; line: string; after?: boolean }[] = [
@@ -72,7 +74,10 @@ export function RunConsole({
         <h2 id="run-h" className="console-title">
           Recorded run <span className="console-meta">{longDate(run.date)} · {model} · 4 field + 4 eval workers</span>
         </h2>
-        <p className="hint on-night console-hint">Click a bar or tick; drag the axis</p>
+        <p className="hint on-night console-hint">
+          <span className="only-wide">Click a bar or tick; drag the axis</span>
+          <span className="only-narrow">Tap a bar; drag the axis</span>
+        </p>
         <div className="replay">
           <button type="button" className="btn-primary" onClick={playing ? replay.pause : replay.play}>
             <PlayIcon playing={playing} />
@@ -94,7 +99,8 @@ export function RunConsole({
 
       <div className="console-body">
         <div className="chart-col">
-          <RunChart t={t} filter={filter} selected={selected} onPick={onPick} onSeek={replay.seek} />
+          <RunChart t={t} filter={filter} selected={selected} onPick={onPick} onSeek={replay.seek} pulse={playing ? replay.speed : 0} />
+          <RunFeed t={t} playing={playing} speed={replay.speed} onPick={onPick} />
         </div>
         <div className="readout" role="group" aria-label="Call counts, and filters for the chart">
           <div className="ro">
@@ -110,8 +116,10 @@ export function RunConsole({
           <Read n={c.rejected} label="thrown out" f="x" filter={filter} onFilter={onFilter} />
           <Read n={c.refused} label="refusals" f="r" filter={filter} onFilter={onFilter} />
           <div className="ro ro-wide">
-            <span className="ro-n num">${timeline.cost_usd.toFixed(2)}</span>
-            <span className="ro-l">at API list price, {Math.round(timeline.output_tokens / 1000)}k tokens out</span>
+            <span className="ro-n num">${spent.usd.toFixed(2)}</span>
+            <span className="ro-l">
+              {live ? 'by finished sessions' : 'at API list price'}, {Math.round(spent.tokens / 1000)}k tokens out
+            </span>
           </div>
         </div>
       </div>

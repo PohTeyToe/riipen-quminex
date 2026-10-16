@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { fields, report } from '../../data/core'
 import { checkWords, claim, clean, excerpt, isInterval, rejected, valueText } from '../../data/run'
 import { callLine } from '../../data/describe'
@@ -66,6 +66,7 @@ export function ClaimView({ id }: { id: string }) {
   const c = claim(id)
   const { open } = useInspect()
   const pickCall = usePickCall()
+  const [big, setBig] = useState(false)
   if (!c) return <p className="hint">This claim isn't in the run.</p>
   const r = report(c.source.aris)
   const field = fields.find((f) => f.id === c.field || f.parts?.some((p) => p.id === c.field))
@@ -82,8 +83,8 @@ export function ClaimView({ id }: { id: string }) {
       </p>
       <h3 className={`view-title${value.length > 60 ? ' is-long' : ' mono'}`}>{value || 'Quote'}</h3>
 
-      <div className="src">
-        <PageMap claimId={c.id} aris={c.source.aris} page={c.source.page} />
+      <div className={`src${big ? ' has-big-map' : ''}`}>
+        <PageMap claimId={c.id} page={c.source.page} big={big} onToggle={() => setBig((b) => !b)} />
         <div className="src-meta">
           <p className="src-title">{r ? `${r.operator.split(' (')[0]}, ${r.report_year}` : `ARIS ${c.source.aris}`}</p>
           <p className="src-sub">

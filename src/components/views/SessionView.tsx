@@ -51,7 +51,14 @@ export function SessionView({ id, call }: { id: string; call?: number }) {
   const list = useRef<HTMLOListElement>(null)
   useEffect(() => {
     if (call === undefined) return
-    list.current?.querySelector<HTMLElement>(`[data-i="${call}"]`)?.scrollIntoView({ block: 'nearest' })
+    // Centre the picked call in the inspector's own scroll area. scrollIntoView would also scroll the window,
+    // which moves the chart under the cursor.
+    const row = list.current?.querySelector<HTMLElement>(`[data-i="${call}"]`)
+    const body = row?.closest<HTMLElement>('.insp-body')
+    if (!row || !body) return
+    const top = row.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop
+    if (top < body.scrollTop || top + row.offsetHeight > body.scrollTop + body.clientHeight)
+      body.scrollTop = Math.max(0, top - body.clientHeight / 2 + row.offsetHeight / 2)
   }, [call, id])
   if (!s) return <p className="hint">No such session.</p>
   const steps = sessionSteps(id)

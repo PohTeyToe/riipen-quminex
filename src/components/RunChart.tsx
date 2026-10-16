@@ -2,6 +2,7 @@ import { memo, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent 
 import { WALL, clock, matches, sessions, type Code, type Filter, type Session } from '../data/timeline'
 import { useElementWidth } from '../lib/hooks'
 import { callLine, shorten } from '../data/describe'
+import { feedEvents } from '../data/feed'
 
 // The run as it happened: eight worker lanes, every session a bar at its logged start and end, every tool call
 // a tick at its logged time. Ticks are drawn as one path per kind, so 1,045 calls cost five DOM nodes.
@@ -106,12 +107,15 @@ export function RunChart({
   selected,
   onPick,
   onSeek,
+  pulse = 0,
 }: {
   t: number
   filter: Filter | null
   selected: ChartPick | null
   onPick: (p: ChartPick) => void
   onSeek: (t: number) => void
+  /** While a replay plays: how many run-seconds a throw-out or refusal keeps its ring. */
+  pulse?: number
 }) {
   const [ref, width] = useElementWidth<HTMLDivElement>()
   const g = useMemo(() => geometry(width), [width])
@@ -129,8 +133,10 @@ export function RunChart({
       return y >= top && y <= top + g.laneH && x >= g.x(s.start) - 3 && x <= g.x(s.end) + 3
     })
     if (!s) return { x, y, s: null, i: null }
-    // the label band at the top of a wide bar picks the session, not a call
+    // the label band at the top of a wide bar picks the session, not a call; on a phone-width chart the ticks are
+    // too close for a finger, so a tap picks the session unless a filter has thinned them
     if (!g.compact && y < g.laneY(s) + 11) return { x, y, s, i: null }
+    if (g.compact && !filter) return { x, y, s, i: null }
     let best: number | null = null
     let bestD = 5
     s.calls.forEach(([ct, c], i) => {
@@ -254,6 +260,21 @@ export function RunChart({
             <Ticks g={g} filter={filter} />
           </g>
           {live && <rect x={px} y={0} width={Math.max(0, g.W - g.right - px)} height={g.axisY - 6} className="future" />}
+          {pulse > 0 &&
+            feedEvents.map((e) => {
+              const age = (t - e.t) / pulse
+              if (age < 0 || age > 1) return null
+              return (
+                <circle
+                  key={`${e.session.id}#${e.i}`}
+                  cx={g.x(e.t)}
+                  cy={g.laneY(e.session) + g.laneH / 2}
+                  r={4 + age * (g.compact ? 8 : 14)}
+                  className={`pulse k-${e.code}`}
+                  opacity={1 - age}
+                />
+              )
+            })}
           {selCall && (
             <circle cx={g.x(selCall[0])} cy={g.laneY(sel!) + g.laneH / 2} r={6} className="sel-call" />
           )}

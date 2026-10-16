@@ -42,11 +42,19 @@ export function intervalsForHole(key: string): IntervalRow[] {
   return all.filter((r) => r.key === key)
 }
 
-/** "0.02%" from an interval's grades: the copper figure as written, if it gives one. */
-export function cuWritten(v: IntervalValue): string | null {
-  const k = Object.keys(v.grades ?? {}).find((x) => /^cu\b/i.test(x))
+const ELEMENT = { cu: /^(cu|copper)\b/i, ni: /^(ni|nickel)\b/i }
+
+/** "0.02%" from an interval's grades: one element's figure as the report wrote it, if it gives one. */
+export function gradeWritten(v: IntervalValue, el: 'cu' | 'ni'): string | null {
+  const k = Object.keys(v.grades ?? {}).find((x) => ELEMENT[el].test(x))
   if (!k) return null
   const unit = /\(([^)]+)\)/.exec(k)?.[1] ?? ''
   const raw = v.grades[k]
   return unit === '%' ? `${raw}%` : `${raw} ${unit}`.trim()
+}
+
+/** "Cu 0.02%": the figure with its element, for lists that sit beside a Cu/Ni switch. */
+export function gradeLabel(v: IntervalValue, el: 'cu' | 'ni'): string {
+  const w = gradeWritten(v, el)
+  return w ? `${el === 'cu' ? 'Cu' : 'Ni'} ${w}` : ''
 }

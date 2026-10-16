@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { report } from '../../data/core'
 import { holeKey, loadDrill, type Drill, type Hole, type Sample } from '../../data/drill'
-import { cuWritten, intervalsForHole, type IntervalRow } from '../../data/intervals'
+import { gradeLabel, gradeWritten, intervalsForHole, type IntervalRow } from '../../data/intervals'
 import { writtenRange } from '../../lib/assay'
 import { useElementWidth } from '../../lib/hooks'
 import { useInspect } from '../../inspect'
@@ -97,7 +97,7 @@ function Zoom({ h, row, el, checks }: { h: Hole; row: IntervalRow; el: Element; 
   const near = h.samples.filter((s) => s.to > from - pad && s.from < to + pad)
   const shown = near.length > 16 ? near.filter((s) => s.to > from - 0.01 && s.from < to + 0.01).slice(0, 16) : near
   const max = 10000
-  const written = el === 'cu' ? cuWritten(row.value) : null
+  const written = gradeWritten(row.value, el)
   const wr = written ? writtenRange(written) : null
   const writtenPpm = wr ? ((wr.lo + wr.hi) / 2) * 10000 : null
   const W = 100
@@ -312,7 +312,7 @@ export function HoleView({ id, claim: claimId }: { id: string; claim?: string })
                       <span className="mono">
                         {x.value.from_m}–{x.value.to_m} m
                       </span>
-                      <span className="mono ival-cu">{cuWritten(x.value) ?? ''}</span>
+                      <span className="mono ival-cu">{gradeLabel(x.value, el)}</span>
                     </span>
                     <span className={`lab-st ls-${st}`}>{st === 'ok' ? 'Lab agrees' : st === 'differ' ? 'Lab differs' : "Lab samples don't reach it"}</span>
                   </button>

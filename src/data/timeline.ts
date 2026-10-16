@@ -75,7 +75,14 @@ export interface Counts {
 }
 
 // Every call in time order with running totals, so the counts at any moment of a replay are one binary search.
-const flat = sessions.flatMap((s) => s.calls.map(([t, c]) => ({ t, c }))).sort((a, b) => a.t - b.t)
+export interface CallRef {
+  t: number
+  c: Code
+  session: Session
+  /** the call's index in its session, which is its step in traces.json */
+  i: number
+}
+const flat: CallRef[] = sessions.flatMap((s) => s.calls.map(([t, c], i) => ({ t, c, session: s, i }))).sort((a, b) => a.t - b.t)
 type Tally = Omit<Counts, 'running' | 'done'>
 const ZERO: Tally = { calls: 0, read: 0, search: 0, open: 0, accepted: 0, rejected: 0, refused: 0 }
 const prefix: Tally[] = []
@@ -93,8 +100,8 @@ const prefix: Tally[] = []
   }
 }
 
-/** How many calls were logged at or before t (seconds), by kind, and how many sessions were running or done. */
-export function countsAt(t: number): Counts {
+/** How many calls in the whole run were logged at or before t. */
+function upTo(t: number): number {
   let lo = 0
   let hi = flat.length
   while (lo < hi) {
@@ -102,6 +109,18 @@ export function countsAt(t: number): Counts {
     if (flat[mid].t <= t) lo = mid + 1
     else hi = mid
   }
+  return lo
+}
+
+/** The last call any worker made at or before t, or null before the first one. */
+export function latestCall(t: number): CallRef | null {
+  const n = upTo(t)
+  return n ? flat[n - 1] : null
+}
+
+/** How many calls were logged at or before t (seconds), by kind, and how many sessions were running or done. */
+export function countsAt(t: number): Counts {
+  const lo = upTo(t)
   const base = lo ? prefix[lo - 1] : ZERO
   let running = 0
   let done = 0
@@ -131,10 +150,22 @@ export function clock(seconds: number): string {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 }
 
-/** "0:09.3": a call's time to a tenth, for the call lists. */
+/** "0:09.3": a call's time to a tenth, for the call lists. Rounds first, so 59.95 s is 1:00.0, not 0:60.0. */
 export function clockTenths(seconds: number): string {
-  const s = Math.max(0, seconds)
-  const m = Math.floor(s / 60)
-  return `${m}:${(s - m * 60).toFixed(1).padStart(4, '0')}`
+  const tenths = Math.round(Math.max(0, seconds) * 10)
+  const m = Math.floor(tenths / 600)
+  return `${m}:${((tenths - m * 600) / 10).toFixed(1).padStart(4, '0')}`
+}
+
+/** What the run had cost by time t: a session's cost is known when it finishes, from its result message. */
+export function spentAt(t: number): { usd: number; tokens: number } {
+  let usd = 0
+  let tokens = 0
+  for (const s of sessions) {
+    if (s.end > t) continue
+    usd += s.cost_usd
+    tokens += s.output_tokens
+  }
+  return { usd, tokens }
 }
 
