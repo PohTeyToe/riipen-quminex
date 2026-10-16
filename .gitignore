@@ -9,3 +9,5 @@ _review_screenshots/
 .vercel/
 *.log
 REVIEW.md
+.env
+.env.*
