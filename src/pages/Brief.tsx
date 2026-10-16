@@ -1,10 +1,29 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { DemoLayout } from '../components/Layout'
 import { ChevronIcon } from '../components/Icons'
 import schemaJson from '../../agent/claim.schema.json'
-import { briefExamples } from '../data/run'
+import briefExamplesJson from '../../data/brief_examples.json'
 import { useHashScroll } from '../router'
 import { LINKS } from '../links'
+
+// Imported straight from its JSON, so this page loads without the run's claims, traces and excerpts.
+const briefExamples = briefExamplesJson as unknown as {
+  note_hand_written: string
+  examples: {
+    track: number
+    label: string
+    hand_written: boolean
+    note?: string
+    claim: Record<string, unknown>
+    compared_with?: Record<string, unknown>
+    code_result?: {
+      same_interval: boolean
+      widths_disagree: boolean
+      arithmetic: Record<string, { ok: boolean; line: string }>
+      rule_text: string
+    }
+  }[]
+}
 
 const DELIVERABLES: [string, string, string][] = [
   ['Track 1 agent prototype', 'A field-by-field agent with four tools, run offline', 'Live runs on your reports, your framework'],
@@ -12,14 +31,14 @@ const DELIVERABLES: [string, string, string][] = [
   ['Eval scripts', '15 questions and a scored summary, every miss listed', 'A larger set with answers your geologists write'],
   ['Technical report with hallucination risks', 'Failure counts by type from a real run', 'The written report'],
   ['Presentation', 'Not started', 'Not started'],
-  ['Synthesis into property evaluations', 'A cited summary written from the card. Code checks its numbers and that it gives every side of a disagreement', 'Claims from tracks 2 and 3'],
+  ['Synthesis into property evaluations', "A cited summary written from the card. Code checks its numbers and that it gives every side of a disagreement, and settles disagreements from the reports' own drill tables", 'Claims from tracks 2 and 3'],
 ]
 
 const PLAN: [string, string, string][] = [
   ['Oct 26 to 30 (check-in Oct 30)', 'Agree on the starting reports with you. Agent running on them.', 'Propose the claim format. The three of us settle it.'],
-  ['Nov 2 to 13', 'Framework package: loaders, tools, claim schema, quote checker, tests. Head start.', 'Other tracks can call the same checker.'],
-  ['Nov 16 to 27', 'Eval set with answers your team writes. Hallucination-risk notes from real misses. Head start.', 'Share the eval format.'],
-  ['Nov 30 to Dec 11 (spotlight Dec 11)', "One property evaluation from all three tracks' claims, disagreements flagged by code.", 'Joint.'],
+  ['Nov 2 to 13', 'Framework package: loaders, tools, claim schema, quote checker, tests. The demo already has a first version of each.', 'Other tracks can call the same checker.'],
+  ['Nov 16 to 27', "Eval set with answers your team writes. Hallucination-risk notes from real misses, starting from this demo's.", 'Share the eval format.'],
+  ['Nov 30 to Dec 11 (spotlight Dec 11)', "One property evaluation from all three tracks' claims, disagreements flagged by code and settled where the data allows.", 'Joint.'],
   ['Dec 14 to 18 (submit Dec 18)', 'Technical report, presentation, handover.', 'Same.'],
 ]
 
@@ -109,21 +128,36 @@ function Json({ value }: { value: unknown }) {
 
 function Examples() {
   const [tab, setTab] = useState(0)
+  const tabs = useRef<(HTMLButtonElement | null)[]>([])
   const ex = briefExamples.examples[tab]
   const check = ex.claim.check as { quote_on_page?: boolean; value_in_quote?: boolean } | undefined
+  const n = briefExamples.examples.length
+  // Arrow keys move between tabs, Home and End go to the ends, as a tab list should.
+  const onKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
+    const to = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key]
+    if (to === undefined) return
+    e.preventDefault()
+    setTab(to)
+    tabs.current[to]?.focus()
+  }
   return (
     <div className="examples">
       <div className="seg" role="tablist" aria-label="Example claims by track">
         {briefExamples.examples.map((e, i) => (
           <button
             key={e.track}
+            ref={(el) => {
+              tabs.current[i] = el
+            }}
             type="button"
             role="tab"
             id={`ex-tab-${i}`}
             aria-selected={tab === i}
             aria-controls="ex-panel"
+            tabIndex={tab === i ? 0 : -1}
             className="seg-button"
             onClick={() => setTab(i)}
+            onKeyDown={(ev) => onKey(ev, i)}
           >
             Track {e.track}
           </button>
@@ -165,6 +199,12 @@ function Examples() {
 
 export default function BriefPage() {
   useHashScroll(true)
+  useEffect(() => {
+    document.title = 'Your brief, mapped · Iron Lake property file'
+    return () => {
+      document.title = 'Iron Lake property file'
+    }
+  }, [])
   const [keysOpen, setKeysOpen] = useState(false)
   return (
     <DemoLayout title="Your brief, mapped">
@@ -176,7 +216,7 @@ export default function BriefPage() {
           <thead>
             <tr>
               <th scope="col">Your brief asks for</th>
-              <th scope="col">Small version here</th>
+              <th scope="col">Built here</th>
               <th scope="col">Not built yet</th>
             </tr>
           </thead>
@@ -186,7 +226,7 @@ export default function BriefPage() {
                 <th scope="row" data-label="Your brief asks for">
                   {ask}
                 </th>
-                <td data-label="Small version here" className={here === 'Not started' ? 'muted' : ''}>
+                <td data-label="Built here" className={here === 'Not started' ? 'muted' : ''}>
                   {here}
                 </td>
                 <td data-label="Not built yet" className={not === 'Not started' ? 'muted' : ''}>

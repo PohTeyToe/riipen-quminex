@@ -1,17 +1,17 @@
 {
- "written_by": "Claude (claude-opus-5-5), the data agent, after run 2 and its review, from the misses on this page and a read of the 2023 drilling pages.",
+ "written_by": "Claude (claude-opus-5-5), the data agent, after run 2 and two reviews, from the misses on this page, the reports' own tables and a read of the 2023 drilling pages.",
  "sentences": [
-  "q15 is a real miss. The answer names the 093N034 on 34595's title page but not the 093N043 on 36807's. That session never opened 36807's title page, and the map sheet session opened neither, so the card shows 093N only because the q15 session found one of them.",
+  "q15 is a real miss. The answer names the 093N034 on 34595's title page but not the 093N043 on 36807's. No session claimed 36807's; the card shows it now because code reads every map sheet label in the reports.",
   "q08 is a scorer miss, not a wrong answer. The answer says \"toward the northeast\" and \"a deeper hole\", and the scorer only accepts the report's own words, so it can't tell a paraphrase from a gap.",
-  "Code can only compare what the agent claims. Reading 41800 p37 by hand turns up two more disagreements no session claimed: Table 4 gives IL-23-26 40 ppb gold where the text gives 47 ppb, and the text says IL-23-025 stopped at 717 m while Table 4 runs its composite to 750.00 m.",
-  "Code checks the numbers in the summary, not its words. Sentence 8 lists IL-22-20 among the disagreements, though it is one row whose width doesn't match its own depths, and sentence 9 says \"the other reports\" where 36807's own p3 and p9 are among them. Every number in both is right; the notes on the card mark the words. A geologist's read would catch slips like these.",
+  "Reading 41800 p37 by hand turns up two more disagreements no session claimed. Table 4 gives IL-23-26 40 ppb gold where the text gives 47 ppb, and the lab sample at those depths reads 40. The text says IL-23-025 stopped at 717 m, where Table 4 and the collar table give 750 m.",
+  "Code checks the numbers in the summary, not its words. Sentence 4 ties 48.3 line-km to the IP survey through pages it doesn't cite, and sentence 10 leaves out 36807 p1's 093N043, which the card shows. Every number in both is right; the notes on the card mark the words.",
   "The checker threw out 22 of 550 proposed claims, mostly values the agent tidied instead of copying, and the agent fixed 17 of them after reading the reason."
  ],
  "facts_behind_it": {
-  "q15": "data/eval/answers.json q15; data/traces.json: eval-q15 opened 34595 p1, never 36807 p1; field-map_sheet opened neither.",
+  "q15": "data/eval/answers.json q15; data/traces.json: eval-q15 opened 34595 p1, never 36807 p1; field-map_sheet opened neither. data/fields.json map_sheet: 36807 p1 under code_pages; data/image_checks.json labels.",
   "q08": "data/eval/answers.json q08 answer line and data/eval/gold.json q08 expected alternatives.",
-  "41800 p37": "Page text: Table 4 row IL-23-26 216.04 216.51 0.47 0.65 0.100 40 71 295 (Au ppb is the sixth column); text: 'with elevated gold (47 ppb Au)'; 'This hole was completed at a depth of 717 m' (IL-23-025); Table 4 row IL-23-25 16.47 750.00 733.53.",
-  "summary": "data/summary.json sentences s10 and s11 (shown as 8 and 9); data/eval/summary_review.json.",
+  "41800 p37": "Page text: Table 4 row IL-23-26 216.04 216.51 0.47 0.65 0.100 40 71 295 (Au ppb is the sixth column); text: 'with elevated gold (47 ppb Au)'; 'This hole was completed at a depth of 717 m' (IL-23-025). Lab: 41800 assay table, sample C367899, 216.04 to 216.51 m, Au 40 ppb. Collar table: 41800 p33, IL-23-025 depth 750.",
+  "summary": "data/summary.json sentences s04 and s12 (shown as 4 and 10); data/eval/summary_review.json.",
   "checker": "data/rejected.json: 22 rejected, 17 fixed on retry; 528 accepted."
  }
 }

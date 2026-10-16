@@ -2390,3 +2390,147 @@ code,
   font-weight: 600;
   color: var(--ochre);
 }
+
+/* ---------- Round 2 ---------- */
+
+/* The page behind the phone sheet doesn't scroll while the sheet is open. */
+html.sheet-open,
+html.sheet-open body {
+  overflow: hidden;
+}
+
+.aris-note {
+  margin-top: -6px;
+}
+
+/* A link that names a ?claim= this run doesn't have. */
+.notice {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: min(560px, calc(100vw - 32px));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 16px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(28 33 39 / 0.12);
+}
+
+.notice p {
+  flex: 1;
+}
+
+/* Lone links get a 24 px tap target. */
+.summary-foot .text-link,
+.not-found .text-link {
+  display: inline-block;
+  min-height: 24px;
+  line-height: 24px;
+}
+
+/* With the panel open on a wide screen, the top bar lines up with the page beside the panel. */
+@media (min-width: 1100px) {
+  html.panel-open .topbar-inner {
+    margin-left: max(0px, calc((100vw - 480px - 1120px) / 2));
+    margin-right: calc(480px + max(0px, calc((100vw - 480px - 1120px) / 2)));
+  }
+}
+
+/* Hash targets take focus so the next Tab starts there; they don't need a ring. */
+[id][tabindex='-1']:focus {
+  outline: none;
+}
+
+/* ---------- Settled by the reports' own tables ---------- */
+
+.settled {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--teal);
+  border-radius: var(--radius);
+  display: grid;
+  gap: 6px;
+}
+
+.settled-head {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.settled-line {
+  color: var(--ink);
+}
+
+.settled-from {
+  overflow-wrap: anywhere;
+}
+
+.backed {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+  background: var(--teal-tint);
+  border-radius: 3px;
+  padding: 1px 7px;
+  margin-bottom: 6px;
+}
+
+.code-pages {
+  margin-top: 6px;
+  display: grid;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+
+.evidence {
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.evidence caption {
+  text-align: left;
+  caption-side: top;
+  padding-bottom: 6px;
+}
+
+.evidence tr.is-used th,
+.evidence tr.is-used td {
+  font-weight: 600;
+}
+
+.evidence-holes {
+  overflow-wrap: anywhere;
+}
+
+.lab-check {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule-soft);
+  display: grid;
+  gap: 6px;
+}
+
+.lab-check-head {
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.lab-differ {
+  display: grid;
+  gap: 6px;
+  padding-left: 18px;
+  list-style: disc;
+}
+
+.nowrap {
+  white-space: nowrap;
+}

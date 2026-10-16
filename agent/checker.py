@@ -1,8 +1,10 @@
 """Quote and value checks for one claim.
 
 A claim passes when its quote is on the page it cites and its value is in its
-quote. A number only matches where the quote doesn't put a "<" or ">" in front
-of it, so 10 never matches "<10". For a drill interval, each grade must also
+quote. A number only matches where the quote doesn't write it as a bound
+("<10", "less than 10", "below 10"), so 10 never matches "<10". A value's unit
+must follow its number in the quote, or head its column. For a drill interval,
+the hole must be the one the quote names for those depths, and each grade must
 sit with its own element: in the element's column of the table row, or next to
 the element's name in a sentence. Quotes on scanned pages are matched against
 the OCR text, but the page image is the source, so those claims are marked for
@@ -46,17 +48,40 @@ def contains_seq(hay: list, needle: list) -> bool:
 
 
 SIGNS = ("<", ">")
+# How the reports write a bound. The same list decides what counts as censored (below detection).
+BOUND_WORDS = {("<",): "<", ("less", "than"): "<", ("below",): "<",
+               (">",): ">", ("greater", "than"): ">", ("more", "than"): ">", ("above",): ">"}
+
+
+def sign_before(hay: list, i: int) -> str:
+    """"<" or ">" when hay writes the number at i as a bound, else ""."""
+    for words, sign in BOUND_WORDS.items():
+        n = len(words)
+        if i >= n and tuple(hay[i - n:i]) == words:
+            return sign
+    return ""
 
 
 def seq_unsigned(hay: list, needle: list) -> list[int]:
-    """Where needle sits in hay, leaving out a number that hay prefixes with < or > (10 is not "<10")."""
-    signed_needle = bool(needle) and needle[0] in SIGNS
-    return [i for i in find_seq(hay, needle)
-            if signed_needle or not (isinstance(needle[0], Decimal) and i > 0 and hay[i - 1] in SIGNS)]
+    """Where needle sits in hay. A number matches only as written: 10 is never "<10" or "less than 10",
+    and "<10" matches "<10", "less than 10" or "below 10"."""
+    if not needle:
+        return []
+    if needle[0] in SIGNS and len(needle) > 1 and isinstance(needle[1], Decimal):
+        return [i for i in find_seq(hay, needle[1:]) if sign_before(hay, i) == needle[0]]
+    if isinstance(needle[0], Decimal):
+        return [i for i in find_seq(hay, needle) if not sign_before(hay, i)]
+    return find_seq(hay, needle)
 
 
 def numbers(text: str) -> list[Decimal]:
     return [t for t in tokens(text) if isinstance(t, Decimal)]
+
+
+def signed_numbers(text: str) -> list[tuple[str, Decimal]]:
+    """Every number with how it is written: ("<", 10) for "<10" or "less than 10", ("", 10) for 10."""
+    t = tokens(text)
+    return [(sign_before(t, i), x) for i, x in enumerate(t) if isinstance(x, Decimal)]
 
 
 def to_decimal(text: str | None) -> Decimal | None:
@@ -71,12 +96,16 @@ def to_decimal(text: str | None) -> Decimal | None:
         return None
 
 
+LOWER_BOUND_RE = re.compile(r"^(" + "|".join(r"\s+".join(map(re.escape, w)) for w, sign in BOUND_WORDS.items()
+                                               if sign == "<") + r")\s*([\d.,]+)\s*(.*)$", re.I)
+
+
 def censored(value: str | None) -> dict | None:
-    """'<10' stays '<10'. Returns the detection limit, never a number standing in for the value."""
+    """'<10', 'less than 10' or 'below 10' stays a bound. Returns the detection limit, never a number standing
+    in for the value."""
     if value is None:
         return None
-    s = str(value).strip()
-    m = re.match(r"^(<|less than|below)\s*([\d.,]+)\s*(.*)$", s, re.I)
+    m = LOWER_BOUND_RE.match(str(value).strip())
     if not m:
         return None
     return {"detection_limit": m.group(2), "unit": m.group(3).strip() or None}
@@ -129,12 +158,8 @@ def unit_of(*texts: str) -> str | None:
 
 def cell(raw) -> tuple[str, Decimal] | None:
     """A grade as a table cell: its sign ("<", ">" or "") and its number."""
-    t = tokens(str(raw))
-    nums = [x for x in t if isinstance(x, Decimal)]
-    if len(nums) != 1:
-        return None
-    sign = t[0] if t and t[0] in SIGNS else ("<" if censored(raw) else "")
-    return sign, nums[0]
+    nums = signed_numbers(str(raw))
+    return nums[0] if len(nums) == 1 else None
 
 
 def header_columns(page_norm: str, before: int) -> list[tuple[str, str]]:
@@ -177,26 +202,63 @@ def row_cells(qt: list, value: dict, n_cols: int) -> list[tuple[str, Decimal]] |
     return None
 
 
+FILLER = {"of", "at", ":", "=", "(", "<", ">"}  # what may sit between an element's name and its number: "copper of 1.17%"
+
+
+CLAUSE_END = {".", ",", ";"}
+
+
+def bound_elements(qt: list) -> dict[int, set[str]]:
+    """The element each number in a sentence belongs to. Text names elements after their numbers ("0.42% Cu",
+    "341 ppm nickel") or before them ("Cu 0.42%", "copper of 1.17%"). An element binds only within its clause
+    (commas, semicolons and full stops end one), and where a clause could be read both ways, code takes the way
+    that clause names more of them, both on a tie. So in "0.034% Cu, 0.42% Ni" the Cu belongs to 0.034."""
+    out: dict[int, set[str]] = {}
+    start = 0
+    for end in [i for i, t in enumerate(qt) if t in CLAUSE_END] + [len(qt)]:
+        after, before = [], []
+        for k in range(start, end):
+            el = ELEMENT_WORD.get(qt[k]) if isinstance(qt[k], str) else None
+            if not el:
+                continue
+            j = k - 1
+            while j >= start and qt[j] in UNIT_TOKENS:
+                j -= 1
+            if j >= start and isinstance(qt[j], Decimal):
+                after.append((j, el))
+            j, skipped = k + 1, 0
+            while j < end and qt[j] in FILLER and skipped < 2:
+                j, skipped = j + 1, skipped + 1
+            if j < end and isinstance(qt[j], Decimal):
+                before.append((j, el))
+        for j, el in (after if len(after) > len(before) else before if len(before) > len(after) else after + before):
+            out.setdefault(j, set()).add(el)
+        start = end + 1
+    return out
+
+
+def written_unit(qt: list, i: int) -> str | None:
+    """The grade unit written right after the number at i, if any."""
+    after = []
+    j = i + 1
+    while j < len(qt) and len(after) < 4 and qt[j] in UNIT_TOKENS:
+        after.append(qt[j])
+        j += 1
+    return unit_of("".join(str(x) for x in after)) if after else None
+
+
 def in_sentence(qt: list, el: str, want: tuple[str, Decimal], unit: str | None) -> bool:
-    """The grade sits next to its element's name: "0.42% copper", "341 ppm nickel", "Cu 0.42%", "copper of 1.17%"."""
+    """The grade sits with its element's name: "0.42% copper", "341 ppm nickel", "Cu 0.42%", "copper of 1.17%"."""
     sign, num = want
-    needle = ([sign] if sign else []) + [num]
-    for i in seq_unsigned(qt, needle):
-        j = i + len(needle)
-        after = []
-        while j < len(qt) and len(after) < 4 and qt[j] in UNIT_TOKENS:
-            after.append(qt[j])
-            j += 1
-        written = unit_of("".join(str(x) for x in after)) if after else None
+    bound = bound_elements(qt)
+    for i, t in enumerate(qt):
+        if not (isinstance(t, Decimal) and t == num and sign_before(qt, i) == sign):
+            continue
+        written = written_unit(qt, i)
         if unit and written and unit != written:
             continue
-        if j < len(qt) and ELEMENT_WORD.get(qt[j]) == el:
+        if el in bound.get(i, set()):
             return True
-        k = i - 1
-        while k >= 0 and i - k <= 4 and not isinstance(qt[k], Decimal):
-            if ELEMENT_WORD.get(qt[k]) == el:
-                return True
-            k -= 1
     return False
 
 
@@ -230,6 +292,63 @@ def grade_problems(value: dict, quote: str, page_norm: str) -> list[str]:
     return out
 
 
+# ---------------------------------------------------------------- holes and units
+
+HOLE_RE = re.compile(r"\b([A-Z]{1,4}) ?-? ?(\d{2}) ?-\s*(\d{1,3})\b")
+NUMBER_RE = re.compile(r"\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?")
+
+
+def hole_key(hole: str) -> tuple:
+    """IL-23-25, IL-23-025 and "IL-22-\n011" compare by their parts: ("il", 23, 25)."""
+    parts = re.findall(r"[a-z]+|\d+", normalize(hole))
+    return tuple(int(p) if p.isdigit() else p for p in parts)
+
+
+def hole_problem(value: dict, quote: str) -> str | None:
+    """The hole must be the one the quote names for these depths: the nearest hole ID before them (in a
+    table, the row's own hole, or the hole an "including" row sits under), else the nearest after."""
+    holes = [(m.start(), m.end(), (m.group(1).lower(), int(m.group(2)), int(m.group(3))), m.group())
+             for m in HOLE_RE.finditer(quote)]
+    if not holes:
+        return None
+    nums = [(m.start(), Decimal(m.group().replace(",", ""))) for m in NUMBER_RE.finditer(quote)
+            if not any(a <= m.start() < b for a, b, _, _ in holes)]
+    known = [d for k in ("from_m", "to_m", "width_m") if (d := to_decimal(value.get(k))) is not None]
+    if not known:
+        return None
+    vals = [d for _, d in nums]
+    runs = find_seq(vals, known)
+    at = nums[runs[-1]][0] if runs else next((o for o, d in nums if d == known[0]), None)
+    if at is None:
+        return None
+    before = [h for h in holes if h[1] <= at]
+    named = before[-1] if before else min(holes, key=lambda h: h[0] - at)
+    if named[2] != hole_key(value.get("hole") or "")[:3]:
+        written = re.sub(r"\s+", "", named[3])
+        return f"the quote names {written} for these depths, not {value.get('hole')}"
+    return None
+
+
+def unit_problem(value, unit: str | None, quote: str) -> str | None:
+    """A value's unit must follow its number in the quote, as in "5,001.30 m", or head it, as in "Grid Total (m)
+    67600". A unit heading elsewhere in the quote belongs to another column."""
+    if not unit or not str(unit).strip():
+        return None
+    want = signed_numbers(str(value))
+    ut = tokens(unit)
+    if not want or not ut:
+        return None
+    qt = tokens(quote)
+    sign, num = want[0]
+    head = ["("] + ut + [")"]
+    for i, t in enumerate(qt):
+        if not (isinstance(t, Decimal) and t == num and sign_before(qt, i) == sign):
+            continue
+        if qt[i + 1:i + 1 + len(ut)] == ut or qt[max(0, i - len(head)):i] == head:
+            return None
+    return f"the quote doesn't write {str(unit).strip()!r} after {value}"
+
+
 def pages_with(nq: str) -> list[dict]:
     return [{"aris": a, "page": n} for a, n in corpus.all_pages() if nq in corpus.normalized_page(a, n)]
 
@@ -242,7 +361,7 @@ def where(found: list[dict], aris: int) -> str:
     return f"report {f['aris']} page {f['page']}"
 
 
-def check_claim(kind: str, value, report: int, page: int, quote: str) -> dict:
+def check_claim(kind: str, value, report: int, page: int, quote: str, unit: str | None = None) -> dict:
     """Check one claim. Returns the result the agent sees and the data keeps."""
     res: dict = {"accepted": False, "by": "code", "quote_on_page": False, "value_in_quote": None,
                  "scanned": False, "found_on": [], "also_in": [], "failure": None, "reason": ""}
@@ -294,10 +413,21 @@ def check_claim(kind: str, value, report: int, page: int, quote: str) -> dict:
                        reason="Not in the quote: " + ", ".join(repr(m) for m in missing))
             return res
         if kind == "interval":
+            wrong_hole = hole_problem(value, quote)
+            if wrong_hole:
+                res.update(value_in_quote=False, failure="hole_not_with_row",
+                           reason="The hole must be the one the quote names for these depths: " + wrong_hole)
+                return res
             loose = grade_problems(value, quote, corpus.normalized_page(report, page))
             if loose:
                 res.update(value_in_quote=False, failure="grade_not_with_element",
                            reason="Each grade must sit with its own element. " + "; ".join(loose))
+                return res
+        elif kind == "value":
+            no_unit = unit_problem(value, unit, quote)
+            if no_unit:
+                res.update(value_in_quote=False, failure="unit_not_in_quote",
+                           reason="The unit must follow the number in the quote, or head its column: " + no_unit)
                 return res
         res["value_in_quote"] = True
 

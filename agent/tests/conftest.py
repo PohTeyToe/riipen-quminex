@@ -42,6 +42,7 @@ PAGES = {
         {"page": 33, "scanned": False, "text": (
             "Table 3: Significant Intervals from the 2022 Drill Program \nHole \nFrom (m) \nTo (m) \nInterval \n(m) \n"
             "Cu (%) \nNi (%) \nAu (ppb) \nPt (ppb) \nPd (ppb) \n"
+            "IL-22-001\n123.48 \n125.87\n2.39 \n0.30\n0.045\n10\n18\n24\n"
             "IL-22-006\n123.82 \n136.98\n13.16 \n0.18\n0.027\n10\n23\n<10\n"
             "including\n123.82 \n133.02\n9.20 \n0.21\n0.030\n<10\n29\n<10\n"
             "IL-22-011\n175.46 \n177.53\n2.07 \n0.30\n0.049\n10\n<10\n<10\n")},
@@ -51,6 +52,11 @@ PAGES = {
             "mineralization was similar to IL-22-009, consisting of massive net-textured magnetite, rarely \n"
             "replaced by hematite, along with bands and veinlets of pyrite, pyrrhotite and trace chalcopyrite. \n"
             "This zone returned 0.30% copper and 0.049% nickel over 2.36 m. \n")},
+    ],
+    40980: [
+        {"page": 17, "scanned": False, "text": (
+            "diamond drill program for 694 metres in 1974 (Buskas, 1989). Less than 10% of the core was \n"
+            "split and assayed; however, large amounts of magnetite were intersected. \n")},
     ],
     41800: [
         {"page": 10, "scanned": False, "text": (

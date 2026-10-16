@@ -324,6 +324,224 @@
    "eval_cross_check": {
     "note": "The same rule run over the eval sessions' claims. Anything they found that this field's own session missed is folded into the row and marked as found by the eval.",
     "found": []
+   },
+   "settled_by": {
+    "by": "drill collars",
+    "side": 1,
+    "farthest_km": 2.6,
+    "other_km": 61.1,
+    "line": "All 26 drill collars sit within 2.6 km of this side's points. The nearest collar to the other side is 61.1 km from it.",
+    "rule": "The reports' drill collar tables say where each hole was drilled. A side is backed when every collar is nearer to it than any collar is to another side.",
+    "collars": [
+     {
+      "hole": "IL-22-001",
+      "easting": "645575",
+      "northing": "5756817",
+      "depth_m": "228",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-002",
+      "easting": "645690",
+      "northing": "5756945",
+      "depth_m": "252",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-003",
+      "easting": "645445",
+      "northing": "5756340",
+      "depth_m": "252",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-004",
+      "easting": "646465",
+      "northing": "5756815",
+      "depth_m": "264",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-005",
+      "easting": "649070",
+      "northing": "5756000",
+      "depth_m": "36.3",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-006",
+      "easting": "645575",
+      "northing": "5756817",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-007",
+      "easting": "643519",
+      "northing": "5759051",
+      "depth_m": "276",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-008",
+      "easting": "644742",
+      "northing": "5758440",
+      "depth_m": "249",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-009",
+      "easting": "645600",
+      "northing": "5756900",
+      "depth_m": "150",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-010",
+      "easting": "645600",
+      "northing": "5756900",
+      "depth_m": "261",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-011",
+      "easting": "645600",
+      "northing": "5756900",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-012",
+      "easting": "645510",
+      "northing": "5756775",
+      "depth_m": "102",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-013",
+      "easting": "645510",
+      "northing": "5756775",
+      "depth_m": "150",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-014",
+      "easting": "646172",
+      "northing": "5757186",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-015",
+      "easting": "646175",
+      "northing": "5756996",
+      "depth_m": "207",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-016",
+      "easting": "646057",
+      "northing": "5756857",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-017",
+      "easting": "645947",
+      "northing": "5757042",
+      "depth_m": "201",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-018",
+      "easting": "645651",
+      "northing": "5756830",
+      "depth_m": "261",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-019",
+      "easting": "645603",
+      "northing": "5756903",
+      "depth_m": "141",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-020",
+      "easting": "651130",
+      "northing": "5754100",
+      "depth_m": "480",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-021",
+      "easting": "651130",
+      "northing": "5754100",
+      "depth_m": "300",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-022",
+      "easting": "645947",
+      "northing": "5757042",
+      "depth_m": "249",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-023",
+      "easting": "645798",
+      "northing": "5757670",
+      "depth_m": "126",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-23-024",
+      "easting": "645362",
+      "northing": "5756889",
+      "depth_m": "606",
+      "aris": 41800,
+      "page": 33
+     },
+     {
+      "hole": "IL-23-025",
+      "easting": "643289",
+      "northing": "5759109",
+      "depth_m": "750",
+      "aris": 41800,
+      "page": 33
+     },
+     {
+      "hole": "IL-23-026",
+      "easting": "645605",
+      "northing": "5756678",
+      "depth_m": "324",
+      "aris": 41800,
+      "page": 33
+     }
+    ]
    }
   },
   {
@@ -376,6 +594,83 @@
       "c-0356",
       "c-0357",
       "c-0358"
+     ],
+     "code_pages": [
+      {
+       "aris": 40980,
+       "page": 16,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 40980,
+       "page": 24,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 40980,
+       "page": 27,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 40980,
+       "page": 29,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 40980,
+       "page": 35,
+       "written": "NTS 92P/7"
+      },
+      {
+       "aris": 41327,
+       "page": 16,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41327,
+       "page": 25,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41327,
+       "page": 28,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41327,
+       "page": 45,
+       "written": "NTS 92P/7"
+      },
+      {
+       "aris": 41800,
+       "page": 16,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41800,
+       "page": 25,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41800,
+       "page": 29,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41800,
+       "page": 31,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41800,
+       "page": 34,
+       "written": "N.T.S. 92P/15"
+      },
+      {
+       "aris": 41800,
+       "page": 42,
+       "written": "NTS 92P/7"
+      }
      ],
      "sources": [
       {
@@ -443,6 +738,18 @@
      "claims": [
       "c-0040"
      ],
+     "code_pages": [
+      {
+       "aris": 36807,
+       "page": 1,
+       "written": "NTS/BCGS: 093N043",
+       "scanned": true,
+       "image_reads": "NTS/BCGS: 093N043",
+       "checked_by": "claude-opus-5-5",
+       "checked_on": "2026-10-15",
+       "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers (q15) and without seeing the agent,"
+      }
+     ],
      "sources": [
       {
        "aris": 34595,
@@ -469,6 +776,224 @@
       "map_areas": [
        "093N"
       ]
+     }
+    ]
+   },
+   "label_rule": "Code also reads every map sheet label in the reports: NTS or BCGS with the sheet right after it, as in \"NTS: 092P096\". Pages no claim covers join their side as pages read by code.",
+   "settled_by": {
+    "by": "drill collars",
+    "side": 0,
+    "key": "092P",
+    "line": "All 26 drill collars fall in NTS map area 092P (51° to 52° N, 120° to 122° W).",
+    "rule": "Code works out the NTS map area of each drill collar from its coordinates. When every collar falls in the area one side gives, that side is backed.",
+    "collars": [
+     {
+      "hole": "IL-22-001",
+      "easting": "645575",
+      "northing": "5756817",
+      "depth_m": "228",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-002",
+      "easting": "645690",
+      "northing": "5756945",
+      "depth_m": "252",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-003",
+      "easting": "645445",
+      "northing": "5756340",
+      "depth_m": "252",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-004",
+      "easting": "646465",
+      "northing": "5756815",
+      "depth_m": "264",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-005",
+      "easting": "649070",
+      "northing": "5756000",
+      "depth_m": "36.3",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-006",
+      "easting": "645575",
+      "northing": "5756817",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-007",
+      "easting": "643519",
+      "northing": "5759051",
+      "depth_m": "276",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-008",
+      "easting": "644742",
+      "northing": "5758440",
+      "depth_m": "249",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-009",
+      "easting": "645600",
+      "northing": "5756900",
+      "depth_m": "150",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-010",
+      "easting": "645600",
+      "northing": "5756900",
+      "depth_m": "261",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-011",
+      "easting": "645600",
+      "northing": "5756900",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-012",
+      "easting": "645510",
+      "northing": "5756775",
+      "depth_m": "102",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-013",
+      "easting": "645510",
+      "northing": "5756775",
+      "depth_m": "150",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-014",
+      "easting": "646172",
+      "northing": "5757186",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-015",
+      "easting": "646175",
+      "northing": "5756996",
+      "depth_m": "207",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-016",
+      "easting": "646057",
+      "northing": "5756857",
+      "depth_m": "204",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-017",
+      "easting": "645947",
+      "northing": "5757042",
+      "depth_m": "201",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-018",
+      "easting": "645651",
+      "northing": "5756830",
+      "depth_m": "261",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-019",
+      "easting": "645603",
+      "northing": "5756903",
+      "depth_m": "141",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-020",
+      "easting": "651130",
+      "northing": "5754100",
+      "depth_m": "480",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-021",
+      "easting": "651130",
+      "northing": "5754100",
+      "depth_m": "300",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-022",
+      "easting": "645947",
+      "northing": "5757042",
+      "depth_m": "249",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-22-023",
+      "easting": "645798",
+      "northing": "5757670",
+      "depth_m": "126",
+      "aris": 41327,
+      "page": 30
+     },
+     {
+      "hole": "IL-23-024",
+      "easting": "645362",
+      "northing": "5756889",
+      "depth_m": "606",
+      "aris": 41800,
+      "page": 33
+     },
+     {
+      "hole": "IL-23-025",
+      "easting": "643289",
+      "northing": "5759109",
+      "depth_m": "750",
+      "aris": 41800,
+      "page": 33
+     },
+     {
+      "hole": "IL-23-026",
+      "easting": "645605",
+      "northing": "5756678",
+      "depth_m": "324",
+      "aris": 41800,
+      "page": 33
      }
     ]
    }
@@ -2074,7 +2599,7 @@
      "name": "Total metres",
      "state": "settled",
      "rule": "number",
-     "rule_text": "Numbers within 0.1% of each other count as the same value, so rounding doesn't split them.",
+     "rule_text": "Lengths are compared in metres, with their units converted. Values within 0.1% of each other count as the same, so rounding doesn't split them.",
      "claims": [
       "c-0080",
       "c-0081",
@@ -2107,7 +2632,110 @@
        "source_count": 3,
        "report_count": 2
       }
-     ]
+     ],
+     "settled_by": {
+      "by": "collar table",
+      "side": 0,
+      "total_m": "5001.3",
+      "line": "Table 2 on 41327 p30 lists 23 holes. Their depths add up to 5,001.3 m.",
+      "rule": "The collar table whose caption names the same year gives each hole's depth. Code adds them.",
+      "holes": [
+       {
+        "hole": "IL-22-001",
+        "depth_m": "228"
+       },
+       {
+        "hole": "IL-22-002",
+        "depth_m": "252"
+       },
+       {
+        "hole": "IL-22-003",
+        "depth_m": "252"
+       },
+       {
+        "hole": "IL-22-004",
+        "depth_m": "264"
+       },
+       {
+        "hole": "IL-22-005",
+        "depth_m": "36.3"
+       },
+       {
+        "hole": "IL-22-006",
+        "depth_m": "204"
+       },
+       {
+        "hole": "IL-22-007",
+        "depth_m": "276"
+       },
+       {
+        "hole": "IL-22-008",
+        "depth_m": "249"
+       },
+       {
+        "hole": "IL-22-009",
+        "depth_m": "150"
+       },
+       {
+        "hole": "IL-22-010",
+        "depth_m": "261"
+       },
+       {
+        "hole": "IL-22-011",
+        "depth_m": "204"
+       },
+       {
+        "hole": "IL-22-012",
+        "depth_m": "102"
+       },
+       {
+        "hole": "IL-22-013",
+        "depth_m": "150"
+       },
+       {
+        "hole": "IL-22-014",
+        "depth_m": "204"
+       },
+       {
+        "hole": "IL-22-015",
+        "depth_m": "207"
+       },
+       {
+        "hole": "IL-22-016",
+        "depth_m": "204"
+       },
+       {
+        "hole": "IL-22-017",
+        "depth_m": "201"
+       },
+       {
+        "hole": "IL-22-018",
+        "depth_m": "261"
+       },
+       {
+        "hole": "IL-22-019",
+        "depth_m": "141"
+       },
+       {
+        "hole": "IL-22-020",
+        "depth_m": "480"
+       },
+       {
+        "hole": "IL-22-021",
+        "depth_m": "300"
+       },
+       {
+        "hole": "IL-22-022",
+        "depth_m": "249"
+       },
+       {
+        "hole": "IL-22-023",
+        "depth_m": "126"
+       }
+      ],
+      "aris": 41327,
+      "page": 30
+     }
     },
     {
      "id": "drilling_2022.intervals",
@@ -2682,7 +3310,28 @@
        "report_count": 1,
        "hole_written": [
         "IL-22-20"
-       ]
+       ],
+       "lab": {
+        "by": "lab assays",
+        "line": "The lab assayed 209.50 to 211.00 m (1.50 m) as one sample, B1118002: Cu 0.326%, Au 15.0 ppb. 41327 p33 gives 2.50 m, Cu 0.02% and Au 13 ppb.",
+        "rule": "The reports' assay tables list each sample's depths and lab results. Code averages the samples inside an interval, weighted by length, and compares each number the report gives, allowing for how precisely it is written.",
+        "samples": [
+         {
+          "sample": "B1118002",
+          "from_m": "209.50",
+          "to_m": "211.00",
+          "width_m": "1.50",
+          "certificate": "A22-16627",
+          "aris": 41327,
+          "page": 504,
+          "grades": {
+           "Cu (ppm)": "3260.0",
+           "Ni (ppm)": "13.1"
+          },
+          "used": true
+         }
+        ]
+       }
       },
       {
        "hole": "IL-22-011",
@@ -2704,14 +3353,18 @@
           {
            "claim": "c-0090",
            "written": "2.07",
+           "sign": "",
            "value": "2.07",
-           "allow": "0.05"
+           "lo": "2.045",
+           "hi": "2.095"
           },
           {
            "claim": "c-0104",
            "written": "2.36",
+           "sign": "",
            "value": "2.36",
-           "allow": "0.05"
+           "lo": "2.335",
+           "hi": "2.385"
           }
          ]
         },
@@ -2723,14 +3376,18 @@
           {
            "claim": "c-0090",
            "written": "0.30%",
+           "sign": "",
            "value": "0.30",
-           "allow": "0.005"
+           "lo": "0.295",
+           "hi": "0.305"
           },
           {
            "claim": "c-0104",
            "written": "0.30%",
+           "sign": "",
            "value": "0.30",
-           "allow": "0.005"
+           "lo": "0.295",
+           "hi": "0.305"
           }
          ]
         },
@@ -2742,14 +3399,18 @@
           {
            "claim": "c-0090",
            "written": "0.049%",
+           "sign": "",
            "value": "0.049",
-           "allow": "0.0005"
+           "lo": "0.0485",
+           "hi": "0.0495"
           },
           {
            "claim": "c-0104",
            "written": "0.049%",
+           "sign": "",
            "value": "0.049",
-           "allow": "0.0005"
+           "lo": "0.0485",
+           "hi": "0.0495"
           }
          ]
         }
@@ -2794,10 +3455,120 @@
        "report_count": 1,
        "hole_written": [
         "IL-22-011"
-       ]
+       ],
+       "settled_by": {
+        "by": "lab assays",
+        "side": 0,
+        "line": "The lab assayed 175.46 to 177.53 m (2.07 m) as one sample, C119627: Cu 0.302%, Ni 0.0486%. That matches 2.07 m (41327 p33). 41327 p34: 175.36 m isn't a sample boundary. The nearest are 174.96 m and 175.46 m.",
+        "rule": "The reports' assay tables list each sample's depths and lab results. Code averages the samples inside an interval, weighted by length, and backs the side whose depths are sample boundaries and whose disputed numbers match, allowing for how precisely each is written.",
+        "samples": [
+         {
+          "sample": "C119626",
+          "from_m": "174.96",
+          "to_m": "175.46",
+          "width_m": "0.50",
+          "certificate": "A22-12760",
+          "aris": 41327,
+          "page": 453,
+          "grades": {
+           "Cu (ppm)": "178.0",
+           "Ni (ppm)": "62.0"
+          },
+          "used": false
+         },
+         {
+          "sample": "C119627",
+          "from_m": "175.46",
+          "to_m": "177.53",
+          "width_m": "2.07",
+          "certificate": "A22-12760",
+          "aris": 41327,
+          "page": 453,
+          "grades": {
+           "Cu (ppm)": "3020.0",
+           "Ni (ppm)": "486.0"
+          },
+          "used": true
+         }
+        ]
+       }
       }
      ],
-     "unplaced": []
+     "unplaced": [],
+     "lab_summary": {
+      "checked": 20,
+      "match": 14,
+      "differ": [
+       {
+        "claim": "c-0085",
+        "hole": "IL-22-006",
+        "from_m": "123.82",
+        "to_m": "133.02",
+        "src": "41327 p33",
+        "what": [
+         "Au <10 ppb, lab 12.2 ppb"
+        ],
+        "on_card": false
+       },
+       {
+        "claim": "c-0092",
+        "hole": "IL-22-014",
+        "from_m": "158.66",
+        "to_m": "160.00",
+        "src": "41327 p33",
+        "what": [
+         "Ni 0.002%, lab 0.00149%"
+        ],
+        "on_card": false
+       },
+       {
+        "claim": "c-0098",
+        "hole": "IL-22-015",
+        "from_m": "190.77",
+        "to_m": "192.00",
+        "src": "41327 p33",
+        "what": [
+         "Au <10 ppb, lab 11.1 ppb"
+        ],
+        "on_card": false
+       },
+       {
+        "claim": "c-0099",
+        "hole": "IL-22-018",
+        "from_m": "196.05",
+        "to_m": "199.23",
+        "src": "41327 p33",
+        "what": [
+         "Pd 18 ppb, lab 11.8 ppb"
+        ],
+        "on_card": false
+       },
+       {
+        "claim": "c-0101",
+        "hole": "IL-22-20",
+        "from_m": "209.50",
+        "to_m": "211.00",
+        "src": "41327 p33",
+        "what": [
+         "width",
+         "Cu 0.02%, lab 0.326%",
+         "Au 13 ppb, lab 15.0 ppb"
+        ],
+        "on_card": true
+       },
+       {
+        "claim": "c-0104",
+        "hole": "IL-22-011",
+        "from_m": "175.36",
+        "to_m": "177.53",
+        "src": "41327 p34",
+        "what": [
+         "175.36 m isn't a sample boundary. The nearest are 174.96 m and 175.46 m."
+        ],
+        "on_card": true
+       }
+      ]
+     }
     }
    ],
    "caveat_claims": [
@@ -2817,7 +3588,7 @@
      "name": "Total metres",
      "state": "disagree",
      "rule": "number",
-     "rule_text": "Numbers within 0.1% of each other count as the same value, so rounding doesn't split them.",
+     "rule_text": "Lengths are compared in metres, with their units converted. Values within 0.1% of each other count as the same, so rounding doesn't split them.",
      "claims": [
       "c-0105",
       "c-0106",
@@ -2859,7 +3630,30 @@
        "source_count": 1,
        "report_count": 1
       }
-     ]
+     ],
+     "settled_by": {
+      "by": "collar table",
+      "side": 0,
+      "total_m": "1680",
+      "line": "Table 3 on 41800 p33 lists 3 holes. Their depths add up to 606 + 750 + 324 = 1,680 m.",
+      "rule": "The collar table whose caption names the same year gives each hole's depth. Code adds them.",
+      "holes": [
+       {
+        "hole": "IL-23-024",
+        "depth_m": "606"
+       },
+       {
+        "hole": "IL-23-025",
+        "depth_m": "750"
+       },
+       {
+        "hole": "IL-23-026",
+        "depth_m": "324"
+       }
+      ],
+      "aris": 41800,
+      "page": 33
+     }
     },
     {
      "id": "drilling_2023.intervals",
@@ -2992,33 +3786,41 @@
           {
            "claim": "c-0111",
            "written": "24.04",
+           "sign": "",
            "value": "24.04",
-           "allow": "0.05"
+           "lo": "24.015",
+           "hi": "24.065"
           },
           {
            "claim": "c-0114",
            "written": "24.04",
+           "sign": "",
            "value": "24.04",
-           "allow": "0.05"
+           "lo": "24.015",
+           "hi": "24.065"
           }
          ]
         },
         {
          "what": "Cu",
          "agree": false,
-         "line": "Cu: 0.002% and 6 ppm (0.0006%) differ by 0.0014%. Rounding allows 0.0005%.",
+         "line": "Cu: 0.002% and 6 ppm (0.0006%) differ by 0.0014%. Rounding allows 0.00055%.",
          "values": [
           {
            "claim": "c-0111",
            "written": "0.002%",
+           "sign": "",
            "value": "0.002",
-           "allow": "0.0005"
+           "lo": "0.0015",
+           "hi": "0.0025"
           },
           {
            "claim": "c-0114",
            "written": "6 ppm",
+           "sign": "",
            "value": "0.0006",
-           "allow": "0.00005"
+           "lo": "0.00055",
+           "hi": "0.00065"
           }
          ]
         },
@@ -3030,14 +3832,18 @@
           {
            "claim": "c-0111",
            "written": "0.100%",
+           "sign": "",
            "value": "0.100",
-           "allow": "0.0005"
+           "lo": "0.0995",
+           "hi": "0.1005"
           },
           {
            "claim": "c-0114",
            "written": "1,002 ppm",
+           "sign": "",
            "value": "0.1002",
-           "allow": "0.00005"
+           "lo": "0.10015",
+           "hi": "0.10025"
           }
          ]
         }
@@ -3085,7 +3891,249 @@
        "hole_written": [
         "IL-23-025",
         "IL-23-25"
-       ]
+       ],
+       "settled_by": {
+        "by": "lab assays",
+        "side": 1,
+        "line": "The lab assayed 318.25 to 342.29 m (24.04 m) as 17 samples, which average Cu 6.09 ppm, weighted by length. That matches 6 ppm (41800 p10). 41800 p37 gives 0.002%.",
+        "rule": "The reports' assay tables list each sample's depths and lab results. Code averages the samples inside an interval, weighted by length, and backs the side whose depths are sample boundaries and whose disputed numbers match, allowing for how precisely each is written.",
+        "samples": [
+         {
+          "sample": "C367536",
+          "from_m": "318.25",
+          "to_m": "319.45",
+          "width_m": "1.20",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "5.5"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367537",
+          "from_m": "319.45",
+          "to_m": "320.14",
+          "width_m": "0.69",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "7.2"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367539",
+          "from_m": "320.14",
+          "to_m": "321.38",
+          "width_m": "1.24",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "7.8"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367540",
+          "from_m": "321.38",
+          "to_m": "322.40",
+          "width_m": "1.02",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "13.3"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367541",
+          "from_m": "322.40",
+          "to_m": "322.93",
+          "width_m": "0.53",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "3.5"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367542",
+          "from_m": "322.93",
+          "to_m": "324.00",
+          "width_m": "1.07",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "5.1"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367543",
+          "from_m": "324.00",
+          "to_m": "326.00",
+          "width_m": "2.00",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "3.8"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367544",
+          "from_m": "326.00",
+          "to_m": "327.77",
+          "width_m": "1.77",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "3.4"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367546",
+          "from_m": "327.77",
+          "to_m": "328.81",
+          "width_m": "1.04",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "6.4"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367547",
+          "from_m": "328.81",
+          "to_m": "330.37",
+          "width_m": "1.56",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "17.8"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367548",
+          "from_m": "330.37",
+          "to_m": "332.57",
+          "width_m": "2.20",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "4.6"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367549",
+          "from_m": "332.57",
+          "to_m": "333.90",
+          "width_m": "1.33",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "3.4"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367550",
+          "from_m": "333.90",
+          "to_m": "335.89",
+          "width_m": "1.99",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "3.4"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367551",
+          "from_m": "335.89",
+          "to_m": "336.48",
+          "width_m": "0.59",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "2.1"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367552",
+          "from_m": "336.48",
+          "to_m": "338.58",
+          "width_m": "2.10",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "3.3"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367554",
+          "from_m": "338.58",
+          "to_m": "339.93",
+          "width_m": "1.35",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "10.4"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367555",
+          "from_m": "339.93",
+          "to_m": "342.29",
+          "width_m": "2.36",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "5.4"
+          },
+          "used": true
+         },
+         {
+          "sample": "C367556",
+          "from_m": "342.29",
+          "to_m": "344.56",
+          "width_m": "2.27",
+          "certificate": "A23-09720",
+          "aris": 41800,
+          "page": 422,
+          "grades": {
+           "Cu (ppm)": "6.4"
+          },
+          "used": false
+         }
+        ]
+       }
       },
       {
        "hole": "IL-23-024",
@@ -3105,14 +4153,18 @@
           {
            "claim": "c-0108",
            "written": "9.46",
+           "sign": "",
            "value": "9.46",
-           "allow": "0.05"
+           "lo": "9.435",
+           "hi": "9.485"
           },
           {
            "claim": "c-0115",
            "written": "9.46",
+           "sign": "",
            "value": "9.46",
-           "allow": "0.05"
+           "lo": "9.435",
+           "hi": "9.485"
           }
          ]
         },
@@ -3124,14 +4176,18 @@
           {
            "claim": "c-0108",
            "written": "0.42%",
+           "sign": "",
            "value": "0.42",
-           "allow": "0.005"
+           "lo": "0.415",
+           "hi": "0.425"
           },
           {
            "claim": "c-0115",
            "written": "0.42%",
+           "sign": "",
            "value": "0.42",
-           "allow": "0.005"
+           "lo": "0.415",
+           "hi": "0.425"
           }
          ]
         },
@@ -3143,14 +4199,18 @@
           {
            "claim": "c-0108",
            "written": "0.034%",
+           "sign": "",
            "value": "0.034",
-           "allow": "0.0005"
+           "lo": "0.0335",
+           "hi": "0.0345"
           },
           {
            "claim": "c-0115",
            "written": "341 ppm",
+           "sign": "",
            "value": "0.0341",
-           "allow": "0.00005"
+           "lo": "0.03405",
+           "hi": "0.03415"
           }
          ]
         }
@@ -3187,7 +4247,35 @@
        ]
       }
      ],
-     "unplaced": []
+     "unplaced": [],
+     "lab_summary": {
+      "checked": 7,
+      "match": 5,
+      "differ": [
+       {
+        "claim": "c-0110",
+        "hole": "IL-23-25",
+        "from_m": "16.47",
+        "to_m": "750.00",
+        "src": "41800 p37",
+        "what": [
+         "Ni 0.030%, lab 0.0268%"
+        ],
+        "on_card": false
+       },
+       {
+        "claim": "c-0111",
+        "hole": "IL-23-25",
+        "from_m": "318.25",
+        "to_m": "342.29",
+        "src": "41800 p37",
+        "what": [
+         "Cu 0.002%, lab 0.000609%"
+        ],
+        "on_card": true
+       }
+      ]
+     }
     }
    ],
    "caveat_claims": [

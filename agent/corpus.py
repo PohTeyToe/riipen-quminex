@@ -1,4 +1,4 @@
-"""The corpus: seven ARIS reports, their page ranges, and page search."""
+"""The corpus: the property's ARIS reports and their page ranges (agent/property.json), and page search."""
 from __future__ import annotations
 
 import json
@@ -16,17 +16,9 @@ PRIVATE = DATA / "private"
 PDF_DIR = PRIVATE / "pdf"
 PAGES_DIR = PRIVATE / "pages"
 
-# PDF page numbers, 1-based, inclusive. 41327 and 41800 stop where the
-# appendices start, so the corpus is the report body.
-CORPUS = [
-    {"aris": 34595, "first_page": 1, "last_page": 74},
-    {"aris": 36430, "first_page": 1, "last_page": 132},
-    {"aris": 36807, "first_page": 1, "last_page": 101},
-    {"aris": 38640, "first_page": 1, "last_page": 71},
-    {"aris": 40980, "first_page": 1, "last_page": 102},
-    {"aris": 41327, "first_page": 5, "last_page": 49},
-    {"aris": 41800, "first_page": 5, "last_page": 45},
-]
+# One property per config: its name, the ARIS filter that finds its reports, and the PDF pages the agent reads.
+PROPERTY = json.loads((Path(__file__).resolve().parent / "property.json").read_text(encoding="utf-8"))
+CORPUS = PROPERTY["reports"]
 REPORTS = [r["aris"] for r in CORPUS]
 
 TOKEN = re.compile(r"[a-z0-9]+(?:[.\-][a-z0-9]+)*")

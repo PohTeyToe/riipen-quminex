@@ -1,5 +1,5 @@
 import { Link } from '../router'
-import { corpus, corpusPages, index, locationSummary, longDate, model, run } from '../data/core'
+import { corpus, corpusPages, fields, index, locationSummary, longDate, model, run } from '../data/core'
 import { LINKS } from '../links'
 import { ExternalIcon } from '../components/Icons'
 import scoresJson from '../../data/eval/scores.json'
@@ -13,27 +13,32 @@ const proposed = run.claims_accepted + run.claims_rejected
 const words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
 const say = (n: number) => words[n] ?? String(n)
 
+// What the reports' own tables settle, straight from the card's data, so the walkthrough never says more than it.
+const intervalParts = fields.flatMap((f) => (f.parts ?? []).filter((p) => p.rule === 'interval'))
+const labSettled = intervalParts.flatMap((p) => p.groups.filter((g) => g.settled_by && g.disagree_on?.some((w) => w !== 'width')))[0]
+const labChecked = intervalParts.reduce((n, p) => n + (p.lab_summary?.checked ?? 0), 0)
+const labMatch = intervalParts.reduce((n, p) => n + (p.lab_summary?.match ?? 0), 0)
+const labPart = intervalParts.find((p) => p.groups.includes(labSettled ?? p.groups[0]))
+
 const STEPS = [
-  {
-    to: '/demo',
-    shot: '/shots/summary.png',
-    alt: 'The agent\'s summary at the top of the property card: numbered sentences, each followed by the source chips it cites.',
-    body: (
-      <>
-        <strong>Read the summary at the top of the card.</strong> A second session wrote it from the card alone. Every number in it is in a claim it cites, and a
-        sentence that touches a disagreement has to cite every side. Click a source chip to see the quote.
-      </>
-    ),
-  },
   {
     to: '/demo#location',
     shot: '/shots/location.png',
-    alt: 'The Location row on the property card: two groups side by side marked Sources disagree, with the 62 km code line under them.',
+    alt: 'The Location row on the property card: two sides marked Sources disagree, the one most pages give marked Backed by the drill collars, and the drill collar line under them.',
     body:
       loc.state === 'disagree' ? (
         <>
           <strong>Open Location.</strong> One report's title page puts the work about {Math.round(loc.km ?? 0)} km west of where {loc.restPages} other pages, from all{' '}
-          {say(loc.restReports)} reports, put it. That includes the same report's own cover page. You see both sides and the page each came from.
+          {say(loc.restReports)} reports, put it.{' '}
+          {loc.settled ? (
+            <>
+              Code settles it with the reports' own drill collar tables: all {loc.settled.collars} holes drilled in 2022 and 2023 sit within{' '}
+              {loc.settled.farthest_km} km of those pages and at least {Math.round(loc.settled.other_km ?? 0)} km from the title page.
+            </>
+          ) : (
+            'You see both sides and the page each came from.'
+          )}{' '}
+          Click any value for its quote and its page on BC's ARIS archive.
         </>
       ) : (
         <>
@@ -41,13 +46,29 @@ const STEPS = [
         </>
       ),
   },
+  ...(labSettled?.settled_by && labPart
+    ? [
+        {
+          to: `/demo#${labPart.id.replace('.', '-')}-${(labSettled.row ?? '').replace('c-', '')}`,
+          shot: '/shots/lab.png',
+          alt: 'A drill interval where two pages of one report give different copper, the side the lab assays back marked, and the lab result under them.',
+          body: (
+            <>
+              <strong>Open the lab check on {labSettled.hole}.</strong> {labSettled.settled_by.line} Code checks every claimed interval the assays reach the
+              same way: {labMatch} of {labChecked} match.
+            </>
+          ),
+        },
+      ]
+    : []),
   {
-    to: loc.lone ? `/demo?claim=${loc.lone.claims[0]}#location` : '/demo#location',
-    shot: '/shots/panel.png',
-    alt: 'The side panel for one value: the quote highlighted in its excerpt, the check result and a link to the page on ARIS.',
+    to: '/demo',
+    shot: '/shots/summary.png',
+    alt: "The agent's summary at the top of the property card: numbered sentences, each followed by the source chips it cites.",
     body: (
       <>
-        <strong>Click any value.</strong> You get the exact quote, a link to that page on BC's ARIS archive and the tool calls that produced it.
+        <strong>Read the summary at the top of the card.</strong> A second session wrote it from the card alone. Every number in it is in a claim or code line
+        it cites, and a sentence that touches a disagreement cites every side. Where its words go past its quotes, a note says so.
       </>
     ),
   },
@@ -74,7 +95,7 @@ export default function Walkthrough() {
       <main id="main" className="walk">
         <header className="walk-head">
           <h1>Iron Lake property file</h1>
-          <p className="walk-sub">A small track 1 agent for Quminex's Riipen project, run on public BC assessment reports.</p>
+          <p className="walk-sub">A track 1 agent for Quminex's Riipen project, run on public BC assessment reports, with code that checks every value it finds.</p>
           <div className="walk-actions">
             <Link to="/demo" className="button is-primary">
               Open the property file
@@ -93,14 +114,14 @@ export default function Walkthrough() {
 
         <div className="prose">
           <p>
-            Your Riipen brief asks for property evaluations built from technical reports, scored on accuracy and provenance. This is a small track 1 version on public data: an
-            agent read {say(corpus.reports.length)} BC assessment reports on the Iron Lake property, {corpusPages} pages in all, and every line it wrote points back to a
-            quoted page.
+            Your Riipen brief asks for property evaluations built from technical reports, scored on accuracy and provenance, with results that are explainable and
+            testable. This is track 1 on public data: an agent read {say(corpus.reports.length)} BC assessment reports on the Iron Lake property, {corpusPages} pages in all,
+            and every line it wrote points back to a quoted page.
           </p>
           <p>
             The agent has four tools: search the pages, open a page, propose a claim with a quote, or say "Not in these sources". Code checks every quote against the page it
-            cites and decides where reports disagree. A second session reads only the resulting card and writes a short evaluation, and code keeps a sentence only if its
-            numbers are in what it cites. A 15-question eval scores the run and lists what it got wrong.
+            cites and decides where reports disagree. Then it reads the reports' own drill tables, the hole collars and the lab assays, to say which number they back. A
+            second session reads only the resulting card and writes a short evaluation. A 15-question eval scores the run and lists what it got wrong.
           </p>
         </div>
 
@@ -141,33 +162,54 @@ export default function Walkthrough() {
               with three tools: read the card, read a field, propose a sentence. Nobody edited its {summaryRun.sentences.length} sentences.
             </li>
             <li>
-              <strong>The eval numbers, from that same run.</strong> Claude drafted the 15 questions and answers from the pages before the run, and Codex (
-              <span className="mono">gpt-6.1-sol</span>) checked them against the pages. Claude also listed the points the summary should make before it ran. A geologist hasn't checked any of it yet.
+              <strong>The drill tables.</strong> The collar and assay tables in the same reports, including appendix pages the agent never reads. Code reads them itself
+              and uses them only to settle or check what the agent claimed.
+            </li>
+            <li>
+              <strong>The eval numbers, from that same run.</strong> I had Claude write the 15 questions and expected answers from the pages before the run, then had Codex (
+              <span className="mono">gpt-6.1-sol</span>) check each one against its page without seeing the agent. The points the summary should make were set the same
+              way, before it ran. A geologist hasn't checked any of it yet.
             </li>
             <li>
               <strong>Not here:</strong> NI 43-101 or JORC reports, which your brief names. I used BC assessment reports because they're public and I can link every page.
-              There's no geological interpretation either. Every value on the card is a quote, and the summary only restates the claims it cites.
+              There's no geological interpretation either. Every value on the card is a quote or a number code worked out from the reports' own tables.
             </li>
           </ul>
 
           <h2>Why Iron Lake</h2>
           <p>
-            It has a long public record: {index.count} reports from {say(index.operators)} operators since {index.years[0]}, with drilling in 2022 and 2023. The same pipeline
-            can point at any property you pick.
+            It has a long public record: {index.count} reports from {say(index.operators)} operators since {index.years[0]}, with drilling in 2022 and 2023 and the drill
+            tables to check it against. The property is one config file: its name, the ARIS filter that finds its reports and the pages to read. Another property needs
+            its own file and its own eval questions.
           </p>
 
-          <p className="byline">
-            I'm Abdallah Safi, a 4th-year Computer Engineering student at TMU. At JobJoy this spring I built an extraction pipeline with retrieval, evidence checks and
-            deterministic scoring. It reached 94% recall against the expert's picks the first time we measured it.{' '}
-            <a className="text-link" href={LINKS.github} target="_blank" rel="noopener noreferrer">
-              GitHub
-              <ExternalIcon />
-            </a>{' '}
-            <a className="text-link" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
-              LinkedIn
-              <ExternalIcon />
-            </a>
-          </p>
+          <div className="byline">
+            <p>
+              I'm Abdallah Safi, Computer Engineering at TMU. I'm the lead developer on{' '}
+              <span className="nowrap">
+                <a className="text-link" href="https://www.mydocuflow.ca" target="_blank" rel="noopener noreferrer">
+                  MyDocuFlow
+                  <ExternalIcon />
+                </a>
+                ,
+              </span>{' '}
+              the AI paperwork app a Calgary real estate brokerage, MaxWell Canyon Creek, runs its live deals on. I run my own AI dev team on it: Claude agents build,
+              Codex agents review, a separate agent certifies each release, and I make the calls. <strong>24 certified releases in 3 weeks.</strong> This demo was
+              built the same way: Claude agents built it and Codex reviewed every round, under rules I set.
+            </p>
+            <p>
+              BESI hired me back for a second term. There I prototyped an AI hiring assessment that rejects any evidence quote not found word for word, the rule this demo's
+              checker starts from.{' '}
+              <a className="text-link" href={LINKS.github} target="_blank" rel="noopener noreferrer">
+                GitHub
+                <ExternalIcon />
+              </a>{' '}
+              <a className="text-link" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">
+                LinkedIn
+                <ExternalIcon />
+              </a>
+            </p>
+          </div>
         </div>
       </main>
       <footer className="footer">

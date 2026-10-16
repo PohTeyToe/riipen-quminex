@@ -218,7 +218,7 @@
   "2026-10-15T18:36:22Z"
  ],
  "full_runs": 2,
- "full_runs_note": "Run 1 showed the checker throwing out real coordinate quotes and code flagging two false disagreements, so I fixed those, froze everything again and reran all 27 sessions; every number on the site comes from run 2.",
+ "full_runs_note": "Run 1 showed two bugs in the checks, not in the agent: the checker threw out real coordinate quotes, and code flagged two disagreements that weren't. I fixed both and ran the agent again. Every number on the site comes from the second run.",
  "first_run": {
   "run": "2026-10-15-r1",
   "proposed": 423,
@@ -324,9 +324,11 @@
   "60"
  ],
  "post_processing_hashes": {
-  "rules.py": "37016e4967007126c19ffa3a27f3bb91a6db2a8e149b7849fff50979111f6ec8",
-  "score.py": "ae1d0f3454542e8ab5793cafb5c104170b06dcb33c006cc576d8fc9290bb19c8",
-  "build_data.py": "1e1c5908c1725b24bf93b7299cfe105218c077f799a9b85b0bd7034cbadd7ce3"
+  "rules.py": "bf599830911f5e8c345f37e347dbb4da3a35f154c1f7c8852866f1ba780546f6",
+  "score.py": "75ad9cdd686f718d436716d48d5aab6940e3fd0b83c260ed51ca9a7ceb1a8e53",
+  "build_data.py": "8314043dfb731e249e3eded3d538ebe9a179c54ad2b2fc153c73036c92d24d2c",
+  "shipped.py": "c8c299c3301448ca397a3441920cb27da150be544001efcd925f2d6fa26392d7",
+  "extract_tables.py": "6c0efc6f283e6918f118ee604be37e428877d0ce9cdbb242ec1e07222af1e5fc"
  },
  "changes_after_run_2": [
   {
@@ -376,6 +378,65 @@
   {
    "what": "The summary prompt no longer asks for \"the best\" drill results, and it tells the session to name a source by ARIS number and page instead of calling it a cover or title page. The summary session ran again on the final card.",
    "why": "The first summary session (2026-10-15-s1) called two intervals the best, which the report doesn't, and called 36807 p1 a cover page, though 36807's cover page agrees with the other reports. The first word came from the prompt; the second went past the quotes. The points the summary should make didn't change between the two sessions."
+  },
+  {
+   "what": "Code reads the reports' own drill tables and uses them to settle disagreements: the collar tables (where each hole is and how deep it went) and the lab assay tables (each sample's depths and results). The drill collars settle Location and Map sheet, the 2023 collar table settles the 2023 total, and the lab assays settle the IL-22-011 width and the IL-23-25 copper. The IL-22-20 row, whose width misses its own depths, now shows its lab sample. Every claimed interval the assays reach is checked against them.",
+   "why": "Review: every disagreement code found was left open, so a geologist would still ask which number to use. The tables were already in the reports. The assay appendices are outside the pages the agent reads, so code reads those pages for this alone.",
+   "files": [
+    "agent/extract_tables.py",
+    "agent/rules.py",
+    "agent/build_data.py"
+   ]
+  },
+  {
+   "what": "Code also reads every map sheet label in the reports (NTS or BCGS with the sheet right after it) and adds the pages no claim covers. 36807 p1's 093N043 is now on the card; its page is a scan, so it counts only after a check of the page image.",
+   "why": "No session claimed 36807 p1's map sheet, so the card showed 093N on one page and the summary repeated that.",
+   "files": [
+    "agent/rules.py",
+    "agent/build_data.py",
+    "data/image_checks.json"
+   ]
+  },
+  {
+   "what": "The checker got stricter again: an interval's hole must be the one the quote names for its depths; a value's unit must follow its number or head its column; a bound written in words (\"less than 10%\") never matches the number alone; and an element's name binds only to a number in its own clause.",
+   "why": "Review showed a row's grades passing under the hole of the row above, 5,001.30 km passing for 5,001.30 m, and 10% passing for \"less than 10%\". Every claim from the run was checked again: none changed.",
+   "files": [
+    "agent/checker.py"
+   ]
+  },
+  {
+   "what": "The disagreement rules compare each grade as the range it allows, so a value below detection now disagrees with one clearly above its limit. A claim that leaves out the disputed grade takes no side. Lengths are compared in metres. A field where code could read no claim reads \"Quotes, not compared\".",
+   "why": "Review: <10 ppb and 100 ppb read as agreeing, a claim without copper joined both sides of a copper disagreement, and 5,001.30 m and 5,001.30 km fell in one group. No field state on the card changed.",
+   "files": [
+    "agent/rules.py",
+    "agent/build_data.py"
+   ]
+  },
+  {
+   "what": "The scorer counts an expected grade only next to its own element, keeps a number's bound (10 is not <10), and treats a report number with a unit after it (41800 ppb) as a value.",
+   "why": "Review: swapping the Cu and Ni grades in an answer still passed. No verdict changed.",
+   "files": [
+    "agent/score.py",
+    "agent/rules.py"
+   ]
+  },
+  {
+   "what": "The count of what the site ships now covers every file the site imports, and counts a passage the Tech-X reports repeat against each of them. Excerpts are planned across all pages at once, so no page ships more than half its text unless its quotes alone do. Search contexts and rejected quotes the site never shows no longer ship.",
+   "why": "Review: the old count left out search contexts, rejected quotes and gold quotes, so the published shares were low. Counting copies across reports found more: the same summary passage shipped from three reports.",
+   "files": [
+    "agent/shipped.py",
+    "agent/build_data.py",
+    "data/shipped.json"
+   ]
+  },
+  {
+   "what": "The summary ran again on the new card (2026-10-15-s4). Its prompt now lets it say which side the reports' tables back, citing the code line, and never pick a side itself. Three points were added to the summary gold first, for what the tables settle.",
+   "why": "The card changed. A run on the card before the map sheet labels were added (s3) was set aside unused, since it said only 34595 p1 gives 093N.",
+   "files": [
+    "agent/prompts/summary.md",
+    "data/eval/summary_gold.json",
+    "data/eval/summary_review.json"
+   ]
   }
  ],
  "recheck": {

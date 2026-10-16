@@ -1,33 +1,7 @@
 {
  "max_chars": 400,
  "page_share": 0.5,
- "note": "Each claim ships at most 400 characters of its page: the quote, then a little context if there is room. A longer quote is cut to the part around its value. If a page's claims together would ship more than 50% of its text, context goes first, then long text quotes shrink to their value.",
- "pages_over_share": [
-  {
-   "aris": 40980,
-   "page": 9,
-   "share": 0.51
-  },
-  {
-   "aris": 40980,
-   "page": 96,
-   "share": 0.59
-  },
-  {
-   "aris": 41800,
-   "page": 10,
-   "share": 0.5
-  }
- ],
- "report_share": {
-  "34595": 0.068,
-  "36430": 0.042,
-  "36807": 0.063,
-  "38640": 0.102,
-  "40980": 0.099,
-  "41327": 0.245,
-  "41800": 0.233
- },
+ "note": "Each claim ships at most 400 characters of its page: the quote, then a little context if there is room. A longer quote is cut to the part around its value. If the site would ship more than 50% of a page's text, counting every copy of its words in any file the site ships, context goes first, then long text quotes shrink to their value. data/shipped.json has the counts.",
  "excerpts": {
   "c-0012": {
    "text": "MINING DIVISION: Clinton",
@@ -72,11 +46,13 @@
    ]
   },
   "c-0055": {
-   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
+   "text": "hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
    "highlight": [
     0,
-    205
-   ]
+    183
+   ],
+   "quote_cut": true,
+   "quote_chars": 206
   },
   "c-0206": {
    "text": "Iron Lake covers a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to a slightly older granodiorite batholith that has been determined to be Upper Triassic Early Jurassic",
@@ -135,47 +111,55 @@
    ]
   },
   "c-0072": {
-   "text": "The Iron Lake Project, located in south central British Columbia, is a regionally distinct copper, gold, platinum group elements and nickel project hosted in an ultramafic-mafic intrusion within the Quesnel Terrane",
+   "text": "in south central British Columbia, is a regionally distinct copper, gold, platinum group elements and nickel project hosted in an ultramafic-mafic intrusion within the Quesnel",
    "highlight": [
     0,
-    214
-   ]
+    175
+   ],
+   "quote_cut": true,
+   "quote_chars": 215
   },
   "c-0073": {
-   "text": "The first being disseminated sulfide with economically significant values of copper, gold, platinum and palladium; and the second being massive sulfide with economically significant values in copper, nickel and cobalt",
+   "text": "of copper, gold, platinum and palladium; and the second being massive sulfide with economically significant values in copper, nickel and cobalt",
    "highlight": [
     0,
-    217
-   ]
+    143
+   ],
+   "quote_cut": true,
+   "quote_chars": 218
   },
   "c-0205": {
-   "text": "Iron Lake covers a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to a slightly older granodiorite batholith that has been determined to be Upper Triassic Early Jurassic. Field relationships support the interpretation that the mafic to ultramafic body, named the Iron Lake Complex, intrudes the granodiorite batholith and presumably also the surrounding volcanic",
+   "text": "Iron Lake covers a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to a slightly older granodiorite batholith that has been determined to be Upper",
    "highlight": [
     0,
-    395
+    178
    ],
    "quote_cut": true,
    "quote_chars": 432
   },
   "c-0432": {
-   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
+   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel",
    "highlight": [
     0,
-    205
-   ]
+    197
+   ],
+   "quote_cut": true,
+   "quote_chars": 206
   },
   "c-0433": {
-   "text": "Targets from both surveys were drill tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected (e.g. 17 metre interval in excess of 60% sulfide in hole 05-03). Base metal values, while low to moderate in grade indicate that the sulfide mix includes copper, nickel and cobalt consistent with a magmatic sulfide model",
+   "text": "tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected (e.g. 17 metre interval in excess of 60%",
    "highlight": [
     0,
-    367
-   ]
+    150
+   ],
+   "quote_cut": true,
+   "quote_chars": 368
   },
   "c-0434": {
-   "text": "sulfide with economically significant values of copper, gold, platinum and palladium; and the second being massive sulfide with economically significant values in copper, nickel and cobalt. A hybrid of the two styles of mineralization with the full suite of elements is also possible. Sulfide minerals in the disseminated style of mineralization are accompanied with 10% to 40% magnetite",
+   "text": "nickel and cobalt. A hybrid of the two styles of mineralization with the full suite of elements is also possible. Sulfide minerals in the disseminated style of mineralization are accompanied with 10% to 40% magnetite",
    "highlight": [
     0,
-    387
+    216
    ],
    "quote_cut": true,
    "quote_chars": 513
@@ -195,17 +179,17 @@
    ]
   },
   "c-0328": {
-   "text": "12,590 hectares, is located in the Clinton Mining Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House at latitude 51° 57’N longitude l20°54’W (UTM 645500E 575700N). The Iron Lake property is comprised of 24 mineral claims owned 100% by Eastfield Resources Ltd. subject to a 1.5% NSR (reducible to 0.5%). The following",
+   "text": "at latitude 51° 57’N longitude l20°54’W",
    "highlight": [
-    179,
-    218
+    0,
+    39
    ]
   },
   "c-0329": {
-   "text": "the Clinton Mining Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House at latitude 51° 57’N longitude l20°54’W (UTM 645500E 575700N). The Iron Lake property is comprised of 24 mineral claims owned 100% by Eastfield Resources Ltd. subject to a 1.5% NSR (reducible to 0.5%). The following table details claim information:",
+   "text": "UTM 645500E 575700N",
    "highlight": [
-    189,
-    208
+    0,
+    19
    ]
   },
   "c-0042": {
@@ -216,10 +200,10 @@
    ]
   },
   "c-0441": {
-   "text": "for the Iron Lake property and staked the area of the Iron Lake occurrence in February 2000. In October 2000 Eastfield, while investigating soil palladium anomalies from the 1989 soil survey, discovered mineralized olivine-pyroxenite rubble containing significant disseminated bornite and chalcopyrite. Two samples were collected from the rubble field with the first sample grading 0.59% Cu, 0.04%",
+   "text": "In October 2000 Eastfield, while investigating soil palladium anomalies from the 1989 soil survey, discovered mineralized olivine-pyroxenite rubble containing significant disseminated bornite and chalcopyrite",
    "highlight": [
-    93,
-    301
+    0,
+    208
    ]
   },
   "c-0442": {
@@ -251,19 +235,19 @@
    ]
   },
   "c-0435": {
-   "text": "intercept of 1.2 metres was obtained in the hole targeting the first electromagnetic anomaly and an aggregate intercept of 6.1 metres of massive sulfide was obtained (within a 17-metre interval that was estimated to consist of greater than 60% sulfide) in the hole targeting the second electromagnetic anomaly. The massive sulfide intercepts were largely pyrrhotite with lesser chalcopyrite",
+   "text": "that was estimated to consist of greater than 60% sulfide) in the hole targeting the second electromagnetic anomaly. The massive sulfide intercepts were largely pyrrhotite with lesser chalcopyrite",
    "highlight": [
     0,
-    390
+    196
    ],
    "quote_cut": true,
    "quote_chars": 408
   },
   "c-0436": {
-   "text": "This hole intersected an interval of disseminated mineralization anomalous in nickel with values to a maximum of 956 ppm Ni over 2.5 metre sample intervals",
+   "text": "is believed to be the important lithology in hosting the platinum group mineralization discovered in rubble in 2000. This hole intersected an interval of disseminated mineralization anomalous in nickel with values to a maximum of 956 ppm Ni over 2.5 metre sample intervals and ended in an interval of anomalous platinum and palladium content (69 ppb Pt and 68 ppb Pd). In 2006, Argent completed",
    "highlight": [
-    0,
-    155
+    117,
+    272
    ]
   },
   "c-0437": {
@@ -274,17 +258,19 @@
    ]
   },
   "c-0116": {
-   "text": "Geologically, the Iron Lake property is located within the accreted Quesnel terrane, a narrow, north north-westerly trending disrupted but nearly continuous belt from the southern to northern provincial boundaries",
+   "text": "Geologically, the Iron Lake property is located within the accreted Quesnel terrane, a narrow, north north-westerly trending disrupted but nearly continuous belt",
    "highlight": [
     0,
-    213
-   ]
+    161
+   ],
+   "quote_cut": true,
+   "quote_chars": 214
   },
   "c-0117": {
-   "text": "The oldest rocks in the property area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic Early Jurassic Schoolhouse Lake Unit, monzonite and granodiorite, forms the predominant phase of the Takomkame batholith in this area. The Takomkane Suite has intruded the Nicola Group rocks and the Iron",
+   "text": "area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic Early Jurassic Schoolhouse Lake Unit,",
    "highlight": [
     0,
-    390
+    191
    ],
    "quote_cut": true,
    "quote_chars": 479
@@ -336,55 +322,65 @@
    "quote_chars": 473
   },
   "c-0122": {
-   "text": "The Takomkame Batholithic rocks on the property, although locally well exposed are also extensively till covered in much of the property. Lithology is dominantly granodiorite and varies from equigranular to weakly porphyritic in texture. Mafic minerals are dominated by hornblende with lesser biotite. Weak sheeted quartz stockwork veining occurs locally",
+   "text": "are also extensively till covered in much of the property. Lithology is dominantly granodiorite and varies from equigranular to weakly porphyritic in",
    "highlight": [
     0,
-    354
-   ]
+    149
+   ],
+   "quote_cut": true,
+   "quote_chars": 355
   },
   "c-0123": {
-   "text": "Near the northwest corner of the ultramafic unit Schiaizza notes hornblende pyroxenite, hornblende-feldspar pyroxenite, gabbro and diorite occur as parallel sheets defined partly by modal layering and partly by dikes, giving some evidence of magmatic layering",
+   "text": "pyroxenite, gabbro and diorite occur as parallel sheets defined partly by modal layering and partly by dikes, giving some evidence of magmatic layering",
    "highlight": [
     0,
-    259
-   ]
+    151
+   ],
+   "quote_cut": true,
+   "quote_chars": 260
   },
   "c-0427": {
-   "text": "has also identified gold, platinum and palladium mineralization (plus minor nickel and semi-massive magnetite) associated with the complex. The observed opaque minerals in order of abundance are magnetite, pyrite, hematite, pyrrhotite, chalcopyrite and bornite. Two styles of mineralization are currently the focus of exploration in the Iron Lake Ultramafic Intrusive Complex; the first being",
+   "text": "The observed opaque minerals in order of abundance are magnetite, pyrite, hematite, pyrrhotite, chalcopyrite and bornite",
    "highlight": [
-    140,
-    260
+    0,
+    120
    ]
   },
   "c-0428": {
-   "text": "Iron Lake Mafic-Ultramafic Complex) Exploration of the Iron Lake property area in the mid 1970’s (within the Iron Lake Ultramafic Intrusive Complex) identified low grade copper mineralization. Ongoing work by Eastfield has also identified gold, platinum and palladium mineralization (plus minor nickel and semi-massive magnetite) associated with the complex. The observed opaque minerals in order",
-   "highlight": [
-    36,
-    357
-   ]
-  },
-  "c-0429": {
-   "text": "Two styles of mineralization are currently the focus of exploration in the Iron Lake Ultramafic Intrusive Complex; the first being disseminated sulfides containing copper, gold and platinum group metals similar to the mineralization which has been found as float in the vicinity of 645784E, 5757070N (NAD 83) and the second as massive sulfide mineralization discovered 250 metres to the",
+   "text": "1970’s (within the Iron Lake Ultramafic Intrusive Complex) identified low grade copper mineralization. Ongoing work by Eastfield has also identified gold,",
    "highlight": [
     0,
-    386
+    154
+   ],
+   "quote_cut": true,
+   "quote_chars": 322
+  },
+  "c-0429": {
+   "text": "Two styles of mineralization are currently the focus of exploration in the Iron Lake Ultramafic Intrusive Complex; the first being disseminated sulfides containing copper, gold and",
+   "highlight": [
+    0,
+    180
    ],
    "quote_cut": true,
    "quote_chars": 429
   },
   "c-0430": {
-   "text": " 13 occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser olivine. The olivine, which varies between 15-20%, has been partially altered to serpentinite along crystal edges. Approximately 3-4% magnetite is scattered throughout and forms rims around sulfide grains in and around olivine. Four diamond drill holes",
+   "text": "occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser olivine. The olivine, which varies between 15-20%,",
    "highlight": [
-    4,
-    369
-   ]
+    0,
+    189
+   ],
+   "quote_cut": true,
+   "quote_chars": 366
   },
   "c-0431": {
-   "text": "sulfide grains in and around olivine. Four diamond drill holes (05-IL- 02 & 03 and 06-IL-05 & 06) have intersected massive sulfide mineralization. Observations from this analysis indicate that copper, nickel, gold, palladium and platinum are all positively correlated in the disseminated style of mineralization but not so much so in the massive sulfide style. Cobalt, which is more prevalent in the",
+   "text": "Four diamond drill holes (05-IL- 02 & 03 and 06-IL-05 & 06) have intersected massive sulfide mineralization. Observations from this analysis indicate that copper, nickel, gold, palladium and platinum are all positively",
    "highlight": [
-    38,
-    359
-   ]
+    0,
+    218
+   ],
+   "quote_cut": true,
+   "quote_chars": 322
   },
   "c-0306": {
    "text": "In 2004 Fugro Airborne Surveys Corp., on contract to Argent Mining Corp., completed 603 line kilometers of DIGHEM multicoil, multifrequency electromagnetic survey supplemented with a high sensitivity magnetometer survey",
@@ -408,10 +404,10 @@
    ]
   },
   "c-0440": {
-   "text": "05-I-03 17.0 metres of massive sulfide (32.9- 49.9 m; (≈60% MS interspersed with pyroxenite",
+   "text": "Intercepts Hole # Description Cu ppm Ni ppm Co ppm Pd+Pt ppb Fe % Mg % 05-I-02 1.4 metres of massive sulfide (75.2-76.6 m). 6,635 299 1,349 33 47.5 0.5 05-I-03 17.0 metres of massive sulfide (32.9- 49.9 m; (≈60% MS interspersed with pyroxenite). 3,427 362 270 24 23.7 1.1 Incl. 1.4 metres of massive sulfide (47.8- 49.2 m). 9,525 927 1,298 5 55.7 0.1 05-I-04 Elevated Ni to 0.10% Ni per 2.5 m",
    "highlight": [
-    0,
-    91
+    152,
+    243
    ]
   },
   "c-0307": {
@@ -501,25 +497,31 @@
    ]
   },
   "c-0061": {
-   "text": "The Iron Lake Project is located in south central British Columbia 45 kilometers northeast of the City of 100 Mile House and is host to gold, copper and platinum group element mineralization",
+   "text": "is located in south central British Columbia 45 kilometers northeast of the City of 100 Mile House and is host to gold, copper and platinum group element mineralization",
    "highlight": [
     0,
-    190
-   ]
+    168
+   ],
+   "quote_cut": true,
+   "quote_chars": 191
   },
   "c-0062": {
-   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
+   "text": "hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
    "highlight": [
     0,
-    205
-   ]
+    183
+   ],
+   "quote_cut": true,
+   "quote_chars": 206
   },
   "c-0063": {
-   "text": "Magmatic disseminated sulfide with economically significant values of copper, gold, platinum and palladium is known as is massive sulfide with economically significant values in copper, nickel and cobalt",
+   "text": "values of copper, gold, platinum and palladium is known as is massive sulfide with economically significant values in copper, nickel and cobalt",
    "highlight": [
     0,
-    203
-   ]
+    143
+   ],
+   "quote_cut": true,
+   "quote_chars": 204
   },
   "c-0132": {
    "text": "The property is underlain by a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to the slightly older granodiorite Takomkane Batholith that has been determined",
@@ -531,40 +533,44 @@
    "quote_chars": 503
   },
   "c-0462": {
-   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
+   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel",
    "highlight": [
     0,
-    205
-   ]
+    197
+   ],
+   "quote_cut": true,
+   "quote_chars": 206
   },
   "c-0463": {
-   "text": "Targets from both surveys were drill tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected, including an aggregate of 6.1 metres of massive sulfide intervals within a 17 metre section which contained >60% sulfide in hole 05‐03",
+   "text": "tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected, including an aggregate of 6.1 metres of",
    "highlight": [
     0,
-    282
-   ]
+    150
+   ],
+   "quote_cut": true,
+   "quote_chars": 283
   },
   "c-0464": {
-   "text": "of copper, gold, platinum and palladium is known as is massive sulfide with economically significant values in copper, nickel and cobalt. A hybrid of the two styles of mineralization with the full suite of elements is also possible. A third mineralization style, auriferous quartz veins, was the target of the 2016 exploration on a number of new claims staked in the southeast part of the area",
+   "text": "with the full suite of elements is also possible. A third mineralization style, auriferous quartz veins, was the target of the 2016 exploration on a number of new",
    "highlight": [
     0,
-    393
+    162
    ],
    "quote_cut": true,
    "quote_chars": 558
   },
   "c-0332": {
-   "text": "acres), is located in the Clinton Mining Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House, centered at latitude 51° 57’N longitude l20°54’W (UTM 645500E 575700N). The Iron Lake property is comprised of 21 mineral claims owned 100% by Eastfield Resources Ltd., subject to a 2.5% NSR. Eastfield may reduce this to",
+   "text": "centered at latitude 51° 57’N longitude l20°54’W",
    "highlight": [
-    171,
-    219
+    0,
+    48
    ]
   },
   "c-0333": {
-   "text": "Mining Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House, centered at latitude 51° 57’N longitude l20°54’W (UTM 645500E 575700N). The Iron Lake property is comprised of 21 mineral claims owned 100% by Eastfield Resources Ltd., subject to a 2.5% NSR. Eastfield may reduce this to 1.25% with a payment of C$1.5 million.",
+   "text": "UTM 645500E 575700N",
    "highlight": [
-    187,
-    206
+    0,
+    19
    ]
   },
   "c-0354": {
@@ -610,18 +616,22 @@
    ]
   },
   "c-0443": {
-   "text": "The massive sulfide intercepts are located 250 metres south of the mineralized float in what is referred to as the Central Zone. The massive sulfide intercepts were largely pyrrhotite with lesser chalcopyrite",
+   "text": "sulfide intercepts are located 250 metres south of the mineralized float in what is referred to as the Central Zone. The massive sulfide intercepts were largely pyrrhotite with lesser chalcopyrite",
    "highlight": [
     0,
-    208
-   ]
+    196
+   ],
+   "quote_cut": true,
+   "quote_chars": 209
   },
   "c-0444": {
-   "text": "A massive sulfide intercept of 1.2 metres was obtained in the hole targeting the first electromagnetic anomaly (hole 05‐IL‐02). An aggregate intercept of 6.1 metres of massive sulfide was obtained in the hole targeting the second electromagnetic anomaly (05‐IL‐03), which occurred within a 17‐metre interval that was estimated to consist of greater than 60% sulfide",
+   "text": "A massive sulfide intercept of 1.2 metres was obtained in the hole targeting the first electromagnetic anomaly (hole 05‐IL‐02). An aggregate intercept of 6.1 metres of",
    "highlight": [
     0,
-    365
-   ]
+    167
+   ],
+   "quote_cut": true,
+   "quote_chars": 366
   },
   "c-0445": {
    "text": "the second hole was inadvertently drilled parallel to the strike of the conductor but did still intersect a narrow zone of massive sulfide",
@@ -645,31 +655,33 @@
    ]
   },
   "c-0131": {
-   "text": "Geologically, the Iron Lake property is located within the accreted Quesnel terrane; a narrow, north north‐westerly trending disrupted but nearly continuous belt that extends from the southern to northern provincial boundaries",
+   "text": "Geologically, the Iron Lake property is located within the accreted Quesnel terrane; a narrow, north north‐westerly trending disrupted but nearly continuous belt",
    "highlight": [
     0,
-    226
-   ]
+    161
+   ],
+   "quote_cut": true,
+   "quote_chars": 227
   },
   "c-0147": {
-   "text": "The shear zone was mapped as a contact between diorite to the east and feldspar porphyry to the west",
+   "text": "logging road. The showing is two centimetre shear zone which ran 74.9 g/t gold, 20.6ppm silver, >1% arsenic, 1835ppm copper and 235ppm antimony. The shear zone was mapped as a contact between diorite to the east and feldspar porphyry to the west. Anomalous gold and arsenic values were obtained from other parts of the property from outcrop and float, with gold values including 730 and 665ppb.",
    "highlight": [
-    0,
-    100
+    145,
+    245
    ]
   },
   "c-0288": {
-   "text": "Eastfield Resources acquired the claims in 1988 and carried out a ground geophysical programme which consisted of induced polarization (IP) and ground magnetics, as well as bulldozer trenching",
+   "text": "programmes were carried out in 1986 and 1986, and in 1987 two grids (“S” and “TR”) were established. Eastfield Resources acquired the claims in 1988 and carried out a ground geophysical programme which consisted of induced polarization (IP) and ground magnetics, as well as bulldozer trenching. A number of chargeability highs were obtained and local anomalous gold values were obtained from",
    "highlight": [
-    0,
-    192
+    101,
+    293
    ]
   },
   "c-0458": {
-   "text": "The high grade Cate Showing was discovered during this work on a newly constructed logging road. The showing is two centimetre shear zone which ran 74.9 g/t gold, 20.6ppm silver, >1% arsenic, 1835ppm copper and 235ppm antimony. The shear zone was mapped as a contact between diorite to the east and feldspar porphyry to the west",
+   "text": "abundant new rock exposures. The high grade Cate Showing was discovered during this work on a newly constructed logging road. The showing is two centimetre shear zone which ran 74.9 g/t gold, 20.6ppm silver, >1% arsenic, 1835ppm copper and 235ppm antimony. The shear zone was mapped as a contact between diorite to the east and feldspar porphyry to the west. Anomalous gold and arsenic values",
    "highlight": [
-    0,
-    328
+    29,
+    357
    ]
   },
   "c-0459": {
@@ -705,11 +717,13 @@
    ]
   },
   "c-0127": {
-   "text": "Near the northwest corner of the ultramafic unit hornblende pyroxenite, hornblende‐ feldspar pyroxenite, gabbro and diorite have been mapped by the BC Geological Survey as parallel sheets defined partly by modal layering and partly by dikes, giving some evidence of magmatic layering",
+   "text": "have been mapped by the BC Geological Survey as parallel sheets defined partly by modal layering and partly by dikes, giving some evidence of magmatic layering",
    "highlight": [
     0,
-    283
-   ]
+    159
+   ],
+   "quote_cut": true,
+   "quote_chars": 284
   },
   "c-0128": {
    "text": "in much of the property. The lithology of these rocks is dominantly granodiorite and varies from equigranular to weakly porphyritic in",
@@ -737,11 +751,13 @@
    ]
   },
   "c-0447": {
-   "text": "Historical work has discovered narrow sulfide veins containing gold values as high as 74.9 g/t and soil values as high as 12 g/t. The gold mineralization is hosted in feldspar porphyry and diorite intrusives",
+   "text": "Historical work has discovered narrow sulfide veins containing gold values as high as 74.9 g/t and soil values as high as 12 g/t. The gold mineralization is hosted in feldspar",
    "highlight": [
     0,
-    207
-   ]
+    175
+   ],
+   "quote_cut": true,
+   "quote_chars": 208
   },
   "c-0448": {
    "text": "areas of mineralization on the Iron Lake property including disseminated gold, platinum and palladium mineralization, magmatic massive sulfide in the Central Zone and auriferous quartz veins in the southeast part (Succour Lake area) of the property",
@@ -753,18 +769,22 @@
    "quote_chars": 437
   },
   "c-0449": {
-   "text": "Disseminated sulfide copper‐gold‐platinum group element mineralization is known from the central part of the property where olivine‐pyroxenite float containing significant disseminated bornite and chalcopyrite was discovered in 2000",
+   "text": "group element mineralization is known from the central part of the property where olivine‐pyroxenite float containing significant disseminated bornite and chalcopyrite was discovered in 2000",
    "highlight": [
     0,
-    232
-   ]
+    190
+   ],
+   "quote_cut": true,
+   "quote_chars": 233
   },
   "c-0450": {
-   "text": "The disseminated style of mineralization occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser olivine",
+   "text": "The disseminated style of mineralization occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser",
    "highlight": [
     0,
-    187
-   ]
+    179
+   ],
+   "quote_cut": true,
+   "quote_chars": 188
   },
   "c-0451": {
    "text": "Pyroxenite hosted massive sulfide was discovered in the 2005 drilling some 250 metres south of the aforementioned mineralized rubble, with additional intercepts obtained in 2006",
@@ -774,25 +794,31 @@
    ]
   },
   "c-0452": {
-   "text": "The strongest intercepts were obtained in the 2005 holes; 1.2 metres of massive sulfide from 05‐IL02 and an aggregate intercept of 6.1 metres across 17 metres in 05‐IL03. This 17 metre interval consisted a number of discrete massive sulfide beds within pyroxenite with strongly disseminated sulfides, locally to 60",
+   "text": "and an aggregate intercept of 6.1 metres across 17 metres in 05‐IL03. This 17 metre interval consisted a number of discrete massive sulfide beds within pyroxenite with strongly disseminated sulfides, locally to 60",
    "highlight": [
     0,
-    314
-   ]
+    213
+   ],
+   "quote_cut": true,
+   "quote_chars": 316
   },
   "c-0446": {
-   "text": "style of mineralization but not so much so in the massive sulfide style. Cobalt, which is more prevalent in the massive sulfide style of mineralization, is not as correlative in the disseminated style perhaps indicating that the disseminated and massive sulfide styles of mineralization are quite separate. Table 2. Rock Samples of Disseminated Mineralization ‐ Results Sample # Cu ppm Au",
+   "text": "in the massive sulfide style of mineralization, is not as correlative in the disseminated style perhaps indicating that the disseminated and massive sulfide styles of mineralization are quite separate",
    "highlight": [
-    73,
-    305
-   ]
+    0,
+    200
+   ],
+   "quote_cut": true,
+   "quote_chars": 233
   },
   "c-0453": {
-   "text": " 15 mostly pyrrhotite with lesser chalcopyrite. There are still a number of strong electromagnetic conductors from the airborne and ground electromagnetic surveys that have yet to be drill tested. Though the disseminated and massive sulfide mineralization occurrences occur close together, observations indicate that copper, nickel, gold, palladium and platinum are all positively correlated in the",
+   "text": "mostly pyrrhotite with lesser chalcopyrite. There are still a number of strong electromagnetic conductors from the airborne and ground electromagnetic surveys",
    "highlight": [
-    4,
-    195
-   ]
+    0,
+    158
+   ],
+   "quote_cut": true,
+   "quote_chars": 192
   },
   "c-0064": {
    "text": "Recent exploration at Iron Lake has been directed at the southeastern part of the area where porphyry copper and vein gold deposit models have been targeted",
@@ -851,10 +877,10 @@
    ]
   },
   "c-0295": {
-   "text": "10.1.3 Induced Polarization Surveys In 1972 a small area in the southern part of the current claims was surveyed by a junior company, Aragon Exploration Ltd. In 1973 Pickands Mather and Company completed some induced polarization surveying in the vicinity of Iron and Island Lakes",
+   "text": "float, was not included within the area of the UTEM survey. 10.1.3 Induced Polarization Surveys In 1972 a small area in the southern part of the current claims was surveyed by a junior company, Aragon Exploration Ltd. In 1973 Pickands Mather and Company completed some induced polarization surveying in the vicinity of Iron and Island Lakes. In more recent times (1991) 10.2 line kilometers of",
    "highlight": [
-    0,
-    280
+    60,
+    340
    ]
   },
   "c-0296": {
@@ -1005,25 +1031,31 @@
    ]
   },
   "c-0074": {
-   "text": "The Iron Lake Project is located in south central British Columbia 45 kilometers northeast of the City of 100 Mile House and is host to gold, copper and platinum group element mineralization",
+   "text": "is located in south central British Columbia 45 kilometers northeast of the City of 100 Mile House and is host to gold, copper and platinum group element mineralization",
    "highlight": [
     0,
-    190
-   ]
+    168
+   ],
+   "quote_cut": true,
+   "quote_chars": 191
   },
   "c-0075": {
-   "text": "Magmatic disseminated sulfide with economically significant values of copper, gold, platinum and palladium is known as is massive sulfide with economically significant values in copper, nickel and cobalt",
+   "text": "values of copper, gold, platinum and palladium is known as is massive sulfide with economically significant values in copper, nickel and cobalt",
    "highlight": [
     0,
-    203
-   ]
+    143
+   ],
+   "quote_cut": true,
+   "quote_chars": 204
   },
   "c-0076": {
-   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
+   "text": "hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
    "highlight": [
     0,
-    205
-   ]
+    183
+   ],
+   "quote_cut": true,
+   "quote_chars": 206
   },
   "c-0141": {
    "text": "The property is underlain by a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to the slightly older granodiorite Takomkane Batholith that has been determined",
@@ -1035,38 +1067,44 @@
    "quote_chars": 503
   },
   "c-0471": {
-   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel content",
+   "text": "The Iron Lake Complex hosts disseminated and massive sulfide mineralization of a probable magmatic source that is significant for its copper, gold, platinum, palladium and to a lesser extent nickel",
    "highlight": [
     0,
-    205
-   ]
+    197
+   ],
+   "quote_cut": true,
+   "quote_chars": 206
   },
   "c-0472": {
-   "text": "A hybrid of the two styles of mineralization with the full suite of elements is also possible. A third mineralization style, auriferous quartz veins, was the target of the 2016 exploration on a number of new claims staked in the southeast part of the area",
+   "text": "with the full suite of elements is also possible. A third mineralization style, auriferous quartz veins, was the target of the 2016 exploration on a number of new",
    "highlight": [
     0,
-    255
-   ]
+    162
+   ],
+   "quote_cut": true,
+   "quote_chars": 256
   },
   "c-0473": {
-   "text": "Targets from both surveys were drill tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected, including an aggregate of 6.1 metres of massive sulfide intervals within a 17 metre section which contained >60% sulfide in hole 05‐03",
+   "text": "tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected, including an aggregate of 6.1 metres of",
    "highlight": [
     0,
-    282
-   ]
+    150
+   ],
+   "quote_cut": true,
+   "quote_chars": 283
   },
   "c-0330": {
-   "text": "acres), is located in the Clinton Mining Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House, centered at latitude 51° 57’N longitude l20°54’W (UTM 645500E 575700N). The Iron Lake property is comprised of 21 mineral claims owned 100% by Eastfield Resources Ltd., subject to a 2.5% NSR. Eastfield may reduce this to",
+   "text": "centered at latitude 51° 57’N longitude l20°54’W",
    "highlight": [
-    171,
-    219
+    0,
+    48
    ]
   },
   "c-0331": {
-   "text": "Mining Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House, centered at latitude 51° 57’N longitude l20°54’W (UTM 645500E 575700N). The Iron Lake property is comprised of 21 mineral claims owned 100% by Eastfield Resources Ltd., subject to a 2.5% NSR. Eastfield may reduce this to 1.25% with a payment of C$1.5 million.",
+   "text": "UTM 645500E 575700N",
    "highlight": [
-    187,
-    206
+    0,
+    19
    ]
   },
   "c-0355": {
@@ -1077,10 +1115,10 @@
    ]
   },
   "c-0340": {
-   "text": "Ate as This map is a user generated static output from an Internet mapping site and is far general reference only. Data layers that appear on this map may or may not be accurate, current, or atherv.ise reliable. THIS MAP IS NOT TO BE USED FOR NAVIGATION. Printed using the Mineral Titles Online (MrO) application. Center: Scale: SRS: 51 °56'3\", -120°49'40\" 1 : 135,420 EPSG:3857 UTM Zone: 10 ",
+   "text": "Center: Scale: SRS: 51 °56'3\", -120°49'40",
    "highlight": [
-    314,
-    355
+    0,
+    41
    ]
   },
   "c-0044": {
@@ -1119,11 +1157,13 @@
    ]
   },
   "c-0478": {
-   "text": "A massive sulfide intercept of 1.2 metres was obtained in the hole targeting the first electromagnetic anomaly (hole 05‐IL‐02). An aggregate intercept of 6.1 metres of massive sulfide was obtained in the hole targeting the second electromagnetic anomaly (05‐IL‐03), which occurred within a 17‐metre interval that was estimated to consist of greater than 60% sulfide",
+   "text": "A massive sulfide intercept of 1.2 metres was obtained in the hole targeting the first electromagnetic anomaly (hole 05‐IL‐02). An aggregate intercept of 6.1 metres of",
    "highlight": [
     0,
-    365
-   ]
+    167
+   ],
+   "quote_cut": true,
+   "quote_chars": 366
   },
   "c-0479": {
    "text": "the second hole was inadvertently drilled parallel to the strike of the conductor but did still intersect a narrow zone of massive sulfide",
@@ -1161,17 +1201,17 @@
    ]
   },
   "c-0146": {
-   "text": "The shear zone was mapped as a contact between diorite to the east and feldspar porphyry to the west",
+   "text": "logging road. The showing is two centimetre shear zone which ran 74.9 g/t gold, 20.6ppm silver, >1% arsenic, 1835ppm copper and 235ppm antimony. The shear zone was mapped as a contact between diorite to the east and feldspar porphyry to the west. Anomalous gold and arsenic values were obtained from other parts of the property from outcrop and float, with gold values including 730 and 665ppb.",
    "highlight": [
-    0,
-    100
+    145,
+    245
    ]
   },
   "c-0287": {
-   "text": "Eastfield Resources acquired the claims in 1988 and carried out a ground geophysical programme which consisted of induced polarization (IP) and ground magnetics, as well as bulldozer trenching",
+   "text": "programmes were carried out in 1986 and 1986, and in 1987 two grids (“S” and “TR”) were established. Eastfield Resources acquired the claims in 1988 and carried out a ground geophysical programme which consisted of induced polarization (IP) and ground magnetics, as well as bulldozer trenching. A number of chargeability highs were obtained and local anomalous gold values were obtained from",
    "highlight": [
-    0,
-    192
+    101,
+    293
    ]
   },
   "c-0474": {
@@ -1182,10 +1222,10 @@
    ]
   },
   "c-0475": {
-   "text": "The high grade Cate Showing was discovered during this work on a newly constructed logging road. The showing is two centimetre shear zone which ran 74.9 g/t gold, 20.6ppm silver, >1% arsenic, 1835ppm copper and 235ppm antimony",
+   "text": "grids and across newly logged areas which provided abundant new rock exposures. The high grade Cate Showing was discovered during this work on a newly constructed logging road. The showing is two centimetre shear zone which ran 74.9 g/t gold, 20.6ppm silver, >1% arsenic, 1835ppm copper and 235ppm antimony. The shear zone was mapped as a contact between diorite to the east and feldspar",
    "highlight": [
-    0,
-    226
+    80,
+    306
    ]
   },
   "c-0476": {
@@ -1196,10 +1236,10 @@
    ]
   },
   "c-0135": {
-   "text": "The oldest rocks in the property area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit monzonite and granodiorite, forms the predominant phase of the Takomkane batholith in this area. The granodioritic Takomkane Suite has intruded the Nicola Group rocks",
+   "text": "area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit",
    "highlight": [
     0,
-    390
+    190
    ],
    "quote_cut": true,
    "quote_chars": 465
@@ -1232,48 +1272,58 @@
    "quote_chars": 488
   },
   "c-0139": {
-   "text": "Near the northwest corner of the ultramafic unit hornblende pyroxenite, hornblende‐ feldspar pyroxenite, gabbro and diorite have been mapped by the BC Geological Survey as parallel sheets defined partly by modal layering and partly by dikes, giving some evidence of magmatic layering",
+   "text": "have been mapped by the BC Geological Survey as parallel sheets defined partly by modal layering and partly by dikes, giving some evidence of magmatic layering",
    "highlight": [
     0,
-    283
-   ]
+    159
+   ],
+   "quote_cut": true,
+   "quote_chars": 284
   },
   "c-0140": {
-   "text": "Although locally well exposed, the Takomkane Batholithic rocks are also extensively till covered in much of the property. The lithology of these rocks is dominantly granodiorite and varies from equigranular to weakly porphyritic in texture. Mafic minerals are dominated by hornblende with lesser biotite",
+   "text": "in much of the property. The lithology of these rocks is dominantly granodiorite and varies from equigranular to weakly porphyritic in",
    "highlight": [
     0,
-    303
-   ]
+    134
+   ],
+   "quote_cut": true,
+   "quote_chars": 304
   },
   "c-0465": {
-   "text": "in the 1970’s identified low grade porphyry copper mineralization. Work since then has identified a number of areas of mineralization on the Iron Lake property including disseminated gold, platinum and palladium mineralization, magmatic massive sulfide in the Central Zone and auriferous quartz veins in the southeast part (Succour Lake area) of the property targeted in the 2016 programme",
+   "text": "areas of mineralization on the Iron Lake property including disseminated gold, platinum and palladium mineralization, magmatic massive sulfide in the Central Zone and auriferous quartz veins in the southeast part (Succour Lake area) of the property",
    "highlight": [
     0,
-    389
+    248
    ],
    "quote_cut": true,
    "quote_chars": 437
   },
   "c-0466": {
-   "text": "Disseminated sulfide copper‐gold‐platinum group element mineralization is known from the central part of the property where olivine‐pyroxenite float containing significant disseminated bornite and chalcopyrite was discovered in 2000",
+   "text": "group element mineralization is known from the central part of the property where olivine‐pyroxenite float containing significant disseminated bornite and chalcopyrite was discovered in 2000",
    "highlight": [
     0,
-    232
-   ]
+    190
+   ],
+   "quote_cut": true,
+   "quote_chars": 233
   },
   "c-0467": {
-   "text": "The disseminated style of mineralization occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser olivine",
+   "text": "The disseminated style of mineralization occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser",
    "highlight": [
     0,
-    187
-   ]
+    179
+   ],
+   "quote_cut": true,
+   "quote_chars": 188
   },
   "c-0468": {
-   "text": "Historical work has discovered narrow sulfide veins containing gold values as high as 74.9 g/t and soil values as high as 12 g/t. The gold mineralization is hosted in feldspar porphyry and diorite intrusives",
+   "text": "Historical work has discovered narrow sulfide veins containing gold values as high as 74.9 g/t and soil values as high as 12 g/t. The gold mineralization is hosted in feldspar",
    "highlight": [
     0,
-    207
-   ]
+    175
+   ],
+   "quote_cut": true,
+   "quote_chars": 208
   },
   "c-0470": {
    "text": "This 17 metre interval consisted a number of discrete massive sulfide beds within pyroxenite with strongly disseminated sulfides, locally to 60",
@@ -1283,11 +1333,13 @@
    ]
   },
   "c-0469": {
-   "text": " 15 mostly pyrrhotite with lesser chalcopyrite. There are still a number of strong electromagnetic conductors from the airborne and ground electromagnetic surveys that have yet to be drill tested. Though the disseminated and massive sulfide mineralization occurrences occur close together, observations indicate that copper, nickel, gold, palladium and platinum are all positively correlated in the",
+   "text": "mostly pyrrhotite with lesser chalcopyrite. There are still a number of strong electromagnetic conductors from the airborne and ground electromagnetic surveys",
    "highlight": [
-    4,
-    195
-   ]
+    0,
+    158
+   ],
+   "quote_cut": true,
+   "quote_chars": 192
   },
   "c-0486": {
    "text": " 16 Structurally hosted gold is the target of the current exploration in the southeast part of the Iron Lake property. The Cate Showing is a two centimetre shear zone with massive pyrite that has returned values as high as 74.9g/t gold and 20.6ppm silver. Resampling in 2016 by Eastfield verified the high values, with a result of 31.2g/t gold and 15.17g/t silver. Historic and recent rock sampling",
@@ -1304,10 +1356,10 @@
    ]
   },
   "c-0059": {
-   "text": "Starting in the late 1980’s, exploration at the Iron Lake project has predominantly focussed on magmatic gold and platinum group metal rich copper sulfides associated with ultramafic rocks",
+   "text": " 19 10. DISCUSSION: Starting in the late 1980’s, exploration at the Iron Lake project has predominantly focussed on magmatic gold and platinum group metal rich copper sulfides associated with ultramafic rocks. The geology of Iron Lake supports this model but also supports other styles of mineralization as a consequence of the project being located at a “geological triple point” where the",
    "highlight": [
-    0,
-    188
+    20,
+    208
    ]
   },
   "c-0060": {
@@ -1360,10 +1412,10 @@
    ]
   },
   "c-0282": {
-   "text": "10.1.3 Induced Polarization Surveys In 1972 a small area in the southern part of the current claims was surveyed by a junior company, Aragon Exploration Ltd. In 1973 Pickands Mather and Company completed some induced polarization surveying in the vicinity of Iron and Island Lakes",
+   "text": "float, was not included within the area of the UTEM survey. 10.1.3 Induced Polarization Surveys In 1972 a small area in the southern part of the current claims was surveyed by a junior company, Aragon Exploration Ltd. In 1973 Pickands Mather and Company completed some induced polarization surveying in the vicinity of Iron and Island Lakes. In more recent times (1991) 10.2 line kilometers of",
    "highlight": [
-    0,
-    280
+    60,
+    340
    ]
   },
   "c-0283": {
@@ -1409,31 +1461,31 @@
    ]
   },
   "c-0480": {
-   "text": "magnetic feature located to the east of the central area which hosts the disseminated and massive sulfide mineralization. Outcrop in this region is scarce but does include an area of pyrite +/‐ pyrrhotite bearing diorite developed as a borrow pit for road construction. Alteration exposed in this pit includes significant garnet in calcareous sediments indicating that skarning has occurred. The",
+   "text": "Outcrop in this region is scarce but does include an area of pyrite +/‐ pyrrhotite bearing diorite developed as a borrow pit for road construction",
    "highlight": [
-    122,
-    268
+    0,
+    146
    ]
   },
   "c-0481": {
-   "text": "This area justifies completing an induced polarization survey with porphyry copper mineralization being the target. In the Southeast part of the claims, soil and rock sampling in 2016 and 2017 identified numerous gold targets in limonite‐quartz‐sulfide altered structures. Historic results here include up to 12.4 grams per tonne gold in soil and up to 74.9 grams per tonne gold in select rock",
+   "text": "In the Southeast part of the claims, soil and rock sampling in 2016 and 2017 identified numerous gold targets in limonite‐quartz‐sulfide altered structures",
    "highlight": [
-    116,
-    271
+    0,
+    155
    ]
   },
   "c-0514": {
-   "text": "both located in the Central zone of the property. An opportunity currently exists for drill follow up to the massive sulfide discovery of 2005, initial drilling of another untested airborne conductor located to the north, as well as several discrete and well defined induced polarization anomalies outlined in 2011 and 2012 to the east and south. Additional opportunity was added to the project in",
+   "text": "An opportunity currently exists for drill follow up to the massive sulfide discovery of 2005, initial drilling of another untested airborne conductor located to the north, as well as several discrete and well defined induced polarization anomalies outlined in 2011 and 2012 to the east and south",
    "highlight": [
-    50,
-    345
+    0,
+    295
    ]
   },
   "c-0515": {
-   "text": "was added to the project in 2015 with the identification of a soil copper anomaly coincident with a 2004 airborne magnetic anomaly. This area justifies completing an induced polarization survey with porphyry copper mineralization being the target. In the Southeast part of the claims, soil and rock sampling in 2016 and 2017 identified numerous gold targets in limonite‐quartz‐sulfide",
+   "text": "This area justifies completing an induced polarization survey with porphyry copper mineralization being the target",
    "highlight": [
-    132,
-    246
+    0,
+    114
    ]
   },
   "c-0516": {
@@ -1451,24 +1503,24 @@
    ]
   },
   "c-0016": {
-   "text": "Assessment Report Title Page and Summary (at centre of work) MAILING ADDRESS: Next Page BC Geological Survey Assessment Report 38640 R.J.Johnston 5765338 MX-3-333 Dec 20, 2020 2019 Iron Lake 374482, 516280 Au, Pt, Pd 092P 132 092P096 Clinton 51 57 120 54 Eastfield Resources Ltd GK Resources Ltd GK Resources Ltd 9 Adeliade St W, Suite 400, Toronto, ON M5H 3V9 Geophysical, Geochemical $47722",
+   "text": "Iron Lake 374482, 516280 Au, Pt, Pd",
    "highlight": [
-    181,
-    216
+    0,
+    35
    ]
   },
   "c-0032": {
-   "text": "centre of work) MAILING ADDRESS: Next Page BC Geological Survey Assessment Report 38640 R.J.Johnston 5765338 MX-3-333 Dec 20, 2020 2019 Iron Lake 374482, 516280 Au, Pt, Pd 092P 132 092P096 Clinton 51 57 120 54 Eastfield Resources Ltd GK Resources Ltd GK Resources Ltd 9 Adeliade St W, Suite 400, Toronto, ON M5H 3V9 Geophysical, Geochemical $47722 ultramafic, Takomkane Batholith, Nicola volcanics,",
+   "text": "Clinton 51 57 120 54",
    "highlight": [
-    189,
-    209
+    0,
+    20
    ]
   },
   "c-0058": {
-   "text": "Report Title Page and Summary (at centre of work) MAILING ADDRESS: Next Page BC Geological Survey Assessment Report 38640 R.J.Johnston 5765338 MX-3-333 Dec 20, 2020 2019 Iron Lake 374482, 516280 Au, Pt, Pd 092P 132 092P096 Clinton 51 57 120 54 Eastfield Resources Ltd GK Resources Ltd GK Resources Ltd 9 Adeliade St W, Suite 400, Toronto, ON M5H 3V9 Geophysical, Geochemical $47722 ultramafic,",
+   "text": "374482, 516280 Au, Pt, Pd",
    "highlight": [
-    180,
-    205
+    0,
+    25
    ]
   },
   "c-0156": {
@@ -1479,24 +1531,24 @@
    ]
   },
   "c-0338": {
-   "text": "centre of work) MAILING ADDRESS: Next Page BC Geological Survey Assessment Report 38640 R.J.Johnston 5765338 MX-3-333 Dec 20, 2020 2019 Iron Lake 374482, 516280 Au, Pt, Pd 092P 132 092P096 Clinton 51 57 120 54 Eastfield Resources Ltd GK Resources Ltd GK Resources Ltd 9 Adeliade St W, Suite 400, Toronto, ON M5H 3V9 Geophysical, Geochemical $47722 ultramafic, Takomkane Batholith, Nicola volcanics,",
+   "text": "Clinton 51 57 120 54",
    "highlight": [
-    189,
-    209
+    0,
+    20
    ]
   },
   "c-0352": {
-   "text": "and Summary (at centre of work) MAILING ADDRESS: Next Page BC Geological Survey Assessment Report 38640 R.J.Johnston 5765338 MX-3-333 Dec 20, 2020 2019 Iron Lake 374482, 516280 Au, Pt, Pd 092P 132 092P096 Clinton 51 57 120 54 Eastfield Resources Ltd GK Resources Ltd GK Resources Ltd 9 Adeliade St W, Suite 400, Toronto, ON M5H 3V9 Geophysical, Geochemical $47722 ultramafic, Takomkane Batholith,",
+   "text": "092P 132 092P096 Clinton",
    "highlight": [
-    188,
-    212
+    0,
+    24
    ]
   },
   "c-0505": {
-   "text": "(at centre of work) MAILING ADDRESS: Next Page BC Geological Survey Assessment Report 38640 R.J.Johnston 5765338 MX-3-333 Dec 20, 2020 2019 Iron Lake 374482, 516280 Au, Pt, Pd 092P 132 092P096 Clinton 51 57 120 54 Eastfield Resources Ltd GK Resources Ltd GK Resources Ltd 9 Adeliade St W, Suite 400, Toronto, ON M5H 3V9 Geophysical, Geochemical $47722 ultramafic, Takomkane Batholith, Nicola",
+   "text": "092P096 Clinton 51",
    "highlight": [
-    185,
-    203
+    0,
+    18
    ]
   },
   "c-0264": {
@@ -1556,20 +1608,22 @@
    ]
   },
   "c-0155": {
-   "text": "The property is underlain by the Iron Lake Complex; a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to the slightly older (Upper Triassic Early Jurassic) granodiorite Takomkane Batholith. Field relationships indicate that the mafic to ultramafic body, named the Iron Lake Complex, intrudes the granodiorite batholith and the surrounding Nicola Group volcanic",
+   "text": "The property is underlain by the Iron Lake Complex; a mafic to ultramafic intrusive body of early Jurassic age occurring in proximity to the slightly older (Upper Triassic Early Jurassic) granodiorite Takomkane",
    "highlight": [
     0,
-    392
+    210
    ],
    "quote_cut": true,
    "quote_chars": 446
   },
   "c-0273": {
-   "text": "In 2004 a helicopter borne airborne survey was completed over much of the claim group which identified number of electromagnetic conductors some of which were further detailed by a 2006 UTEM ground survey",
+   "text": "In 2004 a helicopter borne airborne survey was completed over much of the claim group which identified number of electromagnetic conductors some of which were further detailed",
    "highlight": [
     0,
-    204
-   ]
+    175
+   ],
+   "quote_cut": true,
+   "quote_chars": 205
   },
   "c-0274": {
    "text": "In 2019 an IP survey was conducted over the Central Zone area to infill and define chargeability anomalies from previous surveys",
@@ -1586,24 +1640,26 @@
    ]
   },
   "c-0501": {
-   "text": "Targets from both surveys were drill tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected, including an aggregate of 6.1 metres of massive sulfide intervals within a 17 metre section which contained >60% sulfide in hole 05‐03",
+   "text": "tested in 2005 and 2006 with significant thicknesses of pyrrhotite dominant massive sulfide being intersected, including an aggregate of 6.1 metres of",
    "highlight": [
     0,
-    282
-   ]
+    150
+   ],
+   "quote_cut": true,
+   "quote_chars": 283
   },
   "c-0326": {
-   "text": "acres), is located in the Clinton Mining Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House, centered at latitude 51° 57’N longitude l20°54’W (UTM Zone 10; 645500E 575700N). The Iron Lake property is comprised of 21 mineral claims owned 100% by Eastfield Resources Ltd., subject to a 2.5% NSR. Eastfield may reduce",
+   "text": "centered at latitude 51° 57’N longitude l20°54’W",
    "highlight": [
-    171,
-    219
+    0,
+    48
    ]
   },
   "c-0327": {
-   "text": "Division of southern British Columbia (Figure 1). The property is situated 45 kilometres northeast of the City of 100 Mile House, centered at latitude 51° 57’N longitude l20°54’W (UTM Zone 10; 645500E 575700N). The Iron Lake property is comprised of 21 mineral claims owned 100% by Eastfield Resources Ltd., subject to a 2.5% NSR. Eastfield may reduce this to 1.25% with a payment of C$1.5",
+   "text": "UTM Zone 10; 645500E 575700N",
    "highlight": [
-    180,
-    208
+    0,
+    28
    ]
   },
   "c-0045": {
@@ -1614,10 +1670,10 @@
    ]
   },
   "c-0268": {
-   "text": "Canevex, along with a privately owned company, continued exploration and in 1989 completed an induced polarization (IP) survey over part of the intrusion",
+   "text": "and up to 392 ppb palladium in soils. Shortly after completing this programme Cepeda withdrew from the project and Canevex, along with a privately owned company, continued exploration and in 1989 completed an induced polarization (IP) survey over part of the intrusion. Despite the detection of significant chargeability anomalies the claims were allowed to expire in 1992. Eastfield",
    "highlight": [
-    0,
-    153
+    115,
+    268
    ]
   },
   "c-0269": {
@@ -1635,11 +1691,13 @@
    ]
   },
   "c-0496": {
-   "text": "In October 2000 Eastfield discovered mineralized olivine‐pyroxenite rubble containing significant disseminated bornite and chalcopyrite; the “mineralized rubble”. This showing is located in the central part of the property southeast of Island Lake",
+   "text": "In October 2000 Eastfield discovered mineralized olivine‐pyroxenite rubble containing significant disseminated bornite and chalcopyrite; the “mineralized rubble”. This showing is located in the central part of the property southeast of Island",
    "highlight": [
     0,
-    247
-   ]
+    242
+   ],
+   "quote_cut": true,
+   "quote_chars": 248
   },
   "c-0497": {
    "text": "The massive sulfide intercepts were largely pyrrhotite with lesser chalcopyrite",
@@ -1663,17 +1721,19 @@
    ]
   },
   "c-0148": {
-   "text": "Geologically, the Iron Lake property is located within the accreted Quesnel terrane; a narrow, north north‐westerly trending disrupted but nearly continuous belt that extends from the southern to northern provincial boundaries",
+   "text": "Geologically, the Iron Lake property is located within the accreted Quesnel terrane; a narrow, north north‐westerly trending disrupted but nearly continuous belt",
    "highlight": [
     0,
-    226
-   ]
+    161
+   ],
+   "quote_cut": true,
+   "quote_chars": 227
   },
   "c-0149": {
-   "text": "The oldest rocks in the property area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit monzonite and granodiorite, forms the predominant phase of the Takomkane batholith in this area. The granodioritic Takomkane Suite has intruded the Nicola Group rocks",
+   "text": "area occur along the eastern edge of the property and are volcanic breccias and volcaniclastics of the Upper Triassic Age Nicola Group. The Late Triassic‐Early Jurassic Schoolhouse Lake Unit",
    "highlight": [
     0,
-    390
+    190
    ],
    "quote_cut": true,
    "quote_chars": 465
@@ -1754,18 +1814,22 @@
    "quote_chars": 400
   },
   "c-0490": {
-   "text": "Disseminated sulfide copper‐gold‐platinum group element mineralization is known from the central part of the property where olivine‐pyroxenite float containing significant disseminated bornite and chalcopyrite was discovered in 2000",
+   "text": "group element mineralization is known from the central part of the property where olivine‐pyroxenite float containing significant disseminated bornite and chalcopyrite was discovered in 2000",
    "highlight": [
     0,
-    232
-   ]
+    190
+   ],
+   "quote_cut": true,
+   "quote_chars": 233
   },
   "c-0491": {
-   "text": "The disseminated style of mineralization occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser olivine",
+   "text": "The disseminated style of mineralization occurs as intergrowths of chalcopyrite and bornite with minor pyrrhotite in a silicate assemblage of interlocking clinopyroxene and lesser",
    "highlight": [
     0,
-    187
-   ]
+    179
+   ],
+   "quote_cut": true,
+   "quote_chars": 188
   },
   "c-0492": {
    "text": "Pyroxenite hosted massive sulfide was discovered in the 2005 drilling some 250 metres south of the aforementioned mineralized rubble, with additional intercepts obtained in 2006",
@@ -1784,24 +1848,28 @@
    "quote_chars": 379
   },
   "c-0157": {
-   "text": "UTM Zone 10 (NAD 83) Office: Author: BL Nicola Group Volvanic Sediments Sandstone-Conglomerate-Siltstone Nicola Group Basalts Pyroxene Flows uTRMvb.f uTRNsv Polaris Ultramafic Diorite to Gabbro Late Triassic Takomkane Batholith Boss Creek Granodiorite Polaris Ultrmafic ultramafic intrusives Takomkane Batholith Schoolhouse Lake Granodiorite TRJTABCgd EJPUum Late Triassic - Early Jurassic",
+   "text": "Diorite to Gabbro Late Triassic Takomkane Batholith Boss Creek Granodiorite Polaris Ultrmafic ultramafic intrusives Takomkane Batholith Schoolhouse Lake Granodiorite",
    "highlight": [
-    40,
-    341
-   ]
+    0,
+    165
+   ],
+   "quote_cut": true,
+   "quote_chars": 301
   },
   "c-0494": {
-   "text": " 12 Though the disseminated and massive sulfide mineralization occurrences occur close together, geochemical correlations indicate that two styles of mineralization are separate and distinct. Copper, nickel, gold, palladium and platinum are all positively correlated in the disseminated style of mineralization but less so in the massive sulfide. Cobalt, which is more prevalent in the massive",
+   "text": "and massive sulfide mineralization occurrences occur close together, geochemical correlations indicate that two styles of mineralization are separate and distinct",
    "highlight": [
-    4,
-    190
-   ]
+    0,
+    162
+   ],
+   "quote_cut": true,
+   "quote_chars": 187
   },
   "c-0495": {
-   "text": "Structurally hosted gold was the target of the exploration in the southeast part of the Iron Lake property during 2016 and 2017. The Cate Showing is a two centimetre shear zone with massive pyrite that has returned values as high as 74.9g/t gold and 20.6ppm silver. Resampling in 2016 by Eastfield verified the high values, with a result of 31.2g/t gold and 15.17g/t silver. Historic and recent",
+   "text": "The Cate Showing is a two centimetre shear zone with massive pyrite that has returned values as high as 74.9g/t gold and 20.6ppm silver",
    "highlight": [
-    129,
-    264
+    0,
+    135
    ]
   },
   "c-0263": {
@@ -1812,17 +1880,19 @@
    ]
   },
   "c-0498": {
-   "text": "Massive sulfide mineralization was explored in the early 2000’s. In 2005 and 2006 drilling was carried out as followup of airborne and ground electromagnetic (EM) surveys which encountered massive pyrrhotite with minor chalcopyrite, and returned values including 1.4 metres of 0.95% copper, 927ppm nickel and 836ppm cobalt. A number of untested EM conductors exist on the property, including",
+   "text": "of airborne and ground electromagnetic (EM) surveys which encountered massive pyrrhotite with minor chalcopyrite, and returned values including 1.4 metres of 0.95% copper,",
    "highlight": [
-    65,
-    322
-   ]
+    0,
+    171
+   ],
+   "quote_cut": true,
+   "quote_chars": 258
   },
   "c-0499": {
-   "text": "of untested EM conductors exist on the property, including several outside of the central area. The disseminated type magmatic mineralization consists of clinopyroxene and olivine with intergrowths of chalcopyrite, bornite and minor pyrrhotite. It has been noted in rubble southwest of Island Lake, where it has returned numerous results averaging 696ppb gold, 328ppb platinum+palladium and 0.72%",
+   "text": "The disseminated type magmatic mineralization consists of clinopyroxene and olivine with intergrowths of chalcopyrite, bornite and minor pyrrhotite. It has been noted in rubble southwest of Island Lake",
    "highlight": [
-    96,
-    297
+    0,
+    201
    ]
   },
   "c-0518": {
@@ -1896,17 +1966,17 @@
    ]
   },
   "c-0066": {
-   "text": "1970s and has been held by Eastfield since the 2000s. Though initially a porphyry copper target, since 1989 it has been explored for ultramafic intrusion-hosted, copper-gold platinum- palladium mineralization. The Succour Lake area has been explored by various operators since the 1980s, focussing on porphyry-type copper and gold deposits. The Roger Lake area, located south of the Iron Lake",
+   "text": "Though initially a porphyry copper target, since 1989 it has been explored for ultramafic intrusion-hosted, copper-gold platinum- palladium mineralization. The Succour Lake area has been explored by various operators since the 1980s, focussing on porphyry-type copper and gold deposits",
    "highlight": [
-    54,
-    339
+    0,
+    285
    ]
   },
   "c-0245": {
-   "text": "describes the 2022 Induced Polarization geophysical survey carried out on the Iron Lake Property. The geophysical survey was carried out from March 3 to 20, 2022 and from May 15 to June 27, 2022. In total, 48.3 line-kms were surveyed along three grids in the southern part of the Iron Lake property. The Property is located in the Cariboo region of south-central British Columbia, approximately 40",
+   "text": "The geophysical survey was carried out from March 3 to 20, 2022 and from May 15 to June 27, 2022. In total, 48.3 line-kms were surveyed along three grids in the southern part of the Iron Lake property",
    "highlight": [
-    98,
-    298
+    0,
+    200
    ]
   },
   "c-0158": {
@@ -2020,10 +2090,10 @@
    ]
   },
   "c-0046": {
-   "text": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a paved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property is reached by continuing east along this road, past Forest Grove, for 49 km to the community of Eagle Creek, continuing past Eagle Creek for 5 km, then turning north on the Lang Lake (610) Forest Service Road. This",
+   "text": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a paved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property",
    "highlight": [
     0,
-    394
+    179
    ],
    "quote_cut": true,
    "quote_chars": 481
@@ -2059,10 +2129,10 @@
    ]
   },
   "c-0232": {
-   "text": "to expire (Wahl, 1976). In 1983, J.W. Morton staked the Ironhorse 1 and 2 claims to cover the copper anomalies outlined by Pickands Mather and Co. He completed a 3.7 line-km ground electromagnetic survey and limited rock chip sampling (Buskas, 1989). In 1985, the property was optioned to Reliant Resources Ltd, and selected sections of the core from the 1974 drilling program were re-logged and",
+   "text": "He completed a 3.7 line-km ground electromagnetic survey and limited rock chip sampling (Buskas, 1989",
    "highlight": [
-    147,
-    248
+    0,
+    101
    ]
   },
   "c-0233": {
@@ -2073,17 +2143,17 @@
    ]
   },
   "c-0234": {
-   "text": "terminating the option in 2002. In 2003, Argent Mining Corp optioned the property and expanded the 1989 soil grid. The following year the company completed 603 line-km of a helicopter-borne geophysical survey that included magnetics and multi-frequency electromagnetics (DIGHEM). A large and very strong magnetic anomaly was outlined over an area of five square kilometres, within which 15",
+   "text": "The following year the company completed 603 line-km of a helicopter-borne geophysical survey that included magnetics and multi-frequency electromagnetics (DIGHEM",
    "highlight": [
-    115,
-    277
+    0,
+    162
    ]
   },
   "c-0235": {
-   "text": "Ni, which included a 1.4- metre sample returning 0.95% Cu, 927 ppm Ni and 836 ppm Co (Morton, 2006). The following year the company completed 17 line-km of a ground-based UTEM geophysical survey, which covered a portion of the property to the north and south of the first three 2005 drill holes. The survey was successful in further detailing and extending the lengths of the 2004 airborne",
+   "text": "The following year the company completed 17 line-km of a ground-based UTEM geophysical survey, which covered a portion of the property to the north and south of the first three 2005 drill holes",
    "highlight": [
-    101,
-    294
+    0,
+    193
    ]
   },
   "c-0236": {
@@ -2122,10 +2192,10 @@
    ]
   },
   "c-0241": {
-   "text": "the area in and around the current Property since the early 1960s. During the early 1970s, Aragon Exploration Ltd held much of the ground around Roger Lake, on what was called the Canim Lake property. Exploration consisted of geological mapping, soil geochemical surveys and an induced polarization and ground magnetometer survey. This work led to the discovery of copper mineralization within",
+   "text": "During the early 1970s, Aragon Exploration Ltd held much of the ground around Roger Lake, on what was called the Canim Lake property. Exploration consisted of geological mapping, soil geochemical surveys and an induced polarization and ground magnetometer survey",
    "highlight": [
-    67,
-    329
+    0,
+    262
    ]
   },
   "c-0242": {
@@ -2136,17 +2206,19 @@
    ]
   },
   "c-0169": {
-   "text": "on the west side of Roger Lake. 7.0 GEOLOGY 7.1 Regional Geology The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic Nicola Group, representing an island arc and marginal basin assemblage. Nicola Group rocks are the dominant unit in the Canim Lake area.",
-   "highlight": [
-    65,
-    320
-   ]
-  },
-  "c-0170": {
-   "text": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss Creek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of a monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza et",
+   "text": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic",
    "highlight": [
     0,
-    393
+    184
+   ],
+   "quote_cut": true,
+   "quote_chars": 256
+  },
+  "c-0170": {
+   "text": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and",
+   "highlight": [
+    0,
+    195
    ],
    "quote_cut": true,
    "quote_chars": 404
@@ -2159,10 +2231,10 @@
    ]
   },
   "c-0162": {
-   "text": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession along its eastern, southern, and southwestern margins; and is in contact with the Takomkane Batholith (Boss Creek and Schoolhouse Lake units) to the north and northwest (Schiarizza and Boulton,",
+   "text": "northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession",
    "highlight": [
     0,
-    394
+    156
    ],
    "quote_cut": true,
    "quote_chars": 402
@@ -2202,11 +2274,13 @@
    ]
   },
   "c-0167": {
-   "text": "The Takomkane batholith lies on the northern and western edges of the Property. Locally it consists of medium- to coarse-grained diorite, quartz diorite, quartz monzonite and granodiorite, generally unaltered. Small, satellite offshoots of the batholith intrude undeformed Nicola Group rocks and the Iron Lake complex, as well as dioritic to monzonitic dykes, plugs and stocks",
+   "text": "The Takomkane batholith lies on the northern and western edges of the Property. Locally it consists of medium- to coarse-grained diorite, quartz diorite, quartz monzonite and granodiorite,",
    "highlight": [
     0,
-    376
-   ]
+    188
+   ],
+   "quote_cut": true,
+   "quote_chars": 377
   },
   "c-0168": {
    "text": "The area is cut by numerous faults with significant displacements. Rocks of the Nicola Group and Iron Lake complex often display a weak to well developed foliation, associated with a series of northeast-trending faults and shear zones. A second set of inferred faults trend N70°E to N80°E (Belik, 2021",
@@ -2223,25 +2297,27 @@
    ]
   },
   "c-0185": {
-   "text": "Cate showing (BC Minfile 092P 182), in the southeast part of the Property, northeast of Succour Lake. The area is underlain by volcaniclastic rocks of the Nicola Group, consisting of sandstone, breccia, siltstone and argillite, locally cut by diorite, gabbroic and feldspar porphyritic dykes. The showing was discovered in 1993, consisting of a 2-cm wide sulphide vein, consisting of pyrrhotite,",
+   "text": "The area is underlain by volcaniclastic rocks of the Nicola Group, consisting of sandstone, breccia, siltstone and argillite, locally cut by diorite, gabbroic and feldspar porphyritic dykes",
    "highlight": [
-    102,
-    291
+    0,
+    189
    ]
   },
   "c-0420": {
-   "text": "breccia, siltstone and argillite, locally cut by diorite, gabbroic and feldspar porphyritic dykes. The showing was discovered in 1993, consisting of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone. A 60 cm chip sample across the shear zone returned 1.32 ppm Au, 8,985 ppm As and 210 ppm Cu. A grab",
+   "text": "The showing was discovered in 1993, consisting of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
    "highlight": [
-    99,
-    291
+    0,
+    192
    ]
   },
   "c-0421": {
-   "text": "are common as late-stage veinlets and alteration patches. Mineralization is mainly grains and blebs of chalcopyrite, bornite and malachite, commonly associated with magnetite and pyrite (Gatchalian, 1972; Schiarizza and Bolton, 2006a). The Beer showing comprises scattered occurrences of disseminated chalcopyrite and malachite. Cukor (1973) reports that \"epidote and chlorite are widespread",
+   "text": "Mineralization is mainly grains and blebs of chalcopyrite, bornite and malachite, commonly associated with magnetite and pyrite (Gatchalian, 1972; Schiarizza and Bolton, 2006a). The Beer showing",
    "highlight": [
-    58,
-    327
-   ]
+    0,
+    194
+   ],
+   "quote_cut": true,
+   "quote_chars": 270
   },
   "c-0078": {
    "text": "IRON LAKE Cu, Au, Co, Ni, Pt, Pd",
@@ -2258,10 +2334,10 @@
    ]
   },
   "c-0227": {
-   "text": "Prior to the commencement of the geophysical survey, the survey grids were cut by Hendex Exploration Services from Prince George, BC. This work consisted of a 48.3 km cut-line grid, as shown on Figure 5",
+   "text": "part of the Property that is predominately underlain by Nicola Group volcanic -sedimentary units. Prior to the commencement of the geophysical survey, the survey grids were cut by Hendex Exploration Services from Prince George, BC. This work consisted of a 48.3 km cut-line grid, as shown on Figure 5. On the southern part of the grid, ten lines were 400 metres apart and oriented east - west. On",
    "highlight": [
-    0,
-    202
+    98,
+    300
    ]
   },
   "c-0228": {
@@ -2272,11 +2348,13 @@
    ]
   },
   "c-0423": {
-   "text": "Geological mapping in 2014 by Wilkins (2014) led to the delineation of a new zone, termed the Wilco showing, about 700 m northeast of the July showing. The zone is narrow and consists of weakly silicified and gossanous, medium-grained, well-fractured diorite with mafic minerals completely altered to epidote and chlorite",
+   "text": "(2014) led to the delineation of a new zone, termed the Wilco showing, about 700 m northeast of the July showing. The zone is",
    "highlight": [
     0,
-    321
-   ]
+    125
+   ],
+   "quote_cut": true,
+   "quote_chars": 322
   },
   "c-0426": {
    "text": "mineralization and alteration at the Beer showing is essentially a continuation of the widespread but sparse, low-grade mineralization of the July showing",
@@ -2293,17 +2371,17 @@
    ]
   },
   "c-0424": {
-   "text": "for about 270 m. It trends in a northwest direction, oblique to Anomaly 1, and remains open to the northwest and southeast. Previous work has indicated the presence of pyrite and chalcopyrite mineralization between these lines as well as to the southeast at the Cate Showing. • Anomaly 3 is a smaller, shallower region of moderately high chargeability in the western part of the grid. It is present",
+   "text": "Previous work has indicated the presence of pyrite and chalcopyrite mineralization between these lines as well as to the southeast at the Cate Showing",
    "highlight": [
-    124,
-    274
+    0,
+    150
    ]
   },
   "c-0519": {
-   "text": "3 is a smaller, shallower region of moderately high chargeability in the western part of the grid. It is present on lines 14N to 16N, approximately 800 m long in the northwest direction by 400 m wide. It may be related to the Wilkins showing, which lies on line 14N. • These anomalies are target areas that should be followed up with fieldwork to define the cause of the geophysical anomalies. ",
+   "text": "These anomalies are target areas that should be followed up with fieldwork to define the cause of the geophysical anomalies",
    "highlight": [
-    269,
-    392
+    0,
+    123
    ]
   },
   "c-0226": {
@@ -2363,10 +2441,10 @@
    ]
   },
   "c-0067": {
-   "text": "1970s and has been held by Eastfield since the 2000s. Though initially a porphyry copper target, since 1989 it has been explored for ultramafic intrusion-hosted, copper-gold platinum- palladium mineralization. The Succour Lake area has been explored by various operators since the 1980s, focussing on porphyry-type copper and gold deposits. The Roger Lake area, located south of Iron Lake, has",
+   "text": "Though initially a porphyry copper target, since 1989 it has been explored for ultramafic intrusion-hosted, copper-gold platinum- palladium mineralization. The Succour Lake area has been explored by various operators since the 1980s, focussing on porphyry-type copper and gold deposits",
    "highlight": [
-    54,
-    339
+    0,
+    285
    ]
   },
   "c-0081": {
@@ -2377,11 +2455,13 @@
    ]
   },
   "c-0174": {
-   "text": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic Nicola Group, representing an island arc and marginal basin assemblage",
+   "text": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic",
    "highlight": [
     0,
-    255
-   ]
+    184
+   ],
+   "quote_cut": true,
+   "quote_chars": 256
   },
   "c-0175": {
    "text": "northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession",
@@ -2393,11 +2473,13 @@
    "quote_chars": 378
   },
   "c-0176": {
-   "text": "The showing consists of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
+   "text": "showing consists of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
    "highlight": [
     0,
-    166
-   ]
+    162
+   ],
+   "quote_cut": true,
+   "quote_chars": 167
   },
   "c-0359": {
    "text": "found on the Property. The Iron Lake occurrence comprises massive sulphide mineralization within ultramafic rocks of the Iron Lake complex, southeast near Island Lake. Semi-massive to massive",
@@ -2409,11 +2491,13 @@
    "quote_chars": 373
   },
   "c-0360": {
-   "text": "Shear-hosted Cu-Au mineralization within quartz-carbonate veins occurs at the Cate showing, in the southeast part of the Property, northeast of Succour Lake. The showing consists of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
+   "text": "Shear-hosted Cu-Au mineralization within quartz-carbonate veins occurs at the Cate showing, in the southeast part of the Property, northeast of Succour Lake. The showing consists of a 2-cm wide sulphide vein,",
    "highlight": [
     0,
-    324
-   ]
+    208
+   ],
+   "quote_cut": true,
+   "quote_chars": 325
   },
   "c-0361": {
    "text": "Significant, disseminated magmatic Cu-Au-Pt-Pd mineralization has also been found within ultramafic float, within large, angular boulders",
@@ -2432,17 +2516,19 @@
    "quote_chars": 515
   },
   "c-0363": {
-   "text": "The Lisa showing is about 1.3 km south-southwest of the Cate showing, roughly along strike from it. The showing comprises rubble of mineralized quartz– ankerite vein material having anomalous gold values",
+   "text": "showing is about 1.3 km south-southwest of the Cate showing, roughly along strike from it. The showing comprises rubble of mineralized quartz– ankerite vein material having anomalous gold values",
    "highlight": [
     0,
-    203
-   ]
+    194
+   ],
+   "quote_cut": true,
+   "quote_chars": 204
   },
   "c-0047": {
-   "text": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a paved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property is accessed by continuing east along this road, past Forest Grove, for 49 km to the community of Eagle Creek, continuing past Eagle Creek for 5 km, then turning north on the Lang Lake (610) Forest Service Road.",
+   "text": "The Property can be reached from 100 Mile House via the Canim-Hendrix Lake Road, which is a paved secondary road that leaves Highway 97 at about 2.4 km north of town. The Property",
    "highlight": [
     0,
-    390
+    179
    ],
    "quote_cut": true,
    "quote_chars": 482
@@ -2478,10 +2564,10 @@
    ]
   },
   "c-0248": {
-   "text": "to expire (Wahl, 1976). In 1983, J.W. Morton staked the Ironhorse 1 and 2 claims to cover the copper anomalies outlined by Pickands Mather and Co. He completed a 3.7 line-km ground electromagnetic survey and limited rock chip sampling (Buskas, 1989). In 1985, the property was optioned to Reliant Resources Ltd, and selected sections of the core from the 1974 drilling program were re-logged and",
+   "text": "He completed a 3.7 line-km ground electromagnetic survey and limited rock chip sampling (Buskas, 1989",
    "highlight": [
-    147,
-    248
+    0,
+    101
    ]
   },
   "c-0249": {
@@ -2492,17 +2578,17 @@
    ]
   },
   "c-0250": {
-   "text": "terminating the option in 2002. In 2003, Argent Mining Corp optioned the property and expanded the 1989 soil grid. The following year the company completed 603 line-km of a helicopter-borne geophysical survey that included magnetics and multi-frequency electromagnetics (DIGHEM). A large and very strong magnetic anomaly was outlined over an area of five square kilometres, within which 15",
+   "text": "The following year the company completed 603 line-km of a helicopter-borne geophysical survey that included magnetics and multi-frequency electromagnetics (DIGHEM",
    "highlight": [
-    115,
-    277
+    0,
+    162
    ]
   },
   "c-0251": {
-   "text": "Ni, which included a 1.4- metre sample returning 0.95% Cu, 927 ppm Ni and 836 ppm Co (Morton, 2006). The following year the company completed 17 line-km of a ground-based UTEM geophysical survey, which covered a portion of the property to the north and south of the first three 2005 drill holes. The survey was successful in further detailing and extending the lengths of the 2004 airborne",
+   "text": "The following year the company completed 17 line-km of a ground-based UTEM geophysical survey, which covered a portion of the property to the north and south of the first three 2005 drill holes",
    "highlight": [
-    101,
-    294
+    0,
+    193
    ]
   },
   "c-0252": {
@@ -2541,10 +2627,10 @@
    ]
   },
   "c-0257": {
-   "text": "the area in and around the current Property since the early 1960s. During the early 1970s, Aragon Exploration Ltd held much of the ground around Roger Lake, on what was called the Canim Lake property. Exploration consisted of geological mapping, soil geochemical surveys and an induced polarization and ground magnetometer survey. This work led to the discovery of copper mineralization within",
+   "text": "During the early 1970s, Aragon Exploration Ltd held much of the ground around Roger Lake, on what was called the Canim Lake property. Exploration consisted of geological mapping, soil geochemical surveys and an induced polarization and ground magnetometer survey",
    "highlight": [
-    67,
-    329
+    0,
+    262
    ]
   },
   "c-0258": {
@@ -2555,10 +2641,10 @@
    ]
   },
   "c-0259": {
-   "text": " A. Koffyberg, PGeo and J. Morton, PGeo 15 In 2021, the Iron Lake – Succour Lake – Rogers Lake areas were explored by Tech-X, which completed an airborne MMT-EM and magnetic survey, a LiDAR survey, hand trenching, rock sampling and geological mapping, and a petrological report. The airborne MMT-EM and magnetic survey, along with density and geological data, was interpreted by Condor Consulting",
+   "text": "In 2021, the Iron Lake – Succour Lake – Rogers Lake areas were explored by Tech-X, which completed an airborne MMT-EM and magnetic survey, a LiDAR survey, hand trenching, rock sampling and geological mapping, and a petrological report",
    "highlight": [
-    43,
-    277
+    0,
+    234
    ]
   },
   "c-0260": {
@@ -2569,19 +2655,19 @@
    ]
   },
   "c-0177": {
-   "text": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss Creek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of a monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza et",
+   "text": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and",
    "highlight": [
     0,
-    393
+    195
    ],
    "quote_cut": true,
    "quote_chars": 404
   },
   "c-0178": {
-   "text": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession along its eastern, southern, and southwestern margins; and is in contact with the Takomkane Batholith (Boss Creek and Schoolhouse Lake units) to the north and northwest (Schiarizza and Boulton,",
+   "text": "northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession",
    "highlight": [
     0,
-    394
+    156
    ],
    "quote_cut": true,
    "quote_chars": 402
@@ -2596,29 +2682,31 @@
    "quote_chars": 474
   },
   "c-0180": {
-   "text": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark green to dark grey andesitic to basaltic flows, with lesser tuff and volcaniclastic rock. A northeast- southwest trending sequence of shale, greywacke and fine-grained siliciclastic rocks is present in the central part of the Property. Bedding generally trends northeast and dips 40° to 80°",
+   "text": "The southeastern part of the Property is underlain by Nicola Group rocks, which consist of dark green to dark grey andesitic to basaltic flows, with",
    "highlight": [
     0,
-    386
+    148
    ],
    "quote_cut": true,
    "quote_chars": 512
   },
   "c-0181": {
-   "text": "by the Iron Lake complex, which occurs in the western part of the Property. The complex is exposed for about 8.5 km, in a north-south orientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is underlain by a thick pyroxenite unit, which probably forms the base of the sill complex (Belik, 2021). To the west, it is overlain by a",
+   "text": "km, in a north-south orientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is underlain by a thick",
    "highlight": [
     0,
-    379
+    151
    ],
    "quote_cut": true,
    "quote_chars": 482
   },
   "c-0182": {
-   "text": "The Takomkane batholith lies on the northern and western edges of the Property. Locally it consists of medium- to coarse-grained diorite, quartz diorite, quartz monzonite and granodiorite, generally unaltered. Small, satellite offshoots of the batholith intrude undeformed Nicola Group rocks and the Iron Lake complex, as well as dioritic to monzonitic dykes, plugs and stocks",
+   "text": "The Takomkane batholith lies on the northern and western edges of the Property. Locally it consists of medium- to coarse-grained diorite, quartz diorite, quartz monzonite and granodiorite,",
    "highlight": [
     0,
-    376
-   ]
+    188
+   ],
+   "quote_cut": true,
+   "quote_chars": 377
   },
   "c-0183": {
    "text": "The area is cut by numerous faults with significant displacements. Rocks of the Nicola Group and Iron Lake complex often display a weak to well developed foliation, associated with a series of northeast-trending faults and shear zones. A second set of inferred faults trend N70°E to N80°E (Belik, 2021",
@@ -2665,11 +2753,13 @@
    ]
   },
   "c-0368": {
-   "text": "In the southwest part of the Property are the July and Beer showings (BC Minfile 092P112 and 125), which were discovered in the early 1970s. Both are described as copper mineralization within and adjacent to the Iron Lake ultramafic-mafic complex northeast of Roger Lake",
+   "text": "July and Beer showings (BC Minfile 092P112 and 125), which were discovered in the early 1970s. Both are described as copper mineralization within and adjacent to the Iron Lake ultramafic-mafic complex northeast of Roger Lake",
    "highlight": [
     0,
-    270
-   ]
+    224
+   ],
+   "quote_cut": true,
+   "quote_chars": 271
   },
   "c-0369": {
    "text": "Shear-hosted Cu-Au mineralization within quartz-carbonate veins occurs at the Cate showing (BC Minfile 092P 182), in the southeast part of the Property, northeast of Succour Lake",
@@ -2700,11 +2790,13 @@
    ]
   },
   "c-0373": {
-   "text": "Geological mapping in 2014 by Wilkins (2014) led to the delineation of a new zone, termed the Wilco showing, about 700 m northeast of the July showing. The zone is narrow and consists of weakly silicified and gossanous, medium-grained, well-fractured diorite with mafic minerals completely altered to epidote and chlorite",
+   "text": "(2014) led to the delineation of a new zone, termed the Wilco showing, about 700 m northeast of the July showing. The zone is",
    "highlight": [
     0,
-    321
-   ]
+    125
+   ],
+   "quote_cut": true,
+   "quote_chars": 322
   },
   "c-0374": {
    "text": "from a fracture zone assayed 2,030 ppm Cu and 90 ppb Au. Eight coarse-grained intrusive breccia zones up to 50 m wide were identified, over an area of about 1 km by 0.5 km, both within and",
@@ -2716,38 +2808,38 @@
    "quote_chars": 476
   },
   "c-0079": {
-   "text": "Judy L. Roger L. Susan L. Canim Lake Weller Lake Succour Lake Beartrack Lake Boomerang Lake Christmas Lake Kellington Lake Eagle Creek Electric Transmission Line Property Boundary IRON LAKE Cu, Au, Co, Ni, Pt, Pd BEER Cu JULY Cu, Au CATE Cu, Au LISA Au WILKINS Cu, Au 640000 640000 645000 645000 650000 650000 655000 655000 5750000 5750000 5755000 5755000 5760000 5760000 0 1 2 3 4 5 km Datum: NAD83",
+   "text": "IRON LAKE Cu, Au, Co, Ni, Pt, Pd",
    "highlight": [
-    180,
-    212
+    0,
+    32
    ]
   },
   "c-0001": {
-   "text": " A. Koffyberg, PGeo and J. Morton, PGeo 22 8.0 CORE DRILLING PROGRAM -2022 In 2022, a total of 5,001.30 m of diamond drilling was completed in 23 holes, which took place as two separate phases of work, between July 27 to August 26 and October 11 to November 6, 2022. In the first phase, 2,628.3 m of drilling was performed in 13 holes. Eight holes targeted the semi-massive sulphide horizon",
+   "text": "In 2022, a total of 5,001.30 m of diamond drilling was completed in 23 holes, which took place as two separate phases of work, between July 27 to August 26 and October 11 to November 6, 2022",
    "highlight": [
-    75,
-    265
+    0,
+    190
    ]
   },
   "c-0003": {
-   "text": "m of diamond drilling was completed in 23 holes, which took place as two separate phases of work, between July 27 to August 26 and October 11 to November 6, 2022. In the first phase, 2,628.3 m of drilling was performed in 13 holes. Eight holes targeted the semi-massive sulphide horizon identified by Argent Mining Corp. (Morton, 2006), referred to as the Discovery Zone, while the remaining five",
+   "text": "In the first phase, 2,628.3 m of drilling was performed in 13 holes",
    "highlight": [
-    163,
-    230
+    0,
+    67
    ]
   },
   "c-0004": {
-   "text": "Discovery Zone, while the remaining five were directed toward geophysical anomalies. One of these holes, IL-22-005, was abandoned due to poor ground conditions. In the second phase of work, 2,373 m of drilling was completed in ten holes: two of these holes were designed to test for porphyry-type mineralization in the southeastern part of the property, which was identified in outcrop; five of the",
+   "text": "In the second phase of work, 2,373 m of drilling was completed in ten holes",
    "highlight": [
-    161,
-    236
+    0,
+    75
    ]
   },
   "c-0022": {
-   "text": " A. Koffyberg, PGeo and J. Morton, PGeo 22 8.0 CORE DRILLING PROGRAM -2022 In 2022, a total of 5,001.30 m of diamond drilling was completed in 23 holes, which took place as two separate phases of work, between July 27 to August 26 and October 11 to November 6, 2022. In the first phase, 2,628.3 m of drilling was performed in 13 holes. Eight holes targeted the semi-massive sulphide horizon",
+   "text": "In 2022, a total of 5,001.30 m of diamond drilling was completed in 23 holes",
    "highlight": [
-    75,
-    151
+    0,
+    76
    ]
   },
   "c-0052": {
@@ -2758,17 +2850,17 @@
    ]
   },
   "c-0080": {
-   "text": " A. Koffyberg, PGeo and J. Morton, PGeo 22 8.0 CORE DRILLING PROGRAM -2022 In 2022, a total of 5,001.30 m of diamond drilling was completed in 23 holes, which took place as two separate phases of work, between July 27 to August 26 and October 11 to November 6, 2022. In the first phase, 2,628.3 m of drilling was performed in 13 holes. Eight holes targeted the semi-massive sulphide horizon",
+   "text": "In 2022, a total of 5,001.30 m of diamond drilling was completed in 23 holes",
    "highlight": [
-    75,
-    151
+    0,
+    76
    ]
   },
   "c-0020": {
-   "text": " A. Koffyberg, PGeo and J. Morton, PGeo 24 quarter duplicate sample and one coarse reject duplicate sample. Following, the samples were transported to Activation Laboratories Ltd. in Kamloops, BC by Archer Cathro employees. 8.2 Sample Preparation, Analysis and QC/QA At Activation Labs, both gold and multi-elemental analyses were performed on the drill core samples. Sample preparation involved",
+   "text": "Following, the samples were transported to Activation Laboratories Ltd. in Kamloops, BC by Archer Cathro employees",
    "highlight": [
-    108,
-    222
+    0,
+    114
    ]
   },
   "c-0021": {
@@ -2809,10 +2901,10 @@
    ]
   },
   "c-0035": {
-   "text": "IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10",
+   "text": "1.50 0.42 0.042 31 19 12 IL-22-007 121.00 123.00 2.00 0.12 <0.001 <10 27 45 and 134.07 144.00 9.93 <0.01 0.088 <10 17 <10 IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64",
    "highlight": [
-    0,
-    50
+    171,
+    221
    ]
   },
   "c-0083": {
@@ -2844,87 +2936,87 @@
    ]
   },
   "c-0087": {
-   "text": "IL-22-007 121.00 123.00 2.00 0.12 <0.001 <10 27 45",
+   "text": "2.39 0.30 0.045 10 18 24 IL-22-006 123.82 136.98 13.16 0.18 0.027 10 23 <10 including 123.82 133.02 9.20 0.21 0.030 <10 29 <10 and 191.86 193.36 1.50 0.42 0.042 31 19 12 IL-22-007 121.00 123.00 2.00 0.12 <0.001 <10 27 45 and 134.07 144.00 9.93 <0.01 0.088 <10 17 <10 IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15",
    "highlight": [
-    0,
-    50
+    170,
+    220
    ]
   },
   "c-0088": {
-   "text": "IL-22-007 121.00 123.00 2.00 0.12 <0.001 <10 27 45 and 134.07 144.00 9.93 <0.01 0.088 <10 17 <10",
+   "text": "18 24 IL-22-006 123.82 136.98 13.16 0.18 0.027 10 23 <10 including 123.82 133.02 9.20 0.21 0.030 <10 29 <10 and 191.86 193.36 1.50 0.42 0.042 31 19 12 IL-22-007 121.00 123.00 2.00 0.12 <0.001 <10 27 45 and 134.07 144.00 9.93 <0.01 0.088 <10 17 <10 IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39",
    "highlight": [
-    0,
-    96
+    151,
+    247
    ]
   },
   "c-0089": {
-   "text": "IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23",
+   "text": "133.02 9.20 0.21 0.030 <10 29 <10 and 191.86 193.36 1.50 0.42 0.042 31 19 12 IL-22-007 121.00 123.00 2.00 0.12 <0.001 <10 27 45 and 134.07 144.00 9.93 <0.01 0.088 <10 17 <10 IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90",
    "highlight": [
-    0,
-    48
+    174,
+    222
    ]
   },
   "c-0090": {
-   "text": "IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10",
+   "text": "1.50 0.42 0.042 31 19 12 IL-22-007 121.00 123.00 2.00 0.12 <0.001 <10 27 45 and 134.07 144.00 9.93 <0.01 0.088 <10 17 <10 IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64",
    "highlight": [
-    0,
-    50
+    171,
+    221
    ]
   },
   "c-0091": {
-   "text": "IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39",
+   "text": "2.00 0.12 <0.001 <10 27 45 and 134.07 144.00 9.93 <0.01 0.088 <10 17 <10 IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10",
    "highlight": [
-    0,
-    48
+    173,
+    221
    ]
   },
   "c-0092": {
-   "text": "IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10",
+   "text": "<0.01 0.088 <10 17 <10 IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18",
    "highlight": [
-    0,
-    51
+    172,
+    223
    ]
   },
   "c-0093": {
-   "text": "IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10",
+   "text": "IL-22-009 117.47 118.92 1.45 0.14 0.020 11 20 23 IL-22-011 175.46 177.53 2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73",
    "highlight": [
-    0,
-    97
+    149,
+    246
    ]
   },
   "c-0094": {
-   "text": "IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25",
+   "text": "2.07 0.30 0.049 10 <10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73 5.73 0.11 0.003 30 17 25 and 190.77 192.00 1.23 0.12 <0.001 <10 <10 <10",
    "highlight": [
-    0,
-    47
+    174,
+    221
    ]
   },
   "c-0095": {
-   "text": "IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13",
+   "text": "<10 <10 IL-22-013 116.32 118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73 5.73 0.11 0.003 30 17 25 and 190.77 192.00 1.23 0.12 <0.001 <10 <10 <10 IL-22-018 196.05",
    "highlight": [
-    0,
-    90
+    155,
+    245
    ]
   },
   "c-0096": {
-   "text": "IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26",
+   "text": "118.47 2.15 0.48 0.019 86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73 5.73 0.11 0.003 30 17 25 and 190.77 192.00 1.23 0.12 <0.001 <10 <10 <10 IL-22-018 196.05 199.23 3.18 0.39 0.021 <10",
    "highlight": [
-    0,
-    133
+    130,
+    263
    ]
   },
   "c-0097": {
-   "text": "IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73 5.73 0.11 0.003 30 17 25",
+   "text": "86 13 39 IL-22-014 158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73 5.73 0.11 0.003 30 17 25 and 190.77 192.00 1.23 0.12 <0.001 <10 <10 <10 IL-22-018 196.05 199.23 3.18 0.39 0.021 <10 <10 18 and 207.00",
    "highlight": [
-    0,
-    176
+    107,
+    283
    ]
   },
   "c-0098": {
-   "text": "IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73 5.73 0.11 0.003 30 17 25 and 190.77 192.00 1.23 0.12 <0.001 <10 <10 <10",
+   "text": "158.66 160.00 1.34 0.11 0.002 <10 <10 <10 and 172.98 190.88 17.90 0.09 0.002 <10 15 <10 IL-22-015 74.88 75.52 0.64 0.12 0.003 194 12 25 and 99.00 103.00 4.00 0.10 0.003 <10 12 13 and 111.00 119.00 8.00 0.12 0.003 18 16 26 and 132.00 137.73 5.73 0.11 0.003 30 17 25 and 190.77 192.00 1.23 0.12 <0.001 <10 <10 <10 IL-22-018 196.05 199.23 3.18 0.39 0.021 <10 <10 18 and 207.00 208.00 1.00 0.32 0.024 <10",
    "highlight": [
-    0,
-    223
+    88,
+    311
    ]
   },
   "c-0099": {
@@ -2958,11 +3050,13 @@
    "quote_chars": 446
   },
   "c-0034": {
-   "text": "IL-22- 011 intersected massive sulphide mineralization between 175.36 and 177.53 m. The mineralization was similar to IL-22-009, consisting of massive net-textured magnetite, rarely replaced by hematite, along with bands and veinlets of pyrite, pyrrhotite and trace chalcopyrite. This zone returned 0.30% copper and 0.049% nickel over 2.36 m",
+   "text": "replaced by hematite, along with bands and veinlets of pyrite, pyrrhotite and trace chalcopyrite. This zone returned 0.30% copper and 0.049% nickel over 2.36 m",
    "highlight": [
     0,
-    341
-   ]
+    159
+   ],
+   "quote_cut": true,
+   "quote_chars": 342
   },
   "c-0104": {
    "text": "IL-22- 011 intersected massive sulphide mineralization between 175.36 and 177.53 m. The mineralization was similar to IL-22-009, consisting of massive net-textured magnetite, rarely replaced by hematite, along with bands and veinlets of pyrite, pyrrhotite and trace chalcopyrite. This zone returned 0.30% copper and 0.049% nickel over 2.36 m",
@@ -2972,18 +3066,20 @@
    ]
   },
   "c-0378": {
-   "text": "Hole IL-22-009 crossed a narrow zone of clinopyroxenite and gabbro between 117.47 and 118.92 m, hosting several bands of massive mineralization, which were up to 20 cm wide in width. The mineralization consisted of magnetite, with rare clots of pyrrhotite and pyrite, in proportions inverse from the mineralization encountered in holes IL- 22-001 and IL-22-006",
+   "text": "pegmatite. Hole IL-22-009 crossed a narrow zone of clinopyroxenite and gabbro between 117.47 and 118.92 m, hosting several bands of massive mineralization, which were up to 20 cm wide in width. The mineralization consisted of magnetite, with rare clots of pyrrhotite and pyrite, in proportions inverse from the mineralization encountered in holes IL- 22-001 and IL-22-006. Assays from this",
    "highlight": [
-    0,
-    360
+    11,
+    371
    ]
   },
   "c-0379": {
-   "text": "IL-22- 011 intersected massive sulphide mineralization between 175.36 and 177.53 m. The mineralization was similar to IL-22-009, consisting of massive net-textured magnetite, rarely replaced by hematite, along with bands and veinlets of pyrite, pyrrhotite and trace chalcopyrite",
+   "text": "massive sulphide mineralization between 175.36 and 177.53 m. The mineralization was similar to IL-22-009, consisting of massive net-textured magnetite, rarely replaced by hematite, along with bands and veinlets of pyrite, pyrrhotite and trace chalcopyrite",
    "highlight": [
     0,
-    278
-   ]
+    255
+   ],
+   "quote_cut": true,
+   "quote_chars": 279
   },
   "c-0380": {
    "text": "The three holes each encountered one or more faults, characterized by strongly silica-carbonate altered breccia and stockwork, hosting disseminated fuchsite, pyrite and minor hematite",
@@ -3007,10 +3103,10 @@
    ]
   },
   "c-0383": {
-   "text": "It cut several zones of semi-massive to massive mineralization between 196.05 to 204.48 m, comprising primarily pyrrhotite with lesser pyrite, magnetite and chalcopyrite, as well as a second, discrete zone of massive magnetite between 225.69 and 226.05 m. Quartz-carbonate veins and veinlets were developed in the brecciated clinopyroxenite between the individual sulphide zones, along with a",
+   "text": "It cut several zones of semi-massive to massive mineralization between 196.05 to 204.48 m, comprising primarily pyrrhotite with lesser pyrite, magnetite and chalcopyrite, as well as a second, discrete zone of massive magnetite between 225.69 and 226.05 m. Quartz-carbonate veins and",
    "highlight": [
     0,
-    392
+    282
    ],
    "quote_cut": true,
    "quote_chars": 465
@@ -3030,10 +3126,10 @@
    ]
   },
   "c-0386": {
-   "text": " A. Koffyberg, PGeo and J. Morton, PGeo 29 bottom third of the hole. The most significant results were obtained from a section of weakly carbonate and clay altered pegmatite and clinopyroxenite, hosting trace clots of very fine-grained chalcopyrite, close to a 2.82 m wide fault zone. This section yielded 0.09% copper over 17.90 m. Holes IL-22-015, IL-22-017 and IL-22-022 were drilled along an",
+   "text": "The most significant results were obtained from a section of weakly carbonate and clay altered pegmatite and clinopyroxenite, hosting trace clots of very fine-grained chalcopyrite, close to a 2.82 m wide fault zone",
    "highlight": [
-    69,
-    283
+    0,
+    214
    ]
   },
   "c-0387": {
@@ -3051,26 +3147,26 @@
    ]
   },
   "c-0389": {
-   "text": "Prospecting Area) This area has seen abundant historical exploration activity from 1972 onwards. Over two days of prospecting, several hundred clinopyroxenite float boulders were found in the region and about three dozen sulphide-bearing float boulders were identified over an area of 650 m by 760 m. Most of the black boulders are coarse-grained and appear to be proximal subangular blocks. In",
+   "text": "Over two days of prospecting, several hundred clinopyroxenite float boulders were found in the region and about three dozen sulphide-bearing float boulders were identified over an area of 650 m by 760 m",
    "highlight": [
-    97,
-    299
+    0,
+    202
    ]
   },
   "c-0191": {
-   "text": "this region the lithology appears to be entirely coarse- grained clinopyroxenite, transitional to medium-grained, 100 to 150 m west of the road. Medium- grained leuco-gabbro injections and some magmatic brecciation are evident in the northeast sector of the large clinopyroxenite outcrop west of the main road. East of the road, several large black clinopyroxenite blocks display igneous layering",
+   "text": "are evident in the northeast sector of the large clinopyroxenite outcrop west of the main road. East of the road, several large black clinopyroxenite blocks display igneous layering",
    "highlight": [
     0,
-    396
+    181
    ],
    "quote_cut": true,
    "quote_chars": 400
   },
   "c-0192": {
-   "text": "In the region, the undifferentiated Nicola Group lithology is broken by a northeast-trending band of dark siliciclastic sedimentary rock several hundred metres wide, with right lateral offset north of Boomerang Lake, and by small diorite and quartz diorite stocks",
+   "text": "earlier in 2022 and IP chargeability target 3 was field checked. In the region, the undifferentiated Nicola Group lithology is broken by a northeast-trending band of dark siliciclastic sedimentary rock several hundred metres wide, with right lateral offset north of Boomerang Lake, and by small diorite and quartz diorite stocks. Target 3 IP anomaly consists of a generally north-trending",
    "highlight": [
-    0,
-    263
+    65,
+    328
    ]
   },
   "c-0312": {
@@ -3090,17 +3186,17 @@
    "quote_chars": 458
   },
   "c-0391": {
-   "text": "Investigating the Condor MMT Anomaly #20, led to the discovery of a 30 cm rusty boulder of hornblende diorite, containing 5% disseminated and veinlets of limonitic pyrite, at UTM 646588E, 5751276N",
+   "text": "chargeability response, unless they are part of a greater volume of sulphide, so far not recognized. Investigating the Condor MMT Anomaly #20, led to the discovery of a 30 cm rusty boulder of hornblende diorite, containing 5% disseminated and veinlets of limonitic pyrite, at UTM 646588E, 5751276N. Two silt samples were collected along Lines 900N and 2500N but were not anomalous (Silt 1 (986L001)",
    "highlight": [
-    0,
-    196
+    101,
+    297
    ]
   },
   "c-0186": {
-   "text": "Bedrock exposed along this road consists of Nicola flows and andesitic tuff. Bedrock near the Cate showing consists of indurated, moderate to intense hornfels-altered ash and feldspar crystal tuff, which is cut by a quartz diorite dyke",
+   "text": "was centred on a newly constructed road to drill holes IL-22-20 and IL-22-21. Bedrock exposed along this road consists of Nicola flows and andesitic tuff. Bedrock near the Cate showing consists of indurated, moderate to intense hornfels-altered ash and feldspar crystal tuff, which is cut by a quartz diorite dyke. Mineralization consists of a half percent of fine-grained pyrite and a weak",
    "highlight": [
-    0,
-    235
+    78,
+    313
    ]
   },
   "c-0187": {
@@ -3125,24 +3221,28 @@
    ]
   },
   "c-0393": {
-   "text": "The Iron Lake Project covers porphyry-type copper-gold as well as Alaskan-type, ultramafic hosted, nickel-copper-gold-cobalt-platinum-palladium prospects. A significant occurrence on the Property of the latter type, is referred to as the Discovery Zone",
+   "text": "The Iron Lake Project covers porphyry-type copper-gold as well as Alaskan-type, ultramafic hosted, nickel-copper-gold-cobalt-platinum-palladium prospects. A significant occurrence on the Property of the latter type, is referred to as the",
    "highlight": [
     0,
-    252
-   ]
+    237
+   ],
+   "quote_cut": true,
+   "quote_chars": 253
   },
   "c-0394": {
-   "text": "This work traced the Discovery Zone along a strike length of 180 m, identified significant pegmatite-hosted nickel and copper mineralization in the immediate area of the zone, and identified nickel mineralization in an area located three kilometres to the west-northwest",
+   "text": "This work traced the Discovery Zone along a strike length of 180 m, identified significant pegmatite-hosted nickel and copper mineralization in the immediate area of the zone,",
    "highlight": [
     0,
-    270
-   ]
+    175
+   ],
+   "quote_cut": true,
+   "quote_chars": 271
   },
   "c-0189": {
-   "text": "Checking for the southern extension of the Iron Lake Complex across Roger Lake in the southwest corner of the Property confirmed that it exits in this area, though its distribution has evidently been offset by a southwest fault, and by quartz diorite intrusion in the vicinity of Reflection Lake on the western boundary",
+   "text": "may have been a contributory factor. Checking for the southern extension of the Iron Lake Complex across Roger Lake in the southwest corner of the Property confirmed that it exits in this area, though its distribution has evidently been offset by a southwest fault, and by quartz diorite intrusion in the vicinity of Reflection Lake on the western boundary. Northwest of the Cate showing, the",
    "highlight": [
-    0,
-    319
+    37,
+    356
    ]
   },
   "c-0190": {
@@ -3153,17 +3253,17 @@
    ]
   },
   "c-0527": {
-   "text": "Further work will be required to test the geometry and tenor of the Discovery Zone and to follow up on significant drill intercepts elsewhere on the Property",
+   "text": "demonstrated the potential for a large Alaskan-type system, while the majority of the porphyry targets remain untested. Further work will be required to test the geometry and tenor of the Discovery Zone and to follow up on significant drill intercepts elsewhere on the Property. Geological Mapping South of Island Lake, several days of prospecting outwards from a previously located Cu-Au-Pt-",
    "highlight": [
-    0,
-    157
+    120,
+    277
    ]
   },
   "c-0528": {
-   "text": "Sampling drainage catchments would better evaluate the potential of this type of mineralization",
+   "text": "consists of Nicola flows and andesitic tuff. A quick traverse across linear Condor geophysical target 21 in the North Area did not provide any new indications for a listwanite target. Most of the lithology consists of coarse-grained, black clinopyroxenite injected by medium grained leuco-gabbro. Sampling drainage catchments would better evaluate the potential of this type of mineralization. ",
    "highlight": [
-    0,
-    95
+    297,
+    392
    ]
   },
   "c-0013": {
@@ -3202,25 +3302,29 @@
    ]
   },
   "c-0068": {
-   "text": "1970s and has been held by Eastfield since the 2000s. Though initially a porphyry copper target, since 1989 it has been explored for ultramafic intrusion-hosted, copper-gold platinum- palladium mineralization. The Succour Lake area has been explored by various operators since the 1980s, focussing on porphyry-type copper and gold deposits. The Roger Lake area, located south of Iron Lake, has",
+   "text": "Though initially a porphyry copper target, since 1989 it has been explored for ultramafic intrusion-hosted, copper-gold platinum- palladium mineralization. The Succour Lake area has been explored by various operators since the 1980s, focussing on porphyry-type copper and gold deposits",
    "highlight": [
-    54,
-    339
+    0,
+    285
    ]
   },
   "c-0193": {
-   "text": "porphyry potential of the Nicola-Takomkane intrusive contact. The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic Nicola Group, representing an island arc and marginal basin assemblage. Nicola Group rocks are the dominant unit in the Canim Lake area. The",
+   "text": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic",
    "highlight": [
-    62,
-    317
-   ]
+    0,
+    184
+   ],
+   "quote_cut": true,
+   "quote_chars": 256
   },
   "c-0194": {
-   "text": "assemblage. Nicola Group rocks are the dominant unit in the Canim Lake area. The Early Jurassic Takomkane Batholith lies on the northwestern part of the map area. The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession along its eastern, southern, and ",
+   "text": "northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession",
    "highlight": [
-    163,
-    396
-   ]
+    0,
+    156
+   ],
+   "quote_cut": true,
+   "quote_chars": 233
   },
   "c-0107": {
    "text": "In the 2023 core drilling program, a total of 1,670 m of diamond drilling was completed in 3 holes, which took place from June 29 to July 26, 2023",
@@ -3258,17 +3362,19 @@
    ]
   },
   "c-0403": {
-   "text": "The Iron Lake occurrence comprises massive sulphide mineralization within ultramafic rocks of the Iron Lake complex, near Island Lake. Semi-massive to massive sulphides were intersected in the 2005-6 drilling program, consisting mainly of pyrrhotite and chalcopyrite, within hornblendite and peridotite",
+   "text": "The Iron Lake occurrence comprises massive sulphide mineralization within ultramafic rocks of the Iron Lake complex, near Island Lake. Semi-massive to massive sulphides were intersected in the 2005-6",
    "highlight": [
     0,
-    302
-   ]
+    199
+   ],
+   "quote_cut": true,
+   "quote_chars": 303
   },
   "c-0525": {
-   "text": "the massive sulphides. The Iron Lake complex in the northwest conductive zone produced two large, flat-lying, low conductivity plates. A single hole drilled previously into the conductive zone did not intersect a conductive source. It is possible that the hole did not go deep enough, and a deeper drill hole targeting both the conductive zone and high magnetic susceptibility is recommended",
+   "text": "the conductive zone did not intersect a conductive source. It is possible that the hole did not go deep enough, and a deeper drill hole targeting both the conductive zone and high magnetic susceptibility is recommended",
    "highlight": [
     0,
-    391
+    218
    ],
    "quote_cut": true,
    "quote_chars": 459
@@ -3343,10 +3449,10 @@
    ]
   },
   "c-0221": {
-   "text": "and minor hand trenching in 1976 before allowing the claims to expire (Wahl, 1976). In 1983, J.W. Morton staked the Ironhorse 1 and 2 claims to cover the copper anomalies outlined by Pickands Mather and Co. He completed a 3.7 line-km ground electromagnetic survey and limited rock chip sampling (Buskas, 1989). In 1985, the property was optioned to Reliant Resources Ltd, and selected sections of",
+   "text": "In 1983, J.W. Morton staked the Ironhorse 1 and 2 claims to cover the copper anomalies outlined by Pickands Mather and Co. He completed a 3.7 line-km ground electromagnetic survey and limited rock chip sampling (Buskas, 1989",
    "highlight": [
-    84,
-    308
+    0,
+    224
    ]
   },
   "c-0211": {
@@ -3357,17 +3463,17 @@
    ]
   },
   "c-0212": {
-   "text": "terminating the option in 2002. In 2003, Argent Mining Corp optioned the property and expanded the 1989 soil grid. The following year the company completed 603 line-km of a helicopter-borne geophysical survey that included magnetics and multi-frequency electromagnetics (DIGHEM). A large and very strong magnetic anomaly was outlined over an area of five square kilometres, within which 15",
+   "text": "The following year the company completed 603 line-km of a helicopter-borne geophysical survey that included magnetics and multi-frequency electromagnetics (DIGHEM",
    "highlight": [
-    115,
-    277
+    0,
+    162
    ]
   },
   "c-0213": {
-   "text": "Ni, which included a 1.4- metre sample returning 0.95% Cu, 927 ppm Ni and 836 ppm Co (Morton, 2006). The following year the company completed 17 line-km of a ground-based UTEM geophysical survey, which covered a portion of the property to the north and south of the first three 2005 drill holes. The survey was successful in further detailing and extending the lengths of the 2004 airborne",
+   "text": "The following year the company completed 17 line-km of a ground-based UTEM geophysical survey, which covered a portion of the property to the north and south of the first three 2005 drill holes",
    "highlight": [
-    101,
-    294
+    0,
+    193
    ]
   },
   "c-0214": {
@@ -3406,10 +3512,10 @@
    ]
   },
   "c-0222": {
-   "text": "the area in and around the current Property since the early 1960s. During the early 1970s, Aragon Exploration Ltd held much of the ground around Roger Lake, on what was called the Canim Lake property. Exploration consisted of geological mapping, soil geochemical surveys and an induced polarization and ground magnetometer survey. This work led to the discovery of copper mineralization within",
+   "text": "During the early 1970s, Aragon Exploration Ltd held much of the ground around Roger Lake, on what was called the Canim Lake property. Exploration consisted of geological mapping, soil geochemical surveys and an induced polarization and ground magnetometer survey",
    "highlight": [
-    67,
-    329
+    0,
+    262
    ]
   },
   "c-0223": {
@@ -3420,24 +3526,24 @@
    ]
   },
   "c-0002": {
-   "text": "three grids, that may be related to intrusive plugs of the Takomkane batholith located to the west and northwest of the Property. This work was followed up by a two-phase drilling program, totalling 5,001.30 m of diamond drilling in 23 holes (Morton and Koffyberg, 2023). In the first phase, 2,628.3 m of drilling was performed in 13 holes. Eight holes targeted the semi-massive sulphide horizon at",
+   "text": "This work was followed up by a two-phase drilling program, totalling 5,001.30 m of diamond drilling in 23 holes (Morton and Koffyberg, 2023",
    "highlight": [
-    130,
-    269
+    0,
+    139
    ]
   },
   "c-0082": {
-   "text": "three grids, that may be related to intrusive plugs of the Takomkane batholith located to the west and northwest of the Property. This work was followed up by a two-phase drilling program, totalling 5,001.30 m of diamond drilling in 23 holes (Morton and Koffyberg, 2023). In the first phase, 2,628.3 m of drilling was performed in 13 holes. Eight holes targeted the semi-massive sulphide horizon at",
+   "text": "This work was followed up by a two-phase drilling program, totalling 5,001.30 m of diamond drilling in 23 holes (Morton and Koffyberg, 2023",
    "highlight": [
-    130,
-    269
+    0,
+    139
    ]
   },
   "c-0224": {
-   "text": " M. Dumala, P.Eng and A. Koffyberg, P.Geo 15 In 2021, the Iron Lake – Succour Lake – Rogers Lake areas were explored by Tech-X, which completed an airborne MMT-EM and magnetic survey, a LiDAR survey, hand trenching, rock sampling and geological mapping, and a petrological report. The airborne MMT-EM and magnetic survey, along with density and geological data, was interpreted by Condor Consulting",
+   "text": "In 2021, the Iron Lake – Succour Lake – Rogers Lake areas were explored by Tech-X, which completed an airborne MMT-EM and magnetic survey, a LiDAR survey, hand trenching, rock sampling and geological mapping, and a petrological report",
    "highlight": [
-    45,
-    279
+    0,
+    234
    ]
   },
   "c-0225": {
@@ -3448,27 +3554,31 @@
    ]
   },
   "c-0195": {
-   "text": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic Nicola Group, representing an island arc and marginal basin assemblage",
+   "text": "The Property lies within the Quesnel Terrane of the Intermontane Belt. The rocks of the Quesnel Terrane are predominantly sedimentary and volcanic rocks of the Middle to Upper Triassic",
    "highlight": [
     0,
-    255
-   ]
+    184
+   ],
+   "quote_cut": true,
+   "quote_chars": 256
   },
   "c-0196": {
-   "text": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and the Boss Creek unit, comprising quartz monzodiorite (Schiarizza and Boulton, 2006a). U-Pb Age dating of a monzogranite from the Schoolhouse Lake unit yielded an age of 195.0 ±0.04 Ma (Schiarizza et",
+   "text": "The Early Jurassic Takomkane Batholith lies to the northwest of the Property. It has been subdivided into two units: the Schoolhouse Lake unit consisting of granodiorite to monzogranodiorite; and",
    "highlight": [
     0,
-    393
+    195
    ],
    "quote_cut": true,
    "quote_chars": 404
   },
   "c-0197": {
-   "text": "The Iron Lake ultramafic-mafic complex lies northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession along its eastern, southern, and southwestern margins; and is in contact with the Takomkane Batholith (Boss Creek and Schoolhouse Lake units) to the north",
+   "text": "northwest of Canim Lake within the Property. The complex is more than 13 km long and up to 6 km wide. It intrudes the Nicola Group volcaniclastic succession",
    "highlight": [
     0,
-    355
-   ]
+    156
+   ],
+   "quote_cut": true,
+   "quote_chars": 355
   },
   "c-0204": {
    "text": "The Discovery Zone remains open down-dip, while along strike it is likely disrupted by cross-faults with an unknown sense of displacement",
@@ -3496,20 +3606,22 @@
    "quote_chars": 511
   },
   "c-0200": {
-   "text": "by the Iron Lake complex, which occurs in the western part of the Property. The complex is exposed for about 8.5 km, in a north-south orientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is underlain by a thick pyroxenite unit, which probably forms the base of the sill complex (Belik, 2021). To the west, it is overlain by a",
+   "text": "km, in a north-south orientation. The complex consists of a mafic to ultramafic sill-like body. The eastern edge of the complex is underlain by a thick",
    "highlight": [
     0,
-    379
+    151
    ],
    "quote_cut": true,
    "quote_chars": 482
   },
   "c-0201": {
-   "text": "The Takomkane batholith lies on the northern and western edges of the Property. Locally it consists of medium- to coarse-grained diorite, quartz diorite, quartz monzonite and granodiorite, generally unaltered. Small, satellite offshoots of the batholith intrude undeformed Nicola Group rocks and the Iron Lake complex, as well as dioritic to monzonitic dykes, plugs and stocks",
+   "text": "The Takomkane batholith lies on the northern and western edges of the Property. Locally it consists of medium- to coarse-grained diorite, quartz diorite, quartz monzonite and granodiorite,",
    "highlight": [
     0,
-    376
-   ]
+    188
+   ],
+   "quote_cut": true,
+   "quote_chars": 377
   },
   "c-0202": {
    "text": "The area is cut by numerous faults with significant displacements. Rocks of the Nicola Group and Iron Lake complex often display a weak to well developed foliation, associated with a series of northeast-trending faults and shear zones. A second set of inferred faults trend N70°E to N80°E (Belik, 2021",
@@ -3535,10 +3647,10 @@
    ]
   },
   "c-0397": {
-   "text": "Lake. The area is underlain by volcaniclastic rocks of the Nicola Group, consisting of sandstone, breccia, siltstone and argillite, locally cut by diorite, gabbroic and feldspar porphyritic dykes. The showing was discovered in 1993, consisting of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
+   "text": "dykes. The showing was discovered in 1993, consisting of a 2-cm wide sulphide vein, consisting of pyrrhotite, arsenopyrite, pyrite and chalcopyrite within a steep, north-northeast striking shear zone",
    "highlight": [
     0,
-    389
+    199
    ],
    "quote_cut": true,
    "quote_chars": 564
@@ -3551,11 +3663,13 @@
    ]
   },
   "c-0399": {
-   "text": "Mineralization is mainly grains and blebs of chalcopyrite, bornite and malachite, commonly associated with magnetite and pyrite (Gatchalian, 1972; Schiarizza and Bolton, 2006a). The Beer showing comprises scattered occurrences of disseminated chalcopyrite and malachite",
+   "text": "Mineralization is mainly grains and blebs of chalcopyrite, bornite and malachite, commonly associated with magnetite and pyrite (Gatchalian, 1972; Schiarizza and Bolton, 2006a). The Beer showing",
    "highlight": [
     0,
-    269
-   ]
+    194
+   ],
+   "quote_cut": true,
+   "quote_chars": 270
   },
   "c-0400": {
    "text": "The showing comprises rubble of mineralized quartz– ankerite vein material. Two samples of the arsenopyrite rich vein samples assayed 2.54 and 3.51 ppm gold",
@@ -3565,80 +3679,82 @@
    ]
   },
   "c-0401": {
-   "text": "mineralization of the July showing. Geological mapping in 2014 by Wilkins (2014) led to the delineation of a new zone, termed the Wilco showing, about 700 m northeast of the July showing. The zone is narrow and consists of weakly silicified and gossanous, medium-grained, well-fractured diorite with mafic minerals completely altered to epidote and chlorite. A rock sample from this zone assayed",
+   "text": "(2014) led to the delineation of a new zone, termed the Wilco showing, about 700 m northeast of the July showing. The zone is",
    "highlight": [
-    36,
-    357
-   ]
+    0,
+    125
+   ],
+   "quote_cut": true,
+   "quote_chars": 322
   },
   "c-0077": {
-   "text": "Judy L. Roger L. Susan L. Canim Lake Weller Lake Succour Lake Beartrack Lake Boomerang Lake Christmas Lake Kellington Lake Eagle Creek Electric Transmission Line Property Boundary IRON LAKE Cu, Au, Co, Ni, Pt, Pd BEER Cu JULY Cu, Au CATE Cu, Au LISA Au WILKINS Cu, Au 640000 640000 645000 645000 650000 650000 655000 655000 5750000 5750000 5755000 5755000 5760000 5760000 0 1 2 3 4 5 km Datum: NAD83",
+   "text": "IRON LAKE Cu, Au, Co, Ni, Pt, Pd",
    "highlight": [
-    180,
-    212
+    0,
+    32
    ]
   },
   "c-0017": {
-   "text": " M. Dumala, P.Eng and A. Koffyberg, P.Geo 23 8.0 AIRBORNE Xcite HTDEM GEOPHYSICAL SURVEY - 2023 A helicopter-borne Time Domain Electromagnetic (Xcite HTDEM) survey was conducted over a portion of the Property from March 6 to 8, 2023. The work was contracted to Axiom Geophysics & Remote Sensing (“Axiom”) of Saskatoon, Saskatchewan. Figure 5 shows the extent of the airborne survey in relation to the",
+   "text": "A helicopter-borne Time Domain Electromagnetic (Xcite HTDEM) survey was conducted over a portion of the Property from March 6 to 8, 2023",
    "highlight": [
-    96,
-    232
+    0,
+    136
    ]
   },
   "c-0018": {
-   "text": "block totalling 205 line-km with a traverse line spacing of 100 m (with some 50 m infill) and tie line spacing of 1,000 m. The survey was flown using the 30Hz Xcite HTDEM system, towed by a helicopter, collecting time domain electromagnetic and magnetic data simultaneously. Flight orientation was 110° / 290° with tie lies at 20° / 200°. Instrumentation was configured in a 20-m diameter loop that",
+   "text": "survey was flown using the 30Hz Xcite HTDEM system, towed by a helicopter, collecting time domain electromagnetic and magnetic data simultaneously",
    "highlight": [
-    127,
-    273
+    0,
+    146
    ]
   },
   "c-0019": {
-   "text": "A logistical report by Axiom is given in Appendix 1, and the following survey parameters were obtained from this report. The survey consisted of one block totalling 205 line-km with a traverse line spacing of 100 m (with some 50 m infill) and tie line spacing of 1,000 m. The survey was flown using the 30Hz Xcite HTDEM system, towed by a helicopter, collecting time domain electromagnetic and",
+   "text": "The survey consisted of one block totalling 205 line-km with a traverse line spacing of 100 m (with some 50 m infill) and tie line spacing of 1,000 m",
    "highlight": [
-    121,
-    270
+    0,
+    149
    ]
   },
   "c-0207": {
-   "text": "A logistical report by Axiom is given in Appendix 1, and the following survey parameters were obtained from this report. The survey consisted of one block totalling 205 line-km with a traverse line spacing of 100 m (with some 50 m infill) and tie line spacing of 1,000 m. The survey was flown using the 30Hz Xcite HTDEM system, towed by a helicopter, collecting time domain electromagnetic and",
+   "text": "The survey consisted of one block totalling 205 line-km with a traverse line spacing of 100 m (with some 50 m infill) and tie line spacing of 1,000 m",
    "highlight": [
-    121,
-    270
+    0,
+    149
    ]
   },
   "c-0210": {
-   "text": " M. Dumala, P.Eng and A. Koffyberg, P.Geo 23 8.0 AIRBORNE Xcite HTDEM GEOPHYSICAL SURVEY - 2023 A helicopter-borne Time Domain Electromagnetic (Xcite HTDEM) survey was conducted over a portion of the Property from March 6 to 8, 2023. The work was contracted to Axiom Geophysics & Remote Sensing (“Axiom”) of Saskatoon, Saskatchewan. Figure 5 shows the extent of the airborne survey in relation to the",
+   "text": "A helicopter-borne Time Domain Electromagnetic (Xcite HTDEM) survey was conducted over a portion of the Property from March 6 to 8, 2023",
    "highlight": [
-    96,
-    232
+    0,
+    136
    ]
   },
   "c-0219": {
-   "text": "his report. M. St. Martin compared the three airborne geophysical surveys flown over the Iron Lake property, as shown in Table 2: • 2004 DIGHEM magnetic and frequency domain EM • 2021 Mobile MT magnetic and EM magneto-telluric • 2023 Xcite magnetic and time domain EM His interpretation and review focused on the Iron Lake Complex (ILC) mafic to ultramafic magmatic intrusion and the peripheral",
+   "text": "2004 DIGHEM magnetic and frequency domain EM • 2021 Mobile MT magnetic and EM magneto-telluric • 2023 Xcite magnetic and time domain EM",
    "highlight": [
-    132,
-    267
+    0,
+    135
    ]
   },
   "c-0105": {
-   "text": "hole be carried out in the ILC NW area it is strongly recommended that down-hole EM be carried out.” 9.0 CORE DRILLING PROGRAM -2023 In 2023, a total of 1,680 m of diamond drilling was completed in three holes, which took place between June 29 and July 26, 2023. Two holes targeted the semi-massive sulphide horizon identified by Argent Mining Corp (Morton, 2006), referred to as the Discovery",
+   "text": "In 2023, a total of 1,680 m of diamond drilling was completed in three holes, which took place between June 29 and July 26, 2023",
    "highlight": [
-    133,
-    261
+    0,
+    128
    ]
   },
   "c-0523": {
-   "text": "for nickel copper pods. It is also why surveying drill holes with down hole time domain is a commonly used in nickel copper exploration. Should a deep hole be carried out in the ILC NW area it is strongly recommended that down-hole EM be carried out.” 9.0 CORE DRILLING PROGRAM -2023 In 2023, a total of 1,680 m of diamond drilling was completed in three holes, which took place between June",
+   "text": "Should a deep hole be carried out in the ILC NW area it is strongly recommended that down-hole EM be carried out",
    "highlight": [
-    137,
-    249
+    0,
+    112
    ]
   },
   "c-0524": {
-   "text": "produced a highly conductive plate that trends northwest and plunges northwest. The body has been drilled by several holes. However, the drilling azimuth has been mostly northwest and a drilling azimuth of northeast is recommended to better intersect the massive sulphides. There is no doubt that a large, flat-lying, weak conductive source is present in the ILC NW area as it is detected by three",
+   "text": "However, the drilling azimuth has been mostly northwest and a drilling azimuth of northeast is recommended to better intersect the massive sulphides",
    "highlight": [
-    124,
-    272
+    0,
+    148
    ]
   },
   "c-0009": {
@@ -3733,18 +3849,22 @@
    ]
   },
   "c-0408": {
-   "text": "The hole was extended to 606 m after intersecting two narrow massive sulphide layers at 530 m and 537 m. These layers were 16 cm and 21 cm wide respectively. Two additional massive sulphide layers were intersected at 572.17 m and 576.94 m. These were a 1.8 m pyrrhotite-rich interval and a 1.59 m wide pyrite-dominated interval, respectively",
+   "text": "cm wide respectively. Two additional massive sulphide layers were intersected at 572.17 m and 576.94 m. These were a 1.8 m pyrrhotite-rich interval and a 1.59 m wide pyrite-dominated interval, respectively",
    "highlight": [
     0,
-    341
-   ]
+    205
+   ],
+   "quote_cut": true,
+   "quote_chars": 342
   },
   "c-0409": {
-   "text": "The final hole, IL-23-026, was drilled towards IL-23-024 to target the up-dip projection of the massive sulphides intersected in IL-23-024. A 30 cm massive sulphide layer was intersected at 216 m",
+   "text": "was drilled towards IL-23-024 to target the up-dip projection of the massive sulphides intersected in IL-23-024. A 30 cm massive sulphide layer was intersected at 216 m",
    "highlight": [
     0,
-    195
-   ]
+    168
+   ],
+   "quote_cut": true,
+   "quote_chars": 196
   },
   "c-0410": {
    "text": "This hole was completed at a depth of 717 m and predominantly intersected magnetite-bearing pyroxenite. No massive sulphide intervals were encountered",
@@ -3810,11 +3930,13 @@
    ]
   },
   "c-0413": {
-   "text": "The Iron Lake property covers porphyry-type copper-gold as well as Alaskan-type, ultramafic hosted, nickel-copper-gold-cobalt-platinum-palladium prospects. A significant occurrence on the Property, of the latter type, is referred to as the Discovery Zone",
+   "text": "The Iron Lake property covers porphyry-type copper-gold as well as Alaskan-type, ultramafic hosted, nickel-copper-gold-cobalt-platinum-palladium prospects. A significant occurrence on the Property, of the latter type, is referred to as the",
    "highlight": [
     0,
-    254
-   ]
+    239
+   ],
+   "quote_cut": true,
+   "quote_chars": 255
   },
   "c-0521": {
    "text": "A drilling azimuth of northeast is recommended to better intersect the massive sulphides",

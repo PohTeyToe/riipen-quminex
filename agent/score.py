@@ -2,14 +2,17 @@
 
 Verdicts come from code only. An expected value counts only when the answer
 line itself states it; a quote the agent cited but didn't use doesn't count.
-A number in the answer that no cited quote contains fails the question. Each
-miss carries failure codes from this list, shown in plain words on the Eval tab.
+A number counts only as written (10 is not "<10"), and an expected grade whose
+label names an element counts only next to that element, so "0.034% Cu,
+0.42% Ni" doesn't pass for 0.42% Cu. A number in the answer that no cited
+quote contains fails the question. Each miss carries failure codes from this
+list, shown in plain words on the Eval tab.
 """
 from __future__ import annotations
 
 import re
 
-from checker import contains_seq, numbers
+from checker import contains_seq, element_of, in_sentence, signed_numbers, tokens
 from rules import unbacked_numbers
 from textnorm import normalize
 
@@ -25,6 +28,8 @@ FAILURES = {
     "missing_value": "Answer missed an expected value",
     "answer_missing": "No answer line",
     "grade_not_with_element": "Grade not with its element",
+    "hole_not_with_row": "Hole not the one in the quoted row",
+    "unit_not_in_quote": "Unit not in the quote",
     "quote_too_long": "Quote over 600 characters",
     "quote_too_short": "Quote too short to check",
     "page_not_in_corpus": "Cited a page outside these reports",
@@ -34,8 +39,9 @@ SCORE_DEFS = {
     "citation_precision": "Cited quotes the checker confirmed on the cited page, out of every quote the agent cited "
                           "while answering, including ones it later fixed. A quote on a scanned page counts only "
                           "once it is confirmed against the page image.",
-    "answer_accuracy": "Answerable questions whose answer line states every expected value and every required caveat, "
-                       "with no number that its cited quotes don't contain, out of 8.",
+    "answer_accuracy": "Answerable questions whose answer line states every expected value, each grade next to its "
+                       "own element, and every required caveat, with no number that its cited quotes don't contain, "
+                       "out of 8.",
     "correct_refusals": "Unanswerable questions the agent refused, out of 4.",
     "false_refusals": "Answerable or conflict questions the agent refused anyway, out of 11.",
     "disagreements_flagged": "Conflict questions whose answer line states every side's value, with no number that its "
@@ -47,11 +53,15 @@ def squash(s: str) -> str:
     return re.sub(r"[^a-z0-9]", "", normalize(s))
 
 
-def alt_met(alt: str, answer: str) -> bool:
-    """An expected value is met only by the answer line itself, never by a quote the answer didn't use."""
+def alt_met(alt: str, answer: str, element: str | None = None) -> bool:
+    """An expected value is met only by the answer line itself, never by a quote the answer didn't use.
+    With an element, a single number must sit next to that element's name in the answer."""
     if re.search(r"[a-z]", alt, re.I):
         return squash(alt) in squash(answer)
-    return contains_seq(numbers(answer), numbers(alt))
+    want = signed_numbers(alt)
+    if element and len(want) == 1:
+        return in_sentence(tokens(answer), element, want[0], None)
+    return contains_seq(signed_numbers(answer), want)
 
 
 def caveat_met(cav: dict, answer: str, claims: list[dict]) -> bool:
@@ -78,7 +88,8 @@ def score_question(category: str, gold: dict, answer: str | None, refused: bool,
     """claims: this session's accepted claims. Returns verdict, failure codes and per-item detail."""
     refusal = is_refusal(answer, refused, claims)
     text = answer or ""
-    items = [{"label": e["label"], "met": any(alt_met(a, text) for a in e["any_of"])} for e in gold["expected"]]
+    items = [{"label": e["label"], "met": any(alt_met(a, text, element_of(e["label"])) for a in e["any_of"])}
+             for e in gold["expected"]]
     caveats = [{"label": c["label"], "met": caveat_met(c, text, claims)} for c in gold["required_caveats"]]
     unbacked = [] if refusal else unbacked_numbers(text, claims)
     failures: list[str] = []

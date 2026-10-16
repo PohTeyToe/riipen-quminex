@@ -70,11 +70,16 @@ export function locationSummary() {
   const sorted = [...groups].sort((a, b) => a.source_count - b.source_count)
   const lone = sorted[0]
   const rest = sorted[sorted.length - 1]
+  const s = f?.settled_by
   return {
     state: f?.state,
     km: f?.distance_km,
     lone,
     restPages: rest?.source_count ?? 0,
     restReports: rest?.report_count ?? 0,
+    settled:
+      s && s.side !== undefined && groups[s.side] === rest
+        ? { collars: s.collars?.length ?? 0, farthest_km: s.farthest_km, other_km: s.other_km }
+        : null,
   }
 }

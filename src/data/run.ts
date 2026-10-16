@@ -4,7 +4,6 @@ import rejectedJson from '../../data/rejected.json'
 import tracesJson from '../../data/traces.json'
 import excerptsJson from '../../data/excerpts.json'
 import imageChecksJson from '../../data/image_checks.json'
-import briefExamplesJson from '../../data/brief_examples.json'
 import answersJson from '../../data/eval/answers.json'
 import goldJson from '../../data/eval/gold.json'
 import scoresJson from '../../data/eval/scores.json'
@@ -12,8 +11,7 @@ import changesJson from '../../data/eval/changes.json'
 import missesNoteJson from '../../data/eval/misses_note.json'
 import summaryJson from '../../data/summary.json'
 import summaryReviewJson from '../../data/eval/summary_review.json'
-import searchLogJson from '../../data/eval/search_log.json'
-import secondReaderJson from '../../data/eval/second_reader.json'
+import { fields } from './core'
 import type {
   Answer,
   Change,
@@ -23,7 +21,6 @@ import type {
   IntervalValue,
   Rejected,
   Score,
-  SearchLog,
   Summary,
   TraceStep,
 } from './types'
@@ -38,24 +35,6 @@ const excerpts = (excerptsJson as unknown as {
 export const imageChecks = imageChecksJson as unknown as {
   checked_by_label: string
   owner_check: { done: boolean; by: string | null; date: string | null; aris?: number; page?: number }
-}
-
-export const briefExamples = briefExamplesJson as unknown as {
-  note_hand_written: string
-  examples: {
-    track: number
-    label: string
-    hand_written: boolean
-    note?: string
-    claim: Record<string, unknown>
-    compared_with?: Record<string, unknown>
-    code_result?: {
-      same_interval: boolean
-      widths_disagree: boolean
-      arithmetic: Record<string, { ok: boolean; line: string }>
-      rule_text: string
-    }
-  }[]
 }
 
 export const answers = (answersJson as unknown as { answers: Answer[] }).answers
@@ -92,13 +71,22 @@ export const changes = changesJson as unknown as {
 export const missesNote = missesNoteJson as unknown as { written_by: string; sentences: string[] }
 export const summary = summaryJson as unknown as Summary
 export const summaryReview = summaryReviewJson as unknown as { written_by: string; checked: string; notes: { sentence: string; note: string }[] }
-export const searchLog = new Map((searchLogJson as unknown as SearchLog[]).map((s) => [s.id, s]))
-export const secondReader = secondReaderJson as unknown as {
-  reader: string
-  verdicts: { id: string; verdict: string; notes: string }[]
-}
 
 const claimsById = new Map(claims.map((c) => [c.id, c]))
+
+// The claims code grouped with each claim on the card, so a linked value (?claim=) opens with the same group a
+// click on the card gives it. Text fields aren't compared, so their claims have no group.
+const groupByClaim = new Map<string, string[]>()
+for (const f of fields) {
+  for (const part of f.parts ?? [f]) {
+    if (part.rule === 'none') continue
+    for (const g of part.groups ?? []) for (const id of g.claims) if (!groupByClaim.has(id)) groupByClaim.set(id, g.claims)
+  }
+}
+
+export function groupOf(id: string): string[] | undefined {
+  return groupByClaim.get(id)
+}
 
 export function claim(id: string): Claim | undefined {
   return claimsById.get(id)

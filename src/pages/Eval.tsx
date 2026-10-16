@@ -4,7 +4,7 @@ import { Chip } from '../components/Panel'
 import { SourceChips } from '../components/FieldRow'
 import { ChevronIcon, ExternalIcon } from '../components/Icons'
 import { pageLink } from '../data/core'
-import { answers, changes, clean, goldById, goldMeta, missesNote, rejected, scores, searchLog, sessionSteps, summary, valueText } from '../data/run'
+import { answers, changes, clean, goldById, goldMeta, missesNote, rejected, scores, sessionSteps, summary, valueText } from '../data/run'
 import type { Answer, Rejected, Score } from '../data/types'
 import { useHashScroll } from '../router'
 
@@ -60,7 +60,7 @@ function Question({ a }: { a: Answer }) {
   const [open, setOpen] = useState(false)
   const g = goldById.get(a.id)
   const reason = a.refused ? refusalReason(a) : undefined
-  const log = searchLog.get(a.id)
+  const log = a.search
   const expected = [...a.items, ...a.caveats.map((c) => ({ ...c, label: `Caveat: ${c.label}` }))]
   return (
     <li className={`question${a.passed ? '' : ' is-miss'}`} id={a.id}>
@@ -169,8 +169,8 @@ function Questions() {
         The {answers.length} questions, misses first
       </h2>
       <p className="lede">
-        Claude wrote the questions and expected answers from the report pages before the first run. Codex (<span className="mono">gpt-6.1-sol</span>) read each
-        expected answer against its page without seeing the agent. Before the run it agreed with {pass1.agree} and disputed {pass1.disputed}; after run 2 it agreed with{' '}
+        I had Claude write the questions and expected answers from the report pages before the first run, and had Codex (<span className="mono">gpt-6.1-sol</span>)
+        read each expected answer against its page without seeing the agent. Before the run it agreed with {pass1.agree} and disputed {pass1.disputed}; after run 2 it agreed with{' '}
         {pass2.agree} and disputed {pass2.disputed}. Each dispute was settled against the page. Each eval session got only the question text. An expected value counts only
         when the answer line itself states it. Three expected answers changed after a run, and all three are listed at the bottom with reasons. A geologist hasn't checked
         any of this yet.
@@ -226,12 +226,13 @@ function ThrownOut() {
       </p>
       <ol className="thrown">
         {order.map((r) => {
-          const shown = typeof r.value === 'string' || r.value === null ? clean(r.value ?? r.quote) : valueText({ value: r.value, unit: null, censored: false })
+          const shown = typeof r.value === 'string' || r.value === null ? clean(r.value ?? r.quote ?? '') : valueText({ value: r.value, unit: null, censored: false })
           const src = r.source
           return (
             <li key={r.attempt_id} className="thrown-item">
               <p className="thrown-value">
-                <s>{shown.length > 180 ? `${shown.slice(0, 178)}…` : shown}</s>
+                <span className="muted small">The agent proposed </span>
+                <s>“{shown.length > 180 ? `${shown.slice(0, 178)}…` : shown}”</s>
               </p>
               <p className="small">
                 <strong className="thrown-reason">{r.failure_label}.</strong> {clean(r.reason.replace(/\\n/g, ' '))}
@@ -321,7 +322,7 @@ function SummaryScore() {
         The summary, scored
       </h2>
       <p className="lede">
-        A separate session read only the property card and wrote the summary at the top of it, one sentence at a time. Before it ran, Claude listed the{' '}
+        A separate session read only the property card and wrote the summary at the top of it, one sentence at a time. Before it ran, I had Claude list the{' '}
         {summary.points.length} points a short evaluation of Iron Lake should make. A point counts only when the summary's own words state it.
       </p>
       <ul className="checklist small summary-points">

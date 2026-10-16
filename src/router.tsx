@@ -55,7 +55,7 @@ export function Link({ to, onClick, ...rest }: LinkProps) {
   return <a href={to} onClick={handle} {...rest} />
 }
 
-/** Scroll to the element named in the hash once it exists. */
+/** Scroll to the element named in the hash once it exists, and move focus there, so the next Tab starts from it. */
 export function useHashScroll(ready: boolean) {
   const { hash, path } = useLocation()
   useEffect(() => {
@@ -63,6 +63,8 @@ export function useHashScroll(ready: boolean) {
     const el = document.getElementById(hash)
     if (el) {
       el.scrollIntoView({ block: 'start' })
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
+      el.focus({ preventScroll: true })
     }
   }, [hash, path, ready])
 }

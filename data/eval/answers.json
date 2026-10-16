@@ -311,6 +311,19 @@
    "id": "q09",
    "category": "unanswerable",
    "question": "What is the mineral resource estimate for the Iron Lake property?",
+   "search": {
+    "terms": [
+     "resource estimate",
+     "mineral resource",
+     "inferred",
+     "indicated",
+     "measured",
+     "reserve",
+     "tonnes",
+     "NI 43-101"
+    ],
+    "pages_hit": 68
+   },
    "answer": "Not in these sources",
    "answer_missing": false,
    "refused": true,
@@ -329,6 +342,16 @@
    "id": "q10",
    "category": "unanswerable",
    "question": "What did the 2025 geochronology and green rock study on the Iron Lake property find?",
+   "search": {
+    "terms": [
+     "green rock",
+     "geochronology",
+     "2025",
+     "age dating",
+     "U-Pb"
+    ],
+    "pages_hit": 66
+   },
    "answer": "Not in these sources",
    "answer_missing": false,
    "refused": true,
@@ -347,6 +370,17 @@
    "id": "q11",
    "category": "unanswerable",
    "question": "What metallurgical recoveries have been reported for Iron Lake mineralization?",
+   "search": {
+    "terms": [
+     "metallurgical",
+     "metallurgic",
+     "recovery",
+     "recoveries",
+     "flotation",
+     "concentrate"
+    ],
+    "pages_hit": 10
+   },
    "answer": "Not in these sources",
    "answer_missing": false,
    "refused": true,
@@ -365,6 +399,14 @@
    "id": "q12",
    "category": "unanswerable",
    "question": "What grades did drill hole IL-22-099 return?",
+   "search": {
+    "terms": [
+     "IL-22-099",
+     "IL-22-99",
+     "099"
+    ],
+    "pages_hit": 34
+   },
    "answer": "Not in these sources",
    "answer_missing": false,
    "refused": true,

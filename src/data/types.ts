@@ -59,7 +59,8 @@ export interface Rejected {
   kind: string
   value: string | IntervalValue | null
   source: Src
-  quote: string
+  /** Shipped only when the claim has no value, since that's when the page shows it. */
+  quote?: string
   failure: string
   failure_label: string
   reason: string
@@ -149,13 +150,69 @@ export interface Group {
   arithmetic?: Record<string, { ok: boolean; computed_m: string; stated_m: string; line: string }>
   inside?: string
   inside_word?: 'including' | 'within'
+  /** Claims that don't give the measure in dispute, so they take no side. */
+  unsided?: string[]
+  /** What the reports' own tables say: a side they back, or what the lab found at a row's depths. */
+  settled_by?: Settled
+  lab?: Settled
+  /** Map sheet labels code read on pages no claim covers. */
+  code_pages?: CodePage[]
+}
+
+export interface CollarRow {
+  hole: string
+  easting: string
+  northing: string
+  depth_m: string
+  aris: number
+  page: number
+}
+
+export interface SampleRow {
+  sample: string
+  from_m: string
+  to_m: string
+  width_m: string
+  certificate: string | null
+  aris: number
+  page: number
+  grades: Record<string, string>
+  /** Inside the depths code averaged. */
+  used: boolean
+}
+
+export interface Settled {
+  by: string
+  /** The side the evidence backs: an index into the groups (or, for an interval, its sides). */
+  side?: number
+  line: string
+  rule: string
+  key?: string
+  farthest_km?: number
+  other_km?: number
+  collars?: CollarRow[]
+  holes?: { hole: string; depth_m: string }[]
+  aris?: number
+  page?: number
+  samples?: SampleRow[]
+}
+
+export interface CodePage {
+  aris: number
+  page: number
+  written: string
+  scanned?: boolean
+  image_reads?: string
+  checked_by?: string
+  checked_on?: string
+  second_read_by?: string
 }
 
 export interface Compared {
   what: string
   agree: boolean
   line: string
-  values: { claim: string; written: string; value: string; allow: string }[]
+  values: { claim: string; written: string; sign: string; value: string; lo: string; hi: string | null }[]
 }
 
 export interface CrossCheck {
@@ -173,6 +230,14 @@ export interface FieldPart {
   caveat_claims: string[]
   unplaced: string[]
   groups: Group[]
+  settled_by?: Settled
+  lab_summary?: LabSummary
+}
+
+export interface LabSummary {
+  checked: number
+  match: number
+  differ: { claim: string; hole: string; from_m: string; to_m: string; src: string; what: string[]; on_card: boolean }[]
 }
 
 export type State = 'settled' | 'disagree' | 'not_in_sources' | 'quotes'
@@ -193,6 +258,8 @@ export interface Field {
   eval_cross_check?: CrossCheck
   from_eval?: string[]
   parts?: FieldPart[]
+  settled_by?: Settled
+  label_rule?: string
   other_claims?: string[]
   searches?: string[]
   refusals?: string[]
@@ -206,6 +273,8 @@ export interface Answer {
   answer: string | null
   answer_missing: boolean
   refused: boolean
+  /** The full-text search behind an unanswerable question, run before the eval. */
+  search?: { terms: string[]; pages_hit: number }
   claims: string[]
   rejected: string[]
   session: string
@@ -236,11 +305,6 @@ export interface GoldQuestion {
   search_terms?: string[]
 }
 
-export interface SearchLog {
-  id: string
-  terms: string[]
-  pages_hit: number
-}
 
 export interface Score {
   n: number

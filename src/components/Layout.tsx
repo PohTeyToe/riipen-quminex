@@ -36,7 +36,8 @@ export function DemoLayout({ title, children }: { title: string; children: React
           <h1>{title}</h1>
           <p className="header-line">Built only from public BC government filings. Not affiliated with any company named in them.</p>
           <p className="run-label small">
-            Agent output from {longDate(run.date)}, <span className="mono">{model}</span>. Code checked each quote against its page.
+            Agent output from {longDate(run.date)}, <span className="mono">{model}</span>. Code checked each quote against its page; quotes on scanned
+            pages were checked against the page image.
           </p>
         </div>
         {children}

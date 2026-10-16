@@ -8,7 +8,7 @@
  "answer_accuracy": {
   "n": 7,
   "of": 8,
-  "definition": "Answerable questions whose answer line states every expected value and every required caveat, with no number that its cited quotes don't contain, out of 8."
+  "definition": "Answerable questions whose answer line states every expected value, each grade next to its own element, and every required caveat, with no number that its cited quotes don't contain, out of 8."
  },
  "correct_refusals": {
   "n": 4,
@@ -104,6 +104,20 @@
    "from_checker": 0
   },
   {
+   "code": "hole_not_with_row",
+   "label": "Hole not the one in the quoted row",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
+   "code": "unit_not_in_quote",
+   "label": "Unit not in the quote",
+   "count": 0,
+   "from_answers": 0,
+   "from_checker": 0
+  },
+  {
    "code": "quote_too_long",
    "label": "Quote over 600 characters",
    "count": 4,
@@ -127,13 +141,13 @@
  ],
  "failure_counts_note": "Checker counts cover every rejected claim in the run, field sessions and eval sessions. Answer counts cover the 15 eval answers.",
  "summary_points": {
-  "n": 17,
-  "of": 18,
+  "n": 19,
+  "of": 21,
   "definition": "Points a short evaluation of Iron Lake should make, written before the summary session ran, that the summary's own text states."
  },
  "summary_sentences": {
-  "n": 10,
-  "of": 13,
+  "n": 12,
+  "of": 14,
   "definition": "Sentences code kept, out of every sentence the summary session proposed. A sentence is kept only if every number in it is in what it cites and it cites every side of any disagreement it touches."
  },
  "changes_after_first_eval": [

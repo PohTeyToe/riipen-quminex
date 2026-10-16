@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { fields, longDate, pageLink, report } from '../data/core'
-import { checkWords, claim, clean, excerpt, gradeText, isInterval, srcLabel, traceSteps, valueText } from '../data/run'
+import { checkWords, claim, clean, excerpt, gradeText, groupOf, isInterval, srcLabel, traceSteps, valueText } from '../data/run'
 import type { Claim, Src } from '../data/types'
 import { ChevronIcon, CloseIcon, ExternalIcon } from './Icons'
 import { ClaimTrace } from './Trace'
@@ -37,6 +37,11 @@ function claimInUrl(): string | null {
   return id && claim(id) ? id : null
 }
 
+/** A linked claim opens with the same group of chips a click on the card gives it. */
+function linked(id: string): PanelState {
+  return { id, siblings: groupOf(id) }
+}
+
 /**
  * The open claim lives in the URL (?claim=), so a value can be linked. Opening the panel adds a history
  * entry, so Back closes it, as people expect of a sheet on a phone. Moving between claims in an open
@@ -45,8 +50,16 @@ function claimInUrl(): string | null {
 export function PanelProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<PanelState | null>(() => {
     const id = claimInUrl()
-    return id ? { id } : null
+    return id ? linked(id) : null
   })
+  // A ?claim= that names no claim in this run: say so once, and drop it from the address.
+  const [unknown, setUnknown] = useState<string | null>(() => {
+    const id = new URL(window.location.href).searchParams.get('claim')
+    return id && !claim(id) ? id : null
+  })
+  useEffect(() => {
+    if (unknown) window.history.replaceState(window.history.state, '', claimUrl(null))
+  }, [unknown])
   const opener = useRef<HTMLElement | null>(null)
   const isOpen = useRef(Boolean(state))
 
@@ -74,14 +87,23 @@ export function PanelProvider({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    const onPop = () => {
+    // Back and Forward, and a click on a link inside the app (a tab, a "Go there"), can change the address
+    // under the panel. The panel follows the address.
+    const sync = (returnFocus: boolean) => () => {
       const id = claimInUrl()
+      if (!id && !isOpen.current) return
       isOpen.current = Boolean(id)
-      setState((prev) => (id ? (prev?.id === id ? prev : { id }) : null))
-      if (!id) opener.current?.focus({ preventScroll: true })
+      setState((prev) => (id ? (prev?.id === id ? prev : linked(id)) : null))
+      if (!id && returnFocus) opener.current?.focus({ preventScroll: true })
     }
+    const onPop = sync(true)
+    const onNavigate = sync(false)
     window.addEventListener('popstate', onPop)
-    return () => window.removeEventListener('popstate', onPop)
+    window.addEventListener('app:navigate', onNavigate)
+    return () => {
+      window.removeEventListener('popstate', onPop)
+      window.removeEventListener('app:navigate', onNavigate)
+    }
   }, [])
 
   const wasOpen = useRef(false)
@@ -104,6 +126,16 @@ export function PanelProvider({ children }: { children: ReactNode }) {
     <PanelContext.Provider value={{ open, current: state?.id ?? null }}>
       {children}
       <SidePanel state={state} onClose={close} onOpen={open} />
+      {unknown && (
+        <div className="notice" role="status">
+          <p>
+            No claim <span className="mono">{unknown}</span> in this run. The link may be from an older version of this page.
+          </p>
+          <button type="button" className="icon-button" onClick={() => setUnknown(null)} aria-label="Dismiss">
+            <CloseIcon />
+          </button>
+        </div>
+      )}
     </PanelContext.Provider>
   )
 }
@@ -226,25 +258,31 @@ function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClo
     return () => window.removeEventListener('keydown', onKey)
   }, [state, onClose])
 
-  // As a sheet the panel is modal: the page behind it can't be reached until it closes.
+  // As a sheet the panel is modal: the page behind it can't be reached or scrolled until it closes.
   const modal = Boolean(state) && sheet
   useEffect(() => {
     if (!modal) return
     const behind = [...document.querySelectorAll<HTMLElement>('.skip, .topbar, #main, .footer')]
     behind.forEach((el) => (el.inert = true))
-    return () => behind.forEach((el) => (el.inert = false))
+    document.documentElement.classList.add('sheet-open')
+    return () => {
+      behind.forEach((el) => (el.inert = false))
+      document.documentElement.classList.remove('sheet-open')
+    }
   }, [modal])
 
-  const c = shown ? claim(shown.id) : undefined
+  // Render what's open now; while the panel slides shut, keep showing what it showed.
+  const view = state ?? shown
+  const c = view ? claim(view.id) : undefined
   const isOpen = Boolean(state)
   const r = c ? report(c.source.aris) : undefined
   const check = c ? checkWords(c) : undefined
   // One chip per page, as on the card: two claims from one page would otherwise show two identical chips.
   const pagesSeen = new Set(c ? [srcLabel(c.source)] : [])
-  const siblings = (shown?.siblings ?? []).filter((id) => {
+  const siblings = (view?.siblings ?? []).filter((id) => {
     const s = claim(id)
     const label = s ? srcLabel(s.source) : id
-    if (id === shown?.id || pagesSeen.has(label)) return false
+    if (id === view?.id || pagesSeen.has(label)) return false
     pagesSeen.add(label)
     return true
   })
@@ -290,6 +328,9 @@ function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClo
                 Open page {c.source.page} on ARIS ({r.pdf_size_label})
                 <ExternalIcon />
               </a>
+              {r.pdf_bytes > 20_000_000 && (
+                <p className="small muted aris-note">A large file. Some phone browsers download all of it and open it at page 1.</p>
+              )}
 
               <dl className="meta">
                 <div>
@@ -338,7 +379,7 @@ function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClo
 
               {siblings.length > 0 && (
                 <section className="panel-section">
-                  <h3 className="label">{shown?.context ?? 'Grouped with this by code'}</h3>
+                  <h3 className="label">{view?.context ?? 'Grouped with this by code'}</h3>
                   <div className="chips">
                     {siblings.map((id) => {
                       const s = claim(id)
@@ -347,7 +388,7 @@ function SidePanel({ state, onClose, onOpen }: { state: PanelState | null; onClo
                           key={id}
                           type="button"
                           className={`chip${s.check.by === 'page image' ? ' is-scanned' : ''}`}
-                          onClick={() => onOpen(id, shown?.siblings, shown?.context)}
+                          onClick={() => onOpen(id, view?.siblings, view?.context)}
                         >
                           {srcLabel(s.source)}
                         </button>

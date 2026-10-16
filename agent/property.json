@@ -1,0 +1,14 @@
+{
+ "name": "Iron Lake",
+ "aris_property_filter": "IRON LAKE",
+ "reports_note": "PDF page numbers, 1-based, inclusive. 41327 and 41800 stop where their appendices start, so the agent reads the report body. Code reads the drill tables in the appendices (agent/extract_tables.py).",
+ "reports": [
+  {"aris": 34595, "first_page": 1, "last_page": 74},
+  {"aris": 36430, "first_page": 1, "last_page": 132},
+  {"aris": 36807, "first_page": 1, "last_page": 101},
+  {"aris": 38640, "first_page": 1, "last_page": 71},
+  {"aris": 40980, "first_page": 1, "last_page": 102},
+  {"aris": 41327, "first_page": 5, "last_page": 49},
+  {"aris": 41800, "first_page": 5, "last_page": 45}
+ ]
+}

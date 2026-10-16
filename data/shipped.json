@@ -1,0 +1,48 @@
+{
+ "note": "Letters and digits of each report's pages that appear in a run of at least 24 in any file the site imports, on every page that carries the same words. report_share counts the report text the agent reads; pages_over_half also covers the drill tables code reads. A page over 50% is over with every excerpt on it at its shortest.",
+ "files": [
+  "agent/claim.schema.json",
+  "data/brief_examples.json",
+  "data/claims.json",
+  "data/corpus.json",
+  "data/eval/answers.json",
+  "data/eval/changes.json",
+  "data/eval/gold.json",
+  "data/eval/misses_note.json",
+  "data/eval/scores.json",
+  "data/eval/summary_review.json",
+  "data/excerpts.json",
+  "data/fields.json",
+  "data/image_checks.json",
+  "data/index.json",
+  "data/rejected.json",
+  "data/run.json",
+  "data/summary.json",
+  "data/traces.json"
+ ],
+ "report_share": {
+  "34595": 0.102,
+  "36430": 0.064,
+  "36807": 0.093,
+  "38640": 0.143,
+  "40980": 0.147,
+  "41327": 0.293,
+  "41800": 0.283
+ },
+ "pages_over_half": {
+  "36430 p15": 0.53,
+  "38640 p14": 0.62,
+  "40980 p9": 0.71,
+  "40980 p25": 0.52,
+  "40980 p26": 0.6,
+  "40980 p96": 0.59,
+  "41327 p9": 0.7,
+  "41327 p26": 0.71,
+  "41800 p9": 0.62,
+  "41800 p10": 0.82,
+  "41800 p26": 0.51,
+  "41800 p27": 0.58,
+  "41800 p37": 0.55,
+  "41800 p38": 0.67
+ }
+}

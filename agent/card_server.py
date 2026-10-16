@@ -33,7 +33,7 @@ def log(tool: str, args: dict, result: Any) -> None:
 
 @server.tool()
 def read_card() -> dict:
-    """The Iron Lake property card: every field, its state (settled, disagree, quotes, not_in_sources),
+    """The property card: every field, its state (settled, disagree, quotes, not_in_sources),
     the claims behind it with their ids and sources, the sides of each disagreement, and the code lines.
     Text fields list only a count; read them with read_field."""
     out = card.load().overview()

@@ -1,13 +1,15 @@
-"""What each claim ships of its page: at most 400 characters, and no page more than half shipped."""
+"""What each claim ships of its page: at most 400 characters, and no page more than half shipped, counting
+every copy of its words."""
 from __future__ import annotations
 
 import json
 
 import pytest
 
-import build_data
 import corpus
+import shipped
 from build_data import EXCERPT_MAX, PAGE_SHARE, flat, plan_excerpts
+from textnorm import display_text
 
 # A made-up page in the reports' layout: short lines ending " \n", so a quote copied from it carries line breaks.
 WORDS = ("The ultramafic rocks host disseminated sulphide with copper and nickel values that vary across the "
@@ -34,12 +36,27 @@ def page(tmp_path, monkeypatch):
     corpus.normalized_page.cache_clear()
 
 
+def plan(cs: list[dict], fixed: list[str] = ()) -> dict:
+    """Plan every claim's excerpt, with the page share counted over all pages of the fixture."""
+    by_page: dict = {}
+    for c in cs:
+        by_page.setdefault((99999, c["source"]["page"]), []).append(c)
+    pages = {(a, n): display_text(corpus.page(a, n)["text"]) for a, n in corpus.all_pages()}
+    return plan_excerpts(by_page, shipped.Matcher(pages), fixed)
+
+
+def page_share(out: dict, page: int, fixed: list[str] = ()) -> float:
+    pages = {(a, n): display_text(corpus.page(a, n)["text"]) for a, n in corpus.all_pages()}
+    m = shipped.Matcher(pages)
+    return shipped.audit(m, [x["text"] for x in out.values()] + list(fixed))["page_share"].get(f"99999 p{page}", 0)
+
+
 def quote_of(first_line: int, n_lines: int) -> str:
     """A quote copied from page 1 as the agent copies it, line breaks and all."""
     return "".join(line + " \n" for line in LINES[first_line:first_line + n_lines]).rstrip(" \n")
 
 
-def shipped(plan: dict, c: dict) -> str:
+def shown(plan: dict, c: dict) -> str:
     """The quote as the site ships it: the part shown when it was cut, else the agent's quote."""
     return plan[c["id"]].get("quote_shown", c["quote"])
 
@@ -50,12 +67,12 @@ def claim(cid, quote, value=None, page=1):
 
 def test_a_long_quote_is_cut_to_the_part_around_its_value(page):
     c = claim("c-1", quote_of(10, 9), value=LINES[13])
-    plan = plan_excerpts(99999, 1, [c])
+    plan_ = plan([c])
     assert len(flat(c["quote"])) > EXCERPT_MAX
-    assert plan["c-1"].get("quote_cut")
-    assert len(plan["c-1"]["text"]) <= EXCERPT_MAX
-    assert len(shipped(plan, c)) <= EXCERPT_MAX
-    assert LINES[13] in shipped(plan, c)
+    assert plan_["c-1"].get("quote_cut")
+    assert len(plan_["c-1"]["text"]) <= EXCERPT_MAX
+    assert len(shown(plan_, c)) <= EXCERPT_MAX
+    assert LINES[13] in shown(plan_, c)
 
 
 def test_the_cap_counts_a_quote_as_written_line_breaks_and_all(page):
@@ -64,17 +81,17 @@ def test_the_cap_counts_a_quote_as_written_line_breaks_and_all(page):
     quote = "".join(w + " \n" for w in COLUMN[:k]).rstrip(" \n")
     assert len(flat(quote)) <= EXCERPT_MAX < len(quote)
     c = claim("c-1", quote, value=COLUMN[3], page=2)
-    plan = plan_excerpts(99999, 2, [c])
-    assert len(plan["c-1"]["text"]) <= EXCERPT_MAX
-    assert len(shipped(plan, c)) <= EXCERPT_MAX
-    assert plan["c-1"].get("quote_cut")
+    plan_ = plan([c])
+    assert len(plan_["c-1"]["text"]) <= EXCERPT_MAX
+    assert len(shown(plan_, c)) <= EXCERPT_MAX
+    assert plan_["c-1"].get("quote_cut")
 
 
 def test_a_short_quote_ships_whole_inside_its_context(page):
     q = quote_of(5, 2)
     c = claim("c-1", q, value=LINES[5])
-    plan = plan_excerpts(99999, 1, [c])
-    ex = plan["c-1"]
+    plan_ = plan([c])
+    ex = plan_["c-1"]
     a, b = ex["highlight"]
     assert ex["text"][a:b] == flat(q).strip()
     assert "quote_cut" not in ex
@@ -82,8 +99,33 @@ def test_a_short_quote_ships_whole_inside_its_context(page):
 
 
 def test_a_page_never_ships_more_than_its_share_unless_the_quotes_alone_do(page):
+    # 12 two-line quotes are 40% of the page; with their context they would be far over half.
+    cs = [claim(f"c-{i}", quote_of(i * 5, 2), value=LINES[i * 5]) for i in range(12)]
+    assert page_share({c["id"]: {"text": c["quote"]} for c in cs}, 1) < PAGE_SHARE
+    assert page_share(plan(cs), 1) <= PAGE_SHARE
+    # 19 of them are 63% on their own: every excerpt shrinks to its quote, and the page stays over.
     cs = [claim(f"c-{i}", quote_of(i * 3, 2), value=LINES[i * 3]) for i in range(19)]
-    plan = plan_excerpts(99999, 1, cs)
-    share = plan.pop("_share")
-    quotes_alone = build_data.union_len([build_data.locate(c["quote"], flat(TEXT)) for c in cs])
-    assert share["shipped_chars"] <= max(PAGE_SHARE * share["page_chars"], quotes_alone)
+    out = plan(cs)
+    assert page_share(out, 1) == page_share({c["id"]: {"text": c["quote"]} for c in cs}, 1)
+
+
+def test_the_share_counts_copies_of_the_page_shipped_from_anywhere(page):
+    # The same claims, but the rest of the page already ships elsewhere (another report repeating it, a gold
+    # quote): context has to go.
+    cs = [claim(f"c-{i}", quote_of(i * 6, 1), value=LINES[i * 6]) for i in range(10)]
+    alone = plan(cs)
+    assert any(len(x["text"]) > len(flat(c["quote"])) for x, c in zip(alone.values(), cs))
+    fixed = [quote_of(i * 6 + 2, 3) for i in range(10)]
+    crowded = plan(cs, fixed)
+    assert page_share(crowded, 1, fixed) <= PAGE_SHARE or all(
+        x["text"] == flat(c["quote"]).strip() for x, c in zip(crowded.values(), cs))
+
+
+def test_a_value_longer_than_the_cap_never_breaks_it(page):
+    # A statement whose value is its whole quote, longer than the cap: the excerpt still ships at most EXCERPT_MAX.
+    q = quote_of(10, 9)
+    c = claim("c-1", q, value=q)
+    plan_ = plan([c])
+    assert len(flat(q)) > EXCERPT_MAX
+    assert len(plan_["c-1"]["text"]) <= EXCERPT_MAX
+    assert len(shown(plan_, c)) <= EXCERPT_MAX

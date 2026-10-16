@@ -15,11 +15,13 @@ import json
 import re
 import sys
 from collections import Counter, defaultdict
+from decimal import Decimal
 
 import card
 import corpus
 import rules
-from checker import censored, check_claim, to_decimal
+import shipped
+from checker import censored, check_claim, element_of, to_decimal
 from runner import PROMPTS
 from score import FAILURES, SCORE_DEFS, alt_met, answer_line, score_question, squash
 from textnorm import display_text, normalize
@@ -38,6 +40,11 @@ def jload(p):
 def jdump(p, obj):
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(obj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
+
+
+def local_date(iso: str) -> str:
+    """A run's date where it ran (session times are logged in UTC; an evening run in Toronto is already tomorrow there)."""
+    return dt.datetime.fromisoformat(iso).astimezone().date().isoformat()
 
 
 def size_label(n: int) -> str:
@@ -78,7 +85,8 @@ def build_index() -> dict:
         })
     ops = {r["operator"] for r in recs}
     return {
-        "source": "BC ARIS index (WFS layer WHSE_MINERAL_TENURE.ARIS_MINERAL_REPORTS), PROPERTY_NAME like 'IRON LAKE'",
+        "source": "BC ARIS index (WFS layer WHSE_MINERAL_TENURE.ARIS_MINERAL_REPORTS), PROPERTY_NAME like "
+                  f"'{corpus.PROPERTY['aris_property_filter']}'",
         "retrieved": jload(PRIVATE / "raw" / "fetch_log.json")["retrieved"],
         "count": len(recs),
         "operators": len(ops),
@@ -161,21 +169,12 @@ def window(text: str, core: tuple[int, int], size: int, lo: int, hi: int) -> tup
     return snap(text, a, b, lo, hi)
 
 
-def union_len(spans: list[tuple[int, int]]) -> int:
-    total, end = 0, -1
-    for a, b in sorted(spans):
-        if b > end:
-            total += b - max(a, end)
-            end = b
-    return total
-
-
-def plan_excerpts(aris: int, page: int, claims: list[dict]) -> dict[str, dict]:
-    """What each claim on one page ships: at most EXCERPT_MAX characters, the quote first, then a little
-    page context. If the page's claims together would ship more than PAGE_SHARE of its text, context
-    goes first, then long text quotes shrink to their value and CORE_PAD characters either side."""
+def excerpt_options(aris: int, page: int, claims: list[dict]) -> dict[str, dict]:
+    """What each claim on one page could ship, longest first: its quote inside page context, the quote alone
+    (a quote over EXCERPT_MAX cut to the part around its value), and for a long text quote, its value with
+    CORE_PAD characters either side. Every option is at most EXCERPT_MAX characters."""
     text = flat(display_text(corpus.page(aris, page)["text"]))
-    plans = {}
+    out = {}
     for c in claims:
         q = locate(c["quote"], text)
         if not q:
@@ -191,29 +190,83 @@ def plan_excerpts(aris: int, page: int, claims: list[dict]) -> dict[str, dict]:
         if core is None:  # an interval's own row ends its quote; anything else starts it
             core = ((max(q[0], q[1] - limit), q[1]) if c["kind"] == "interval"
                     else (q[0], min(q[1], q[0] + limit)))
+        if core[1] - core[0] > limit:  # a value longer than the cap ships its start
+            core = (core[0], core[0] + limit)
         bare = q if q[1] - q[0] <= limit else window(text, core, limit, *q)
-        ctx = bare
+        levels = []
         if bare == q and q[1] - q[0] < EXCERPT_MAX:
-            ctx = window(text, q, EXCERPT_MAX, 0, len(text))
-        plans[c["id"]] = {"claim": c, "quote": q, "core": core, "bare": bare, "shown": ctx}
-    budget = PAGE_SHARE * len(text)
-    if union_len([x["shown"] for x in plans.values()]) > budget:
-        for x in plans.values():
-            x["shown"] = x["bare"]
-        for x in sorted(plans.values(), key=lambda x: x["bare"][0] - x["bare"][1]):
-            if union_len([y["shown"] for y in plans.values()]) <= budget:
-                break
-            if x["claim"]["kind"] == "statement" and x["core"][1] - x["core"][0] < x["quote"][1] - x["quote"][0]:
-                x["shown"] = window(text, x["core"], x["core"][1] - x["core"][0] + 2 * CORE_PAD, *x["quote"])
+            levels.append(window(text, q, EXCERPT_MAX, 0, len(text)))
+        levels.append(bare)
+        if c["kind"] == "statement" and core[1] - core[0] < q[1] - q[0]:
+            small = window(text, core, min(limit, core[1] - core[0] + 2 * CORE_PAD), *q)
+            if small[1] - small[0] < bare[1] - bare[0]:
+                levels.append(small)
+        out[c["id"]] = {"claim": c, "text": text, "quote": q, "levels": levels}
+    return out
+
+
+def choose_excerpts(options: dict[str, dict], matcher: shipped.Matcher, fixed: list[str] = ()) -> dict[str, int]:
+    """Each claim ships its longest option, unless that puts a page over PAGE_SHARE of its text, counting every
+    copy of the page's words the site ships: other claims' excerpts (the Tech-X reports repeat whole
+    passages) and the fixed texts. On a page over its share, context goes first, then long text quotes shrink
+    to their value, biggest first, until the page is under its share or nothing is left to shrink."""
+    level = {cid: 0 for cid in options}
+    cache: dict = {}
+
+    def cover(cid: str) -> dict:
+        key = (cid, level[cid])
+        if key not in cache:
+            a, b = options[cid]["levels"][level[cid]]
+            cache[key] = matcher.spans(options[cid]["text"][a:b])
+        return cache[key]
+
+    fixed_cov: dict = defaultdict(list)
+    for t in set(fixed):
+        for k, v in matcher.spans(t).items():
+            fixed_cov[k] += v
+    contrib: dict = defaultdict(dict)
+    for cid in options:
+        for k, v in cover(cid).items():
+            contrib[k][cid] = v
+
+    def share(k) -> float:
+        spans = fixed_cov[k] + [s for v in contrib[k].values() for s in v]
+        return shipped.union_len(spans) / matcher.chars[k] if matcher.chars[k] else 0
+
+    over = {k for k in contrib if share(k) > PAGE_SHARE}
+    while over:
+        k = max(over, key=share)
+        can = [cid for cid in contrib[k] if level[cid] + 1 < len(options[cid]["levels"])]
+        if not can:
+            over.discard(k)
+            continue
+        cid = min(can, key=lambda c: (level[c], -shipped.union_len(contrib[k][c])))
+        for p in cover(cid):
+            contrib[p].pop(cid, None)
+        level[cid] += 1
+        for p, v in cover(cid).items():
+            contrib[p][cid] = v
+        over = {p for p in over if share(p) > PAGE_SHARE}
+    return level
+
+
+def plan_excerpts(by_page: dict[tuple[int, int], list[dict]], matcher: shipped.Matcher,
+                  fixed: list[str] = ()) -> dict[str, dict]:
+    """What each claim ships of its page: its excerpt, where the quote sits in it, and the quote as shown
+    when it was cut."""
+    options = {}
+    for (aris, pno), cs in sorted(by_page.items()):
+        options |= excerpt_options(aris, pno, cs)
+    level = choose_excerpts(options, matcher, fixed)
     out = {}
-    for cid, x in plans.items():
-        (a, b), (qs, qe) = x["shown"], x["quote"]
+    for cid, x in options.items():
+        (a, b), (qs, qe) = x["levels"][level[cid]], x["quote"]
+        text = x["text"]
         hs, he = max(qs, a), min(qe, b)
         cut = hs > qs or he < qe
         out[cid] = {"text": text[a:b], "highlight": [hs - a, he - a],
                     **({"quote_cut": True, "quote_chars": len(flat(x["claim"]["quote"]).strip()),
                         "quote_shown": text[hs:he]} if cut else {})}
-    out["_share"] = {"page_chars": len(text), "shipped_chars": union_len([x["shown"] for x in plans.values()])}
     return out
 
 
@@ -295,7 +348,7 @@ def build_claims(run_id: str, sessions: dict, fields_by_id: dict, image_checks: 
                     "field_as_proposed": a["field"], "field": route_field(s, a["field"], a["kind"], fields_by_id),
                     "kind": a["kind"], "value": a["value"], "unit": a["unit"],
                     "source": {"aris": a["report"], "page": a["page"]}, "quote": a["quote"]}
-            now = check_claim(a["kind"], a["value"], a["report"], a["page"], a["quote"])
+            now = check_claim(a["kind"], a["value"], a["report"], a["page"], a["quote"], a.get("unit"))
             if r["accepted"] and not now["accepted"]:
                 # The checker got stricter after the run. A claim it would now throw out is shown as thrown out.
                 r = r | {"accepted": False, "failure": now["failure"], "found_on": now["found_on"],
@@ -383,7 +436,7 @@ def field_state(f: dict, claims: list[dict], session: dict | None, default_zone:
             g = rules.group_intervals(values)
         else:
             g = {"rule": "none", "groups": [{"claims": [c["id"] for c in values]}], "unplaced": []}
-        if rule == "none":
+        if rule == "none" or not g["groups"]:  # nothing code could read, so nothing was compared
             state = "quotes"
         elif rule == "interval":
             state = "disagree" if any(x["disagree"] for x in g["groups"]) else "settled"
@@ -455,6 +508,131 @@ def cross_check(rule: str, fs: dict, eval_claims: list[dict], by_id: dict, zone:
             "found": found}
 
 
+def add_map_sheet_labels(fs: dict, by_id: dict, label_checks: dict) -> None:
+    """Fold in the map sheets code reads from every page's labels (rules.map_sheet_labels). A label on a page no claim
+    covers for that map area joins its side as a page read by code. A scanned page counts only once its image has
+    been checked (data/image_checks.json, labels)."""
+    groups = {g["key"]: g for g in fs["groups"]}
+    covered = {(by_id[c]["source"]["aris"], by_id[c]["source"]["page"], g["key"]) for g in fs["groups"] for c in g["claims"]}
+    for a, n in corpus.all_pages():
+        page = corpus.page(a, n)
+        for x in rules.map_sheet_labels(corpus.page_text(a, n)):
+            check = label_checks.get((a, n))
+            if (a, n, x["key"]) in covered or (page["scanned"] and not check):
+                continue
+            covered.add((a, n, x["key"]))
+            g = groups.setdefault(x["key"], {"key": x["key"], "claims": []})
+            g.setdefault("code_pages", []).append(
+                {"aris": a, "page": n, "written": x["written"]}
+                | ({"scanned": True} | {k: check[k] for k in ("image_reads", "checked_by", "checked_on", "second_read_by")}
+                   if page["scanned"] else {}))
+    fs["groups"] = sorted(groups.values(), key=lambda g: g["key"])
+    if len(fs["groups"]) > 1:
+        fs["state"] = "disagree"
+    fs["label_rule"] = ("Code also reads every map sheet label in the reports: NTS or BCGS with the sheet right after it, "
+                        "as in \"NTS: 092P096\". Pages no claim covers join their side as pages read by code.")
+
+
+# ---------------------------------------------------------------- the reports' own tables
+
+def load_tables() -> dict:
+    """The collar and assay tables agent/extract_tables.py read from the report PDFs. A hole listed in two collar
+    tables, and a sample interval listed twice (a reprinted page, or a field duplicate), count once: the first
+    listing wins."""
+    collars: dict = {}
+    tables, assays, pages = [], defaultdict(list), {}
+    seen = set()
+    for r in corpus.CORPUS:
+        p = PRIVATE / "tables" / f"{r['aris']}.json"
+        if not p.exists():
+            continue
+        t = jload(p)
+        for c in t["collars"]:
+            tables.append({"aris": r["aris"], "page": c["page"], "caption": c["caption"], "rows": c["rows"]})
+            for row in c["rows"]:
+                collars.setdefault(rules.hole_key(row["hole"]), row | {"aris": r["aris"], "page": c["page"]})
+        for a in t["assays"]:
+            for s in a["rows"]:
+                key = (rules.hole_key(s["hole"]), s["from_m"], s["to_m"])
+                if key not in seen and s["sample"] and s["grades"] and Decimal(s["to_m"]) > Decimal(s["from_m"]):
+                    seen.add(key)
+                    assays[rules.hole_key(s["hole"])].append(s | {"aris": r["aris"], "page": a["page"]})
+        pages |= {(r["aris"], int(k)): v for k, v in t["pages"].items()}
+    return {"collars": list(collars.values()), "tables": tables, "assays": assays, "pages": pages}
+
+
+def collar_evidence(collars: list[dict]) -> list[dict]:
+    return [{k: c[k] for k in ("hole", "easting", "northing", "depth_m", "aris", "page")} for c in collars]
+
+
+def sample_evidence(samples: list[dict], elements: list[str], used: list[str]) -> list[dict]:
+    """The samples around an interval as the card shows them; used marks the ones inside the depths code averaged."""
+    out = []
+    for s in samples:
+        grades = {k: v for k, v in s["grades"].items() if rules.element_of(k) in elements}
+        out.append({k: s[k] for k in ("sample", "from_m", "to_m", "width_m", "certificate", "aris", "page")}
+                   | {"grades": grades, "used": s["sample"] in used})
+    return out
+
+
+def lab_summary(checked: list[tuple[dict, str, dict]], by_id: dict, src: dict) -> dict:
+    """Every interval claim the lab assays reach, and the ones whose numbers they don't bear out."""
+    differ = []
+    for g, cid, r in checked:
+        if r["ok"]:
+            continue
+        v = by_id[cid]["value"]
+        what = ([r["line"]] if not r["boundaries"] else []) + (["width"] if r.get("width_off") else []) + [
+            f"{x['what']} {x['written']}, lab {rules.lab_value(r, x['what'], x['written'])}" for x in r.get("grades", []) if not x["agree"]]
+        differ.append({"claim": cid, "hole": g["hole"], "from_m": v.get("from_m"), "to_m": v.get("to_m"), "src": src[cid],
+                       "what": what, "on_card": bool(g.get("settled_by") or g.get("lab"))})
+    return {"checked": len(checked), "match": len(checked) - len(differ), "differ": differ}
+
+
+def settle_fields(field_out: list[dict], tables: dict, zone: int, by_id: dict) -> None:
+    """Attach what the reports' own tables say to each field: where they settle a disagreement, and where they
+    check a value the reports agree on."""
+    collars = rules.collar_points(tables["collars"], zone)
+    src = {cid: f"{c['source']['aris']} p{c['source']['page']}" for cid, c in by_id.items()}
+    for fs in field_out:
+        if fs.get("rule") == "location" and fs["state"] == "disagree":
+            s = rules.settle_location(fs["groups"], collars)
+            if s:
+                fs["settled_by"] = s | {"collars": collar_evidence(tables["collars"])}
+        if fs.get("rule") == "map_sheet" and fs["state"] == "disagree":
+            s = rules.settle_map_sheet(fs["groups"], collars)
+            if s:
+                fs["settled_by"] = s | {"collars": collar_evidence(tables["collars"])}
+        year = re.search(r"\d{4}", fs["id"])
+        for part in fs.get("parts") or []:
+            if part["rule"] == "number" and year and part["groups"]:
+                table = next((t for t in tables["tables"] if year.group() in t["caption"]), None)
+                s = rules.settle_total(part["groups"], table)
+                if s:
+                    part["settled_by"] = s | {"holes": [{"hole": r["hole"], "depth_m": r["depth_m"]} for r in table["rows"]],
+                                              "aris": table["aris"], "page": table["page"]}
+            if part["rule"] != "interval":
+                continue
+            checked = []
+            for g in part["groups"]:
+                samples = tables["assays"].get(rules.hole_key(g["hole"]), [])
+                lab = {cid: r for cid in g["claims"] if (r := rules.lab_check(by_id[cid]["value"], samples))}
+                checked += [(g, cid, r) for cid, r in lab.items()]
+                if not lab:
+                    continue
+                s = rules.settle_interval(g, lab, src) or rules.lab_note(g, lab, src)
+                if not s:
+                    continue
+                spans = [rules.depths(by_id[c]["value"]) for c in g["claims"]]
+                lo, hi = min(d[0] for d in spans if d), max(d[1] for d in spans if d)
+                shown = [x for x in samples if Decimal(x["to_m"]) > lo and Decimal(x["from_m"]) < hi]
+                els = [w for w in g.get("disagree_on", []) if w != "width"] or ["Cu", "Ni"]
+                used = next((r["samples"] for r in lab.values() if r.get("ok")), None) or                     next(r.get("samples", []) for r in lab.values())
+                g["settled_by" if "side" in s else "lab"] = s | {"samples": sample_evidence(shown, els, used)}
+            if checked:
+                part["lab_summary"] = lab_summary(checked, by_id, src)
+
+
 # ---------------------------------------------------------------- summary
 
 SENTENCE_FAILURES = {
@@ -501,11 +679,11 @@ def build_summary(fields: dict, claims: list[dict], index: dict) -> dict | None:
         t["fixed_by"] = later[0]["id"] if later else None
     text = " ".join(k["text"] for k in kept)
     gold = jload(DATA / "eval" / "summary_gold.json")
-    points = [{"about": g["about"], "label": g["label"], "met": any(alt_met(a, text) for a in g["any_of"])}
-              for g in gold["points"]]
+    points = [{"about": g["about"], "label": g["label"],
+               "met": any(alt_met(a, text, element_of(g["label"])) for a in g["any_of"])} for g in gold["points"]]
     frozen = manifest["frozen_hashes"]
     return {
-        "summary": d.name, "date": meta["started"][:10], "model": meta["init_model"], "cli_version": meta["cli_version"],
+        "summary": d.name, "date": local_date(meta["started"]), "model": meta["init_model"], "cli_version": meta["cli_version"],
         "effort": manifest["effort"], "tools": manifest["tools"], "only_card_tools": manifest["only_card_tools"],
         "result": meta["result_subtype"], "model_turns": meta.get("num_turns"), "seconds": meta["seconds"],
         "gold_unchanged_since_run": frozen.get("summary_gold.json") == hashlib.sha256(
@@ -532,6 +710,8 @@ def main(run_id: str) -> None:
     changes = jload(DATA / "eval" / "changes.json")
     image_checks_path = DATA / "image_checks.json"
     image_checks = {c["attempt_id"]: c for c in jload(image_checks_path)["checks"]} if image_checks_path.exists() else {}
+    label_checks = {(c["aris"], c["page"]): c for c in jload(image_checks_path).get("labels", [])
+                    if c["result"] == "confirmed"} if image_checks_path.exists() else {}
     claims, rejected, attempts, claim_ids, rechecked_out = build_claims(run_id, sessions, fields_by_id, image_checks)
     by_id = {c["id"]: c for c in claims}
 
@@ -554,34 +734,6 @@ def main(run_id: str) -> None:
     jdump(DATA / "traces.json", {"run": run_id, "note": "Summarized tool calls. Full page text is never stored here.",
                                  "sessions": traces})
 
-    # excerpts: what each claim ships of its page
-    excerpts, shares = {}, []
-    by_page = defaultdict(list)
-    for c in claims:
-        by_page[(c["source"]["aris"], c["source"]["page"])].append(c)
-    for (aris, pno), cs in sorted(by_page.items()):
-        plan = plan_excerpts(aris, pno, cs)
-        share = plan.pop("_share")
-        shares.append({"aris": aris, "page": pno, **share})
-        excerpts |= plan
-    missing = [c["id"] for c in claims if c["id"] not in excerpts]
-    cut_quotes = {cid: ex.pop("quote_shown") for cid, ex in excerpts.items() if "quote_shown" in ex}
-    report_chars = {r["aris"]: sum(len(flat(corpus.page_text(r["aris"], n))) for n in corpus.pages(r["aris"])
-                                   if r["pages_used"][0] <= n <= r["pages_used"][1]) for r in corp["reports"]}
-    shipped = Counter()
-    for x in shares:
-        shipped[x["aris"]] += x["shipped_chars"]
-    over = [x for x in shares if x["shipped_chars"] > PAGE_SHARE * x["page_chars"]]
-    jdump(DATA / "excerpts.json", {
-        "max_chars": EXCERPT_MAX, "page_share": PAGE_SHARE,
-        "note": f"Each claim ships at most {EXCERPT_MAX} characters of its page: the quote, then a little context if there "
-                f"is room. A longer quote is cut to the part around its value. If a page's claims together would ship "
-                f"more than {PAGE_SHARE:.0%} of its text, context goes first, then long text quotes shrink to their value.",
-        "pages_over_share": [{k: x[k] for k in ("aris", "page")} | {"share": round(x["shipped_chars"] / x["page_chars"], 2)}
-                             for x in over],
-        "report_share": {str(a): round(shipped[a] / report_chars[a], 3) for a in report_chars},
-        "excerpts": excerpts, "not_located": missing})
-
     # fields
     field_out = []
     eval_claims = [c for c in claims if c["scope"] == "eval" and c["kind"] != "caveat"]
@@ -595,6 +747,8 @@ def main(run_id: str) -> None:
                 fs = field_state(f, fc, sessions.get(f"field-{f['id']}"), default_zone, extra)
                 fs["from_eval"] = sorted(c["id"] for c in extra)
             fs["eval_cross_check"] = cc
+        if f.get("rule") == "map_sheet" and fs["state"] != "not_in_sources":
+            add_map_sheet_labels(fs, by_id, label_checks)
         for part in fs.get("parts", [fs]):
             sides_summary(part, by_id)
             for g in part.get("groups") or []:
@@ -602,6 +756,8 @@ def main(run_id: str) -> None:
                     g["hole_written"] = sorted({re.sub(r"-\s+", "-", by_id[c]["value"]["hole"]).strip()
                                                 for c in g["claims"]})
         field_out.append(fs)
+    tables = load_tables()
+    settle_fields(field_out, tables, default_zone, by_id)
     fields_file = {"run": run_id, "default_utm_zone": default_zone, "text_field_note": rules.RULE_TEXT["none"],
                    "fields": field_out}
     jdump(DATA / "fields.json", fields_file)
@@ -620,6 +776,7 @@ def main(run_id: str) -> None:
     # eval
     questions = jload(DATA / "eval" / "questions.json")
     gold = {g["id"]: g for g in jload(DATA / "eval" / "gold.json")["questions"]}
+    search_log = {x["id"]: x for x in jload(DATA / "eval" / "search_log.json")}
     answers = []
     for q in questions:
         s = f"eval-{q['id']}"
@@ -630,7 +787,9 @@ def main(run_id: str) -> None:
         refused = any(c["tool"] == "refuse" for c in sess["calls"])
         ans = answer_line(sess["meta"]["final_text"])
         sc = score_question(q["category"], gold[q["id"]], ans, refused, qc)
+        log = search_log.get(q["id"])
         answers.append({"id": q["id"], "category": q["category"], "question": q["question"],
+                        **({"search": {"terms": log["terms"], "pages_hit": log["pages_hit"]}} if log else {}),
                         "answer": ans, "answer_missing": ans is None, "refused": refused,
                         "claims": [c["id"] for c in qc],
                         "rejected": [r["attempt_id"] for r in rejected if r["session"] == s],
@@ -668,7 +827,7 @@ def main(run_id: str) -> None:
         "failure_counts_note": "Checker counts cover every rejected claim in the run, field sessions and eval sessions. "
                                "Answer counts cover the 15 eval answers.",
         **({"summary_points": {"n": sum(p["met"] for p in summary["points"]), "of": len(summary["points"]),
-                               "definition": "Points a short evaluation of Iron Lake should make, written before the summary "
+                               "definition": f"Points a short evaluation of {corpus.PROPERTY['name']} should make, written before the summary "
                                              "session ran, that the summary's own text states."},
             "summary_sentences": {"n": len(summary["sentences"]),
                                   "of": len(summary["sentences"]) + len(summary["thrown_out"]),
@@ -682,18 +841,41 @@ def main(run_id: str) -> None:
 
     # The summary session reads the card with full quotes; that copy stays private.
     jdump(PRIVATE / "card_claims.json", {"run": run_id, "claims": claims})
-    # Everything above used the full quotes. The shipped claim carries only the part of its quote the site shows.
-    for c in claims:
-        if c["id"] in cut_quotes:
-            c["quote"] = cut_quotes[c["id"]]
-            c["quote_cut"] = {"chars": excerpts[c["id"]]["quote_chars"]}
+    # A rejected claim shows its value, or its quote when it has no value; only what it shows ships.
     for r in rejected:
-        if len(r["quote"] or "") > EXCERPT_MAX:
+        if r["value"] is not None:
+            r["quote_chars"] = len(r.pop("quote") or "")
+        elif len(r["quote"] or "") > EXCERPT_MAX:
             full = len(r["quote"])
             r["quote"] = r["quote"][:EXCERPT_MAX].rsplit(" ", 1)[0]
             r["quote_cut"] = {"chars": full}
-    jdump(DATA / "claims.json", {"run": run_id, "count": len(claims), "claims": claims})
     jdump(DATA / "rejected.json", {"run": run_id, "count": len(rejected), "rejected": rejected})
+
+    # Excerpts: what each claim ships of its page. Planned last, so the page share counts everything else
+    # the site ships too.
+    pages = {(a, n): display_text(corpus.page(a, n)["text"]) for a, n in corpus.all_pages()}
+    pages |= {k: display_text(v) for k, v in tables["pages"].items() if k not in pages}  # table pages code reads
+    matcher = shipped.Matcher(pages)
+    by_page = defaultdict(list)
+    for c in claims:
+        by_page[(c["source"]["aris"], c["source"]["page"])].append(c)
+    fixed = shipped.site_strings(skip=("excerpts.json", "claims.json"))
+    fixed += [s for c in claims for s in shipped.strings_in({k: v for k, v in c.items() if k != "quote"})]
+    excerpts = plan_excerpts(by_page, matcher, fixed)
+    missing = [c["id"] for c in claims if c["id"] not in excerpts]
+    for c in claims:  # the shipped claim carries only the part of its quote the site shows
+        ex = excerpts.get(c["id"])
+        if ex and "quote_shown" in ex:
+            c["quote"] = ex.pop("quote_shown")
+            c["quote_cut"] = {"chars": ex["quote_chars"]}
+    jdump(DATA / "excerpts.json", {
+        "max_chars": EXCERPT_MAX, "page_share": PAGE_SHARE,
+        "note": f"Each claim ships at most {EXCERPT_MAX} characters of its page: the quote, then a little context if there "
+                f"is room. A longer quote is cut to the part around its value. If the site would ship more than "
+                f"{PAGE_SHARE:.0%} of a page's text, counting every copy of its words in any file the site ships, context "
+                f"goes first, then long text quotes shrink to their value. data/shipped.json has the counts.",
+        "excerpts": excerpts, "not_located": missing})
+    jdump(DATA / "claims.json", {"run": run_id, "count": len(claims), "claims": claims})
 
     # scanned pages
     scanned = []
@@ -719,7 +901,7 @@ def main(run_id: str) -> None:
     gold_hash = (run_dir / "gold_frozen.sha256").read_text(encoding="utf-8") if (run_dir / "gold_frozen.sha256").exists() else ""
     run = {
         "run": run_id,
-        "date": min(m["started"] for m in metas)[:10],
+        "date": local_date(min(m["started"] for m in metas)),
         "model": sorted({m["init_model"] for m in metas}),
         "cli_version": sorted({m["cli_version"] for m in metas}),
         "effort": manifest["runs"][0]["effort"],
@@ -743,14 +925,29 @@ def main(run_id: str) -> None:
         "claims_accepted": len(claims), "claims_rejected": len(rejected),
         "command": [c.replace(str(corpus.ROOT) + "\\", "").replace("\\", "/") for c in metas[0]["command"]],
         "post_processing_hashes": {f: hashlib.sha256((corpus.ROOT / "agent" / f).read_bytes()).hexdigest()
-                                   for f in ("rules.py", "score.py", "build_data.py")},
+                                   for f in ("rules.py", "score.py", "build_data.py", "shipped.py", "extract_tables.py")},
         "changes_after_run_2": changes.get("after_run_2", []),
         "recheck": {"note": "Every claim the run accepted was checked again with the checker as it is now. Any it would "
                             "throw out is shown as thrown out.",
                     "claims": len(claims) + len(rechecked_out), "thrown_out": rechecked_out},
     }
     jdump(DATA / "run.json", run)
+
+    # What the site ships of each report, counted over every file it imports.
+    files = shipped.imported_json()
+    counts = shipped.audit(matcher, shipped.site_strings(), body=set(corpus.all_pages()))
+    over = {k: v for k, v in counts["page_share"].items() if v > PAGE_SHARE}
+    jdump(DATA / "shipped.json", {
+        "note": "Letters and digits of each report's pages that appear in a run of at least "
+                f"{shipped.MIN_RUN} in any file the site imports, on every page that carries the same words. "
+                "report_share counts the report text the agent reads; pages_over_half also covers the drill tables "
+                f"code reads. A page over {PAGE_SHARE:.0%} is over with every excerpt on it at its shortest.",
+        "files": [str(f.relative_to(corpus.ROOT)).replace("\\", "/") for f in files],
+        "report_share": counts["report_share"],
+        "pages_over_half": over,
+    })
     print(f"claims {len(claims)}, rejected {len(rejected)}, excerpts missing {len(missing)}")
+    print(f"  shipped: {counts['report_share']}, {len(over)} pages over {PAGE_SHARE:.0%}")
     for fs in field_out:
         print(f"  {fs['name']}: {fs['state']}")
     for k in ("citation_precision", "answer_accuracy", "correct_refusals", "false_refusals", "disagreements_flagged"):

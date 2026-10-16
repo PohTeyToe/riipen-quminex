@@ -11,7 +11,8 @@ import re
 from decimal import Decimal
 from functools import lru_cache
 
-from checker import ELEMENTS, censored, element_of, numbers, to_decimal, unit_of
+import corpus
+from checker import ELEMENTS, censored, element_of, hole_key, numbers, signed_numbers, to_decimal, unit_of
 from textnorm import normalize
 
 SAME_PLACE_KM = 5.0
@@ -19,13 +20,15 @@ SAME_INTERVAL_OVERLAP = Decimal("0.9")
 WIDTH_TOL_M = Decimal("0.05")
 ARITH_TOL_M = Decimal("0.01")
 NUMBER_REL_TOL = Decimal("0.001")
+LAB_REL_TOL = Decimal("0.01")
 
 RULE_TEXT = {
     "location": "Points within 5 km count as the same place, because each report gives its own centre of work "
                 "to the nearest minute. Points farther apart are put on different sides.",
     "map_sheet": "Map sheets are compared on the four-character NTS map area, such as 092P.",
     "exact_text": "Values are compared as text, ignoring case, punctuation and the field's own label words.",
-    "number": "Numbers within 0.1% of each other count as the same value, so rounding doesn't split them.",
+    "number": "Lengths are compared in metres, with their units converted. Values within 0.1% of each other count "
+              "as the same, so rounding doesn't split them.",
     "interval": "Two intervals for the same hole are the same interval when their depths overlap by at least 90% "
                 "of the longer one. Code then compares them: widths more than 0.05 m apart disagree, and so does any "
                 "grade both give that differs by more than the rounding of the numbers as written. An interval that "
@@ -167,11 +170,27 @@ def group_text(claims: list[dict], ignore_words: list[str]) -> dict:
     return {"rule": "exact_text", "groups": [{"key": k, "claims": v} for k, v in by.items()], "unplaced": []}
 
 
+LENGTH_M = {"m": 1, "metre": 1, "metres": 1, "meter": 1, "meters": 1,
+            "km": 1000, "kilometre": 1000, "kilometres": 1000, "kilometer": 1000, "kilometers": 1000}
+
+
+def in_metres(claim: dict) -> Decimal | None:
+    """A length claim in metres, from its number and its unit ("5,001.30" with unit "m", or "1.68 km").
+    None when code can't read the number, the number is a bound, or the unit isn't a length."""
+    v = claim.get("value")
+    nums = signed_numbers(str(v or ""))
+    if len(nums) != 1 or nums[0][0]:
+        return None
+    unit = claim.get("unit") or re.sub(r"[\d.,\s]+", " ", str(v)).strip()
+    factor = LENGTH_M.get(normalize(unit).strip())
+    return None if factor is None else nums[0][1] * factor
+
+
 def group_numbers(claims: list[dict]) -> dict:
     items, unplaced = [], []
     for c in claims:
-        d = to_decimal(c.get("value"))
-        if d is None or censored(c.get("value")):
+        d = in_metres(c)
+        if d is None:
             unplaced.append(c["id"])
         else:
             items.append((d, c["id"]))
@@ -190,30 +209,42 @@ def group_numbers(claims: list[dict]) -> dict:
 TO_PCT = {"%": Decimal(1), "ppm": Decimal("0.0001"), "g/t": Decimal("0.0001"), "ppb": Decimal("0.0000001")}
 
 
-def grade_pct(key: str, raw: str) -> tuple[Decimal, Decimal] | None:
-    """A grade as % with half a unit of its last written digit, or None if censored or unreadable."""
-    if censored(raw):
-        return None
-    d = to_decimal(raw)
+def grade_value(key: str, raw: str) -> dict | None:
+    """A grade as the range of % it allows. A number as written allows half a unit of its last digit either
+    side (0.002% is 0.0015 to 0.0025%); a value below detection allows anything up to its limit ("<5 ppb" is
+    0 to 5 ppb). None if code can't read the number or its unit."""
+    nums = signed_numbers(str(raw))
     unit = unit_of(str(raw), key)
-    if d is None or unit is None:
+    if len(nums) != 1 or unit is None:
         return None
-    return d * TO_PCT[unit], half_unit(raw) * TO_PCT[unit]
+    sign, d = nums[0]
+    pct = d * TO_PCT[unit]
+    if sign == "<":
+        return {"sign": "<", "value": pct, "lo": Decimal(0), "hi": pct}
+    if sign == ">":
+        return {"sign": ">", "value": pct, "lo": pct, "hi": None}
+    h = half_unit(raw) * TO_PCT[unit]
+    return {"sign": "", "value": pct, "lo": pct - h, "hi": pct + h}
 
 
-def grades_by_element(value: dict) -> dict[str, tuple]:
+def clash(a: dict, b: dict) -> bool:
+    """Two values can't both be right: the ranges they allow don't overlap. A bound excludes its limit, so <10 and
+    >10 clash, and <10 clashes with exactly 10."""
+    def apart(x: dict, y: dict) -> bool:  # x lies wholly below y
+        if x["hi"] is None:
+            return False
+        return x["hi"] < y["lo"] or (x["hi"] == y["lo"] and (x.get("sign") == "<" or y.get("sign") == ">"))
+    return apart(a, b) or apart(b, a)
+
+
+def grades_by_element(value: dict) -> dict[str, dict]:
     out = {}
     for k, v in (value.get("grades") or {}).items():
         el = element_of(k) or element_of(str(v))
-        g = grade_pct(k, str(v))
+        g = grade_value(k, str(v))
         if el and g:
             out[el] = g
     return out
-
-
-def hole_key(hole: str) -> tuple:
-    parts = re.findall(r"[a-z]+|\d+", normalize(hole))
-    return tuple(int(p) if p.isdigit() else p for p in parts)
 
 
 def metres(raw) -> Decimal | None:
@@ -251,7 +282,7 @@ def same_interval(a: dict, b: dict) -> bool:
         longer = max(da[1] - da[0], db[1] - db[0])
         return overlap > 0 and overlap >= SAME_INTERVAL_OVERLAP * longer
     ga, gb = grades_by_element(a), grades_by_element(b)
-    return all(el in ga and el in gb and abs(ga[el][0] - gb[el][0]) <= max(ga[el][1], gb[el][1])
+    return all(el in ga and el in gb and ga[el]["sign"] == gb[el]["sign"] == "" and not clash(ga[el], gb[el])
                for el in ("Cu", "Ni"))
 
 
@@ -276,6 +307,11 @@ def written_grade(key: str, raw: str) -> str:
     return raw + ("%" if unit == "%" else f" {unit}")
 
 
+def shown_values(vals: list[dict]) -> list[dict]:
+    """Values as the JSON keeps them: the numbers as strings, so the card can show and compare them."""
+    return [{k: (None if v[k] is None else str(v[k])) if k in ("value", "lo", "hi") else v[k] for k in v} for v in vals]
+
+
 def compare_widths(g: list[dict]) -> dict | None:
     known = [(w, c) for c in g if (w := metres(c["value"].get("width_m"))) is not None]
     if len(known) < 2:
@@ -284,47 +320,73 @@ def compare_widths(g: list[dict]) -> dict | None:
     agree = spread <= WIDTH_TOL_M
     line = "Widths " + " and ".join(f"{w} m" for w, _ in known)
     line += " agree." if agree else f" differ by {spread} m. The rule allows {WIDTH_TOL_M} m."
+    half = WIDTH_TOL_M / 2  # two widths clash when they are more than WIDTH_TOL_M apart
     return {"what": "width", "agree": agree, "line": line,
-            "values": [{"claim": c["id"], "written": str(c["value"]["width_m"]), "value": str(w), "allow": str(WIDTH_TOL_M)}
-                       for w, c in known]}
+            "values": shown_values([{"claim": c["id"], "written": str(c["value"]["width_m"]), "sign": "",
+                                     "value": w, "lo": w - half, "hi": w + half} for w, c in known])}
 
 
 def compare_grades(g: list[dict]) -> list[dict]:
     by_el: dict[str, list] = {}
     for c in g:
         for k, raw in (c["value"].get("grades") or {}).items():
-            el, pct = element_of(k) or element_of(str(raw)), grade_pct(k, str(raw))
-            if el and pct:
-                by_el.setdefault(el, []).append({"claim": c["id"], "written": written_grade(k, str(raw)),
-                                                 "value": str(pct[0]), "allow": str(pct[1])})
+            el, gv = element_of(k) or element_of(str(raw)), grade_value(k, str(raw))
+            if el and gv:
+                by_el.setdefault(el, []).append({"claim": c["id"], "written": written_grade(k, str(raw)), **gv})
     out = []
     for el, vals in by_el.items():
         if len(vals) < 2:
             continue
-        nums = [Decimal(v["value"]) for v in vals]
-        spread, allow = max(nums) - min(nums), max(Decimal(v["allow"]) for v in vals)
-        agree = spread <= allow
-        shown = [v["written"] if v["written"].endswith("%") else f"{v['written']} ({fmt_pct(Decimal(v['value']))})"
+        clashes = [(a, b) for i, a in enumerate(vals) for b in vals[i + 1:] if clash(a, b)]
+        agree = not clashes
+        shown = [v["written"] if v["written"].endswith("%") or v["sign"] else f"{v['written']} ({fmt_pct(v['value'])})"
                  for v in vals]
         line = f"{el}: " + " and ".join(shown)
-        line += " agree within rounding." if agree else f" differ by {fmt_pct(spread)}. Rounding allows {fmt_pct(allow)}."
-        out.append({"what": el, "agree": agree, "line": line, "values": vals})
+        bounded = [v for v in vals if v["sign"]]
+        if agree:
+            line += " agree within rounding" + (" and detection limits." if bounded else ".")
+        elif any(a["sign"] or b["sign"] for a, b in clashes):
+            a, b = next((a, b) for a, b in clashes if a["sign"] or b["sign"])
+            bound, plain = (a, b) if a["sign"] else (b, a)
+            side = "above" if bound["sign"] == "<" else "below"
+            line += f" disagree: {plain['written']} is {side} the limit of {bound['written']}."
+        else:
+            lo, hi = min(vals, key=lambda v: v["value"]), max(vals, key=lambda v: v["value"])
+            allow = (hi["hi"] - hi["value"]) + (lo["value"] - lo["lo"])
+            line += f" differ by {fmt_pct(hi['value'] - lo['value'])}. Rounding allows {fmt_pct(allow)}."
+        out.append({"what": el, "agree": agree, "line": line, "values": shown_values(vals)})
     return out
 
 
-def sides_of(g: list[dict], compared: list[dict]) -> list[dict]:
-    """Claims that agree with each other on every measure that disagrees share a side."""
+def value_range(v: dict) -> dict:
+    return {"lo": Decimal(v["lo"]), "hi": None if v["hi"] is None else Decimal(v["hi"]), "sign": v.get("sign", "")}
+
+
+def sides_of(g: list[dict], compared: list[dict]) -> tuple[list[dict], list[str]]:
+    """The sides of a disagreement. A claim joins a side only if it clashes with no claim on it on any
+    measure that disagrees, and only if it states at least one of those measures: a claim that leaves out
+    the disputed grade can't take a side, so it never joins the two sides into one."""
     off = [x for x in compared if not x["agree"]]
+    if not off:
+        return [], []
+    vals = {(x["what"], v["claim"]): value_range(v) for x in off for v in x["values"]}
 
-    def close(a: dict, b: dict) -> bool:
-        for x in off:
-            va = next((v for v in x["values"] if v["claim"] == a["id"]), None)
-            vb = next((v for v in x["values"] if v["claim"] == b["id"]), None)
-            if va and vb and abs(Decimal(va["value"]) - Decimal(vb["value"])) > max(Decimal(va["allow"]), Decimal(vb["allow"])):
-                return False
-        return True
+    def apart(a: str, b: str) -> bool:
+        return any(clash(vals[(x["what"], a)], vals[(x["what"], b)]) for x in off
+                   if (x["what"], a) in vals and (x["what"], b) in vals)
 
-    return [{"claims": sorted(c["id"] for c in side)} for side in single_link(g, close)] if off else []
+    sides: list[list[str]] = []
+    unsided = []
+    for cid in sorted(c["id"] for c in g):
+        if not any((x["what"], cid) in vals for x in off):
+            unsided.append(cid)
+            continue
+        side = next((s for s in sides if not any(apart(cid, m) for m in s)), None)
+        if side is None:
+            sides.append([cid])
+        else:
+            side.append(cid)
+    return [{"claims": s} for s in sides], unsided
 
 
 def group_intervals(claims: list[dict]) -> dict:
@@ -335,6 +397,7 @@ def group_intervals(claims: list[dict]) -> dict:
         compared = [x for x in [compare_widths(g), *compare_grades(g)] if x]
         off = [x["what"] for x in compared if not x["agree"]]
         row = max(g, key=lambda c: len(c["value"].get("grades") or {}))  # the fullest claim stands for the group
+        sides, unsided = sides_of(g, compared)
         out.append({
             "hole": row["value"]["hole"],
             "claims": sorted(c["id"] for c in g),
@@ -342,7 +405,8 @@ def group_intervals(claims: list[dict]) -> dict:
             "disagree": bool(off),
             "disagree_on": off,
             "compared": compared,
-            "sides": sides_of(g, compared),
+            "sides": sides,
+            **({"unsided": unsided} if unsided else {}),
             "arithmetic": {c["id"]: a for c in g if (a := arithmetic(c["value"])) is not None},
         })
     # An interval inside a longer one of the same hole is listed under the shortest such interval.
@@ -405,16 +469,281 @@ def attach_caveats(claims: list[dict]) -> dict[str, list[str]]:
 
 # ---------------------------------------------------------------- answers
 
-# Report numbers and pointers into a report (page 33, Table 3, Figure 2) aren't values.
-REPORT_REF_RE = re.compile(r"\b(?:aris\s*)?(?:34595|36430|36807|38640|40980|41327|41800)\b"
-                           r"|\b(?:p|pp|page|pages|table|figure|fig|section|appendix)\.?\s?\d+\b")
+POINTER_RE = re.compile(r"\b(?:p|pp|page|pages|table|figure|fig|section|appendix)\.?\s?\d+\b")
+VALUE_UNIT_RE = re.compile(r"\s?(?:%|ppm|ppb|g/t|m\b|cm\b|km\b|metres|meters|line|ha\b|hectares)")
+
+
+def strip_refs(text: str) -> str:
+    """Leave out pointers into a report (page 33, Table 3, Figure 2) and the numbers of the reports in this
+    corpus. A report number with a unit after it ("41800 ppb") is a value, not a reference, and stays."""
+    text = POINTER_RE.sub(" ", text)
+    reports = "|".join(str(a) for a in corpus.REPORTS)
+    return re.sub(rf"\b(?:aris\s*)?(?:{reports})\b(?!\.\d)",
+                  lambda m: m.group() if VALUE_UNIT_RE.match(text, m.end()) else " ", text)
 
 
 def unbacked_numbers(answer: str, claims: list[dict]) -> list[str]:
-    """Numbers in an answer line that no accepted claim (value or quote) contains."""
-    text = REPORT_REF_RE.sub(" ", normalize(answer))
-    backed: set[Decimal] = set()
+    """Numbers in an answer line that no accepted claim (value or quote) contains, as written: "10 ppb" isn't
+    backed by a quote that says "<10 ppb"."""
+    backed: set = set()
     for c in claims:
-        backed.update(numbers(c["quote"]))
-        backed.update(numbers(str(c.get("value") or "")))
-    return [str(n) for n in numbers(text) if n not in backed]
+        backed.update(signed_numbers(c["quote"]))
+        backed.update(signed_numbers(str(c.get("value") or "")))
+    return [f"{sign}{n}" for sign, n in signed_numbers(strip_refs(normalize(answer))) if (sign, n) not in backed]
+
+
+# ---------------------------------------------------------------- settled by the reports' own tables
+# Code settles a disagreement only with other evidence from the same reports, read by agent/extract_tables.py:
+# the drill collar tables (where each hole is and how deep it went) and the lab assay tables (each sample's
+# depths and results). Each rule says what it read and what it found, and a side is backed only when the
+# evidence agrees with it and not with the others.
+
+NTS_LETTERS = ("ABCD", "HGFE", "IJKL", "PONM")  # map areas by row from the south, each row from the east
+
+
+def nts_area(lat: float, lon: float) -> dict | None:
+    """The NTS map area a point in BC falls in, such as 092P, with its corners. South of 68° N a map area is 1° of
+    latitude by 2° of longitude; series 82, 92, 102 and 112 start at 48° N, and each step of 4° north adds one."""
+    w = -lon
+    if not (48 <= lat < 60 and 112 <= w < 144):
+        return None
+    band, row = divmod(int(lat - 48), 4)
+    strip, col = divmod(int((w - 112) // 2), 4)
+    s, south, east = 82 + 10 * strip + band, 48 + 4 * band + row, 112 + 8 * strip + 2 * col
+    return {"key": f"{s:03d}{NTS_LETTERS[row][col]}", "lat": [south, south + 1], "lon_w": [east, east + 2]}
+
+
+def collar_points(collars: list[dict], zone: int) -> list[dict]:
+    out = []
+    for c in collars:
+        lon, lat = _utm_to_lonlat(zone).transform(int(c["easting"]), int(c["northing"]))
+        out.append(c | {"lat": lat, "lon": lon})
+    return out
+
+
+def settle_location(groups: list[dict], collars: list[dict]) -> dict | None:
+    """The drill collars settle where the work is: a side is backed when every collar is nearer to it than any
+    collar is to another side."""
+    if len(groups) < 2 or not collars:
+        return None
+    d = [[min(km_between(c, p) for p in g["points"]) for g in groups] for c in collars]
+    near = {min(range(len(groups)), key=lambda i: row[i]) for row in d}
+    if len(near) != 1:
+        return None
+    s = near.pop()
+    farthest = max(row[s] for row in d)
+    other = min(row[i] for row in d for i in range(len(groups)) if i != s)
+    if farthest >= other:
+        return None
+    return {"by": "drill collars", "side": s, "farthest_km": round(farthest, 1), "other_km": round(other, 1),
+            "line": f"All {len(collars)} drill collars sit within {farthest:.1f} km of this side's points. The nearest "
+                    f"collar to the other side is {other:.1f} km from it.",
+            "rule": "The reports' drill collar tables say where each hole was drilled. A side is backed when every "
+                    "collar is nearer to it than any collar is to another side."}
+
+
+def settle_map_sheet(groups: list[dict], collars: list[dict]) -> dict | None:
+    """The drill collars settle the map sheet when they all fall in one NTS map area that one side gives."""
+    areas = {a["key"]: a for c in collars if (a := nts_area(c["lat"], c["lon"]))}
+    if len(areas) != 1 or len(groups) < 2:
+        return None
+    key, a = next(iter(areas.items()))
+    side = next((i for i, g in enumerate(groups) if g["key"] == key), None)
+    if side is None:
+        return None
+    return {"by": "drill collars", "side": side, "key": key,
+            "line": f"All {len(collars)} drill collars fall in NTS map area {key} ({a['lat'][0]}° to {a['lat'][1]}° N, "
+                    f"{a['lon_w'][0]}° to {a['lon_w'][1]}° W).",
+            "rule": "Code works out the NTS map area of each drill collar from its coordinates. When every collar falls "
+                    "in the area one side gives, that side is backed."}
+
+
+def settle_total(groups: list[dict], table: dict | None) -> dict | None:
+    """A drill program's total, checked against the hole depths in its own collar table."""
+    if not table or not groups:
+        return None
+    total = sum(Decimal(r["depth_m"]) for r in table["rows"])
+    match = [i for i, g in enumerate(groups) if abs(Decimal(g["key"]) - total) / max(Decimal(g["key"]), total) <= NUMBER_REL_TOL]
+    if len(match) != 1:
+        return None
+    side = match[0]
+    n = len(table["rows"])
+    terms = " + ".join(r["depth_m"] for r in table["rows"]) + " = " if n <= 4 else ""
+    return {"by": "collar table", "side": side, "total_m": str(total),
+            "line": f"{table['caption'].split(':')[0]} on {table['aris']} p{table['page']} lists {n} holes. Their depths "
+                    f"add up to {terms}{total:,} m.",
+            "rule": "The collar table whose caption names the same year gives each hole's depth. Code adds them."}
+
+
+def assay_grade(sample: dict, el: str) -> tuple[Decimal, Decimal] | None:
+    """One sample's grade for an element as a range in %: a value below detection runs from 0 to its limit. Uses
+    the ppm column, or the % column the lab fills when a sample is over the ppm range."""
+    keys = [k for k in sample["grades"] if element_of(k) == el]
+    for k in sorted(keys, key=lambda k: "%" in k):
+        g = grade_value(k, sample["grades"][k])
+        if g and g["sign"] != ">":
+            return (g["lo"], g["hi"]) if g["sign"] else (g["value"], g["value"])
+    return None
+
+
+def lab_check(value: dict, samples: list[dict]) -> dict | None:
+    """An interval against its hole's lab assays. Its depths must be sample boundaries (allowing for how precisely
+    they are written); then each grade it gives must match the samples' length-weighted average, allowing for the
+    rounding of the grade as written. None when the assays don't reach the interval."""
+    d = depths(value)
+    if not d or not samples:
+        return None
+    f, t = d
+    tf, tt = half_unit(value["from_m"]) + Decimal("0.005"), half_unit(value["to_m"]) + Decimal("0.005")
+    starts = {Decimal(s["from_m"]) for s in samples}
+    ends = {Decimal(s["to_m"]) for s in samples}
+    if min(starts) > f + tf or max(ends) < t - tt:
+        return None
+    bf = min(starts, key=lambda x: abs(x - f))
+    bt = min(ends, key=lambda x: abs(x - t))
+    out: dict = {"from_m": str(bf), "to_m": str(bt)}
+    if abs(bf - f) > tf or abs(bt - t) > tt:
+        off = value["from_m"] if abs(bf - f) > tf else value["to_m"]
+        near = sorted(sorted(starts | ends, key=lambda x: abs(x - metres(off)))[:2])
+        return out | {"ok": False, "boundaries": False,
+                      "line": f"{off} m isn't a sample boundary. The nearest are {near[0]} m and {near[1]} m."}
+    inside = [s for s in samples if Decimal(s["from_m"]) >= bf and Decimal(s["to_m"]) <= bt]
+    length = sum(Decimal(s["to_m"]) - Decimal(s["from_m"]) for s in inside)
+    if length < (bt - bf) - Decimal("0.01"):
+        return None  # a stretch of the interval wasn't sampled, so its average can't be checked
+    out |= {"boundaries": True, "samples": [s["sample"] for s in inside], "length_m": str(length), "grades": []}
+    ok = True
+    w = metres(value.get("width_m"))
+    if w is not None and abs(w - (bt - bf)) > half_unit(value["width_m"]) + Decimal("0.005"):
+        ok = False
+        out["width_off"] = True
+    for k, raw in (value.get("grades") or {}).items():
+        el, g = element_of(k) or element_of(str(raw)), grade_value(k, str(raw))
+        if not (el and g):
+            continue
+        parts = [(Decimal(s["to_m"]) - Decimal(s["from_m"]), assay_grade(s, el)) for s in inside]
+        if any(r is None for _, r in parts):
+            continue
+        lo = sum(wt * r[0] for wt, r in parts) / length
+        hi = sum(wt * r[1] for wt, r in parts) / length
+        # Reports often work a composite out from rounded sample values, or cut it off instead of rounding it
+        # (341 ppm for 341.6), so 1% of the lab average also counts as a match.
+        agree = not clash(g, {"lo": lo, "hi": hi}) or (
+            g["sign"] == "" and lo == hi and abs(g["value"] - lo) <= lo * LAB_REL_TOL)
+        ok &= agree
+        out["grades"].append({"what": el, "written": written_grade(k, str(raw)), "agree": agree,
+                              "lab_pct": [f"{lo:.9f}", f"{hi:.9f}"]})
+    if value.get("grades") and not out["grades"] and not out.get("width_off"):
+        return None  # the samples report none of the grades this interval gives
+    out["ok"] = ok
+    return out
+
+
+def in_unit(pct: Decimal, unit: str) -> str:
+    """A grade held as % in a report's unit, to three significant figures: 0.00061% in ppm is 6.1 ppm."""
+    if unit in ("ppm", "ppb", "g/t"):
+        v = pct / TO_PCT[unit]
+        return f"{v:,.{max(0, 2 - int(math.floor(math.log10(v))) if v else 0)}f} {unit}"
+    return f"{pct:.{max(0, 2 - int(math.floor(math.log10(pct))) if pct else 0)}f}%"
+
+
+def lab_value(check: dict, el: str, written: str) -> str:
+    """The lab average for one element of a lab check, in the unit the report wrote it in."""
+    g = next(x for x in check["grades"] if x["what"] == el)
+    lo, hi = (Decimal(x) for x in g["lab_pct"])
+    unit = unit_of(written) or "%"
+    if lo == hi:
+        return in_unit(lo, unit)
+    # Samples below detection count as anything from 0 to their limit, so the average is a range.
+    return f"<{in_unit(hi, unit)}" if lo == 0 else f"{in_unit(lo, unit)} to {in_unit(hi, unit)}"
+
+
+def settle_interval(g: dict, lab: dict[str, dict], src: dict[str, str]) -> dict | None:
+    """A disagreement between intervals of one hole, settled by the lab assays: one side matches the samples on
+    every measure in dispute, and every other side doesn't. src names each claim's page ("41800 p37")."""
+    if not g.get("disagree") or not g.get("sides"):
+        return None
+
+    def fits(cid: str) -> bool | None:
+        r = lab.get(cid)
+        if r is None:
+            return None
+        if not r["boundaries"] or ("width" in g["disagree_on"] and r.get("width_off")):
+            return False
+        return all(x["agree"] for x in r["grades"] if x["what"] in g["disagree_on"])
+
+    verdict = [{fits(c) for c in s["claims"]} for s in g["sides"]]
+    good = [i for i, v in enumerate(verdict) if v == {True}]
+    if len(good) != 1 or any(v != {False} for i, v in enumerate(verdict) if i != good[0]):
+        return None
+    side = good[0]
+    backed = g["sides"][side]["claims"]
+    others = [c for i, s in enumerate(g["sides"]) if i != side for c in s["claims"]]
+    written = {(x["what"], v["claim"]): v["written"] for x in g["compared"] for v in x["values"]}
+    els = [w for w in g["disagree_on"] if w != "width"] or [x["what"] for x in lab[backed[0]]["grades"]
+                                                            if x["what"] in ("Cu", "Ni")]
+    line = lab_found(lab[backed[0]], {x["what"]: x["written"] for x in lab[backed[0]]["grades"] if x["what"] in els})
+    said = "; ".join(f"{', '.join(written[(w, c)] + (' m' if w == 'width' else '') for w in g['disagree_on'])} ({src[c]})"
+                     for c in backed)
+    line += f" That matches {said}."
+    for c in others:
+        o = lab[c]
+        if not o["boundaries"]:
+            line += f" {src[c]}: {o['line']}"
+        else:
+            off = [f"{written[(w, c)]}{' m' if w == 'width' else ''}" for w in g["disagree_on"]
+                   if (w == "width" and o.get("width_off")) or any(x["what"] == w and not x["agree"] for x in o["grades"])]
+            line += f" {src[c]} gives {', '.join(off)}."
+    return {"by": "lab assays", "side": side, "line": line,
+            "rule": "The reports' assay tables list each sample's depths and lab results. Code averages the samples "
+                    "inside an interval, weighted by length, and backs the side whose depths are sample boundaries "
+                    "and whose disputed numbers match, allowing for how precisely each is written."}
+
+
+def lab_found(check: dict, written: dict[str, str]) -> str:
+    """What the lab found over an interval's depths, for the elements in written, each in the unit the report
+    writes it in ({"Cu": "0.002%"} reads the lab's copper in %)."""
+    n = len(check["samples"])
+    head = f"The lab assayed {check['from_m']} to {check['to_m']} m ({check['length_m']} m) as " + (
+        f"one sample, {check['samples'][0]}" if n == 1 else f"{n} samples")
+    vals = [f"{el} {lab_value(check, el, w)}" for el, w in written.items()]
+    if not vals:
+        return head + "."
+    return head + (f": {', '.join(vals)}." if n == 1 else f", which average {', '.join(vals)}, weighted by length.")
+
+
+def lab_note(g: dict, lab: dict[str, dict], src: dict[str, str]) -> dict | None:
+    """For an interval whose stated width doesn't match its own depths: what the lab sampled at those depths, and
+    which of the row's numbers the samples don't bear out."""
+    off = [cid for cid, a in (g.get("arithmetic") or {}).items() if not a["ok"] and lab.get(cid, {}).get("boundaries")]
+    if not off:
+        return None
+    cid = off[0]
+    r = lab[cid]
+    misses = [x for x in r["grades"] if not x["agree"]]
+    line = lab_found(r, {x["what"]: x["written"] for x in misses})
+    gives = ([f"{g['arithmetic'][cid]['stated_m']} m"] if r.get("width_off") else []) + [f"{x['what']} {x['written']}"
+                                                                                       for x in misses]
+    if gives:
+        line += f" {src[cid]} gives {', '.join(gives[:-1]) + ' and ' + gives[-1] if len(gives) > 1 else gives[0]}."
+    return {"by": "lab assays", "line": line,
+            "rule": "The reports' assay tables list each sample's depths and lab results. Code averages the samples inside "
+                    "an interval, weighted by length, and compares each number the report gives, allowing for how "
+                    "precisely it is written."}
+
+
+# A map sheet label: NTS or BCGS with the sheet right after it, as in "NTS: 092P096", "NTS/BCGS: 093N043" or
+# "N.T.S.  92P/15". Words between the label and a sheet ("BCGS Map Sheets 092P...") don't count.
+NTS_LABEL_RE = re.compile(r"\b(?:N\.?\s?T\.?\s?S\.?|BCGS)(?:\s?/\s?(?:N\.?\s?T\.?\s?S\.?|BCGS))?[\s:|]*"
+                          r"(0?(\d{2,3})\s?([A-P])(?![A-Za-z])(?:[./]?\d{1,3})?)")
+
+
+def map_sheet_labels(text: str) -> list[dict]:
+    """Every map sheet a page labels. Code reads these itself because they are exact labels, so a page no session
+    opened still counts."""
+    out = []
+    for m in NTS_LABEL_RE.finditer(text):
+        n = int(m.group(2))
+        if 82 <= n <= 114:
+            out.append({"key": f"{n:03d}{m.group(3)}", "written": re.sub(r"\s+", " ", m.group()).strip()})
+    return out

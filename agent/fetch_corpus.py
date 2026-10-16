@@ -1,4 +1,4 @@
-"""Fetch the public Iron Lake material from BC's ARIS archive.
+"""Fetch the property's public material from BC's ARIS archive (agent/property.json).
 
 Writes everything to data/private/ (gitignored): the WFS index dump, the ARIS
 detail pages, and the seven corpus PDFs. Polite: one request at a time with a
@@ -23,18 +23,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PRIVATE = ROOT / "data" / "private"
+PROPERTY = json.loads((ROOT / "agent" / "property.json").read_text(encoding="utf-8"))
 UA = "iron-lake-property-file/0.1 (student research; one request at a time)"
 PAUSE_S = 1.5
 
 WFS_URL = (
     "https://openmaps.gov.bc.ca/geo/pub/wfs?service=WFS&version=2.0.0&request=GetFeature"
     "&typeName=pub:WHSE_MINERAL_TENURE.ARIS_MINERAL_REPORTS&outputFormat=application/json"
-    "&CQL_FILTER=" + urllib.parse.quote("PROPERTY_NAME ILIKE '%IRON LAKE%'")
+    "&CQL_FILTER=" + urllib.parse.quote(f"PROPERTY_NAME ILIKE '%{PROPERTY['aris_property_filter']}%'")
 )
 DETAIL_URL = "https://apps.nrs.gov.bc.ca/pub/aris/detail/{n}"
 PDF_URL = "https://apps.nrs.gov.bc.ca/pub/aris/Report/{n}.pdf/"
 
-CORPUS = [34595, 36430, 36807, 38640, 40980, 41327, 41800]
+CORPUS = [r["aris"] for r in PROPERTY["reports"]]
 
 
 def get(url: str, method: str = "GET") -> urllib.request.addinfourl:

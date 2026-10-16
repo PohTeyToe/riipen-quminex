@@ -83,5 +83,17 @@
    "checked_on": "2026-10-15",
    "note": "The centre of the printed map view on a Mineral Titles Online map titled 'Iron Lake Claims', not a stated centre of work."
   }
+ ],
+ "labels": [
+  {
+   "aris": 36807,
+   "page": 1,
+   "result": "confirmed",
+   "image_reads": "NTS/BCGS: 093N043",
+   "checked_by": "claude-opus-5-5",
+   "checked_on": "2026-10-15",
+   "note": "A map sheet label code read from the OCR text of this scanned page. The page image, rendered at 120 dpi, reads the same.",
+   "second_read_by": "Codex (gpt-6.1-sol), as second reader of the eval answers (q15) and without seeing the agent,"
+  }
  ]
 }

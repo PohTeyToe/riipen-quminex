@@ -33,14 +33,7 @@ def log(tool: str, args: dict, result: Any) -> None:
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
-@server.tool()
 def search(query: str, report: int | None = None) -> list[dict]:
-    """Search the pages of the seven Iron Lake assessment reports (BM25, lexical).
-
-    Returns up to 8 hits, each with report (ARIS number), page (PDF page number),
-    whether the page is a scan, and a 200-character snippet. Exact strings such as
-    hole IDs, units and coordinates work well as queries. Optionally limit to one report.
-    """
     global _search
     if _search is None:
         _search = corpus.Search()
@@ -50,6 +43,17 @@ def search(query: str, report: int | None = None) -> list[dict]:
     log("search", {"query": query, "report": report},
         {"hits": [{"report": h["report"], "page": h["page"]} for h in hits]})
     return hits
+
+
+NUMBER_WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+_n = len(corpus.REPORTS)
+search.__doc__ = f"""Search the pages of the {NUMBER_WORDS[_n] if _n <= 10 else _n} {corpus.PROPERTY['name']} assessment reports (BM25, lexical).
+
+    Returns up to 8 hits, each with report (ARIS number), page (PDF page number),
+    whether the page is a scan, and a 200-character snippet. Exact strings such as
+    hole IDs, units and coordinates work well as queries. Optionally limit to one report.
+    """
+server.tool()(search)
 
 
 @server.tool()
@@ -96,7 +100,7 @@ def propose_claim(
     global _claims
     _claims += 1
     claim_id = f"{SESSION}-{_claims:03d}"
-    res = check_claim(kind, value, report, page, quote)
+    res = check_claim(kind, value, report, page, quote, unit)
     args = {"field": field, "value": value, "report": report, "page": page, "quote": quote,
             "unit": unit, "kind": kind}
     log("propose_claim", args, res | {"claim_id": claim_id})

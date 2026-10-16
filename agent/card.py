@@ -44,6 +44,8 @@ def code_lines(part: dict) -> list[str]:
     lines = []
     if part.get("code_line"):
         lines.append(part["code_line"])
+    if part.get("settled_by"):
+        lines.append(f"Settled by the reports' {part['settled_by']['by']}: {part['settled_by']['line']}")
     for g in part.get("groups") or []:
         for x in g.get("compared") or []:
             if not x["agree"]:
@@ -51,6 +53,13 @@ def code_lines(part: dict) -> list[str]:
         for a in (g.get("arithmetic") or {}).values():
             if not a["ok"]:
                 lines.append(f"{g['hole']}: {a['line']}")
+        for k in ("settled_by", "lab"):
+            if g.get(k):
+                lines.append(f"{g['hole']}, checked against the {g[k]['by']}: {g[k]['line']}")
+        if g.get("code_pages"):
+            pages = ", ".join(f"{x['aris']} p{x['page']}" for x in g["code_pages"])
+            lines.append(f"Map sheet {g['key']} is also labelled on {len(g['code_pages'])} pages no claim covers, read by "
+                         f"code: {pages}.")
     if part.get("rule") == "number" and len(part.get("groups") or []) > 1:
         keys = [float(g["key"]) for g in part["groups"]]
         lines.append(f"{' and '.join(g['key'] for g in part['groups'])} differ by "
@@ -65,7 +74,7 @@ def sides(name: str, part: dict) -> list[dict]:
     if part.get("rule") == "interval":
         return [{"name": f"{name}, {g['hole']}", "sides": [set(s["claims"]) for s in g["sides"]]}
                 for g in part["groups"] if g.get("disagree")]
-    return [{"name": name, "sides": [set(g["claims"]) for g in part["groups"]]}]
+    return [{"name": name, "sides": [set(g["claims"]) for g in part["groups"] if g["claims"]]}]
 
 
 class Card:
@@ -88,7 +97,8 @@ class Card:
                 self.refused.add(f["id"])
                 self.citable[f"refused:{f['id']}"] = {"quote": "", "value": "", "what": "Not in these sources"}
         self.citable["index:aris"] = {
-            "quote": (f"The ARIS index lists {index['count']} Iron Lake reports from {index['operators']} operators, "
+            "quote": (f"The ARIS index lists {index['count']} {corpus.PROPERTY['name']} reports from {index['operators']} "
+                      f"operators, "
                       f"{index['years'][0]} to {index['years'][1]}, with C${index['spent_reported_total']:,.2f} "
                       f"reported spend."),
             "value": "", "what": "ARIS index"}
@@ -121,11 +131,15 @@ class Card:
         row = {"part": p["id"], "name": p["name"], "state": p["state"]}
         if f"code:{p['id']}" in self.citable:
             row["code_line"] = {"cite": f"code:{p['id']}", "text": self.citable[f"code:{p['id']}"]["quote"]}
+        if p.get("settled_by") and p["state"] == "disagree":
+            row["settled_by"] = {"backs_group": p["settled_by"]["side"], "by": p["settled_by"]["by"]}
         if p.get("rule") == "interval":
             row["intervals"] = [{"hole": g["hole"], "claims": [self._brief(c) for c in g["claims"]],
                                  **({"inside": g["inside"], "inside_word": g["inside_word"]} if g.get("inside") else {}),
                                  **({"disagree_on": g["disagree_on"], "sides": [x["claims"] for x in g["sides"]]}
-                                    if g.get("disagree") else {})}
+                                    if g.get("disagree") else {}),
+                                 **({"settled_by": {"backs_side": g["settled_by"]["side"], "by": g["settled_by"]["by"]}}
+                                    if g.get("settled_by") else {})}
                                 for g in p["groups"]]
         else:
             row["groups"] = [{"key": g.get("key"), "claims": [self._brief(c) for c in g["claims"]]} for g in p.get("groups") or []]

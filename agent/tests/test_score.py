@@ -77,3 +77,20 @@ def test_a_caveat_must_be_named_in_the_answer_and_backed_by_a_quote():
     assert r["caveats"][0]["met"] is False
     r = score_question("answerable", WITH_CAVEAT, "9.46 m at 0.034% Ni; aqua regia may read low", False, [TABLE])
     assert r["caveats"][0]["met"] is False
+
+
+def test_an_expected_grade_counts_only_next_to_its_element():
+    gold = {"expected": [{"label": "Copper 0.42%", "any_of": ["0.42"]}, {"label": "Nickel 0.034%", "any_of": ["0.034"]}],
+            "required_caveats": []}
+    right = score_question("answerable", gold, "IL-23-024 returned 9.46 m of 0.42% Cu, 0.034% Ni.", False, [TABLE])
+    assert right["passed"]
+    swapped = score_question("answerable", gold, "IL-23-024 returned 9.46 m of 0.034% Cu, 0.42% Ni.", False, [TABLE])
+    assert not swapped["passed"] and [i["met"] for i in swapped["items"]] == [False, False]
+
+
+def test_each_clause_names_its_elements_its_own_way():
+    # One sentence of the summary writes "0.02% Cu" and then "Cu 0.326%"; both copper values sit with copper.
+    from score import alt_met
+    text = ("Table 3 gives 2.50 m with 0.02% Cu, which is 1.50 m with Cu 0.326%. Elsewhere 0.18% Cu and 0.48% Cu.")
+    assert alt_met("0.326", text, "Cu") and alt_met("0.02", text, "Cu")
+    assert not alt_met("0.326", text, "Ni")

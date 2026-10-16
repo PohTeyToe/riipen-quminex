@@ -1,6 +1,6 @@
 from checker import censored, check_claim
 from conftest import claim
-from rules import (arithmetic, attach_caveats, grade_pct, group_intervals, group_locations, group_map_sheets,
+from rules import (arithmetic, attach_caveats, grade_value, group_intervals, group_locations, group_map_sheets,
                    group_numbers, group_text, unbacked_numbers)
 from textnorm import normalize
 
@@ -105,8 +105,9 @@ def test_also_in_lists_identical_quotes():
 
 def test_censored_value_keeps_its_detection_limit_and_never_becomes_zero():
     assert censored("<10") == {"detection_limit": "10", "unit": None}
-    assert grade_pct("Pt (ppb)", "<10") is None
-    g = group_numbers([claim("a", 41327, 33, "x", "<10"), claim("b", 41327, 33, "y", "10")])
+    pt = grade_value("Pt (ppb)", "<10")
+    assert pt["sign"] == "<" and pt["lo"] == 0 and pt["hi"] == pt["value"] > 0
+    g = group_numbers([claim("a", 41327, 33, "x", "<10 m"), claim("b", 41327, 33, "y", "10 m")])
     assert g["unplaced"] == ["a"]
     assert all("a" not in grp["claims"] for grp in g["groups"])
     r = check_claim("interval", {"hole": "IL-22-011", "width_m": "2.07", "grades": {"Pt (ppb)": "<10"}},
@@ -186,7 +187,8 @@ def test_same_interval_with_different_copper_is_a_disagreement():
     grp = g["groups"][0]
     assert grp["disagree_on"] == ["Cu"]
     cu = next(x for x in grp["compared"] if x["what"] == "Cu")
-    assert cu["line"] == "Cu: 0.002% and 6 ppm (0.0006%) differ by 0.0014%. Rounding allows 0.0005%."
+    # 0.002% allows 0.0015 to 0.0025%, 6 ppm allows 5.5 to 6.5 ppm: together, rounding allows 0.00055%.
+    assert cu["line"] == "Cu: 0.002% and 6 ppm (0.0006%) differ by 0.0014%. Rounding allows 0.00055%."
     ni = next(x for x in grp["compared"] if x["what"] == "Ni")
     assert ni["agree"]
 
@@ -324,3 +326,90 @@ def test_half_unit_scales_centimetres():
     from rules import half_unit
     assert half_unit("318.3") == Decimal("0.05")
     assert half_unit("47 cm") == Decimal("0.005")
+
+
+# ---------------------------------------------------------------- round 2 (Codex repros)
+
+P33_ROWS = ("IL-22-001\n123.48 \n125.87\n2.39 \n0.30\n0.045\n10\n18\n24\n"
+            "IL-22-006\n123.82 \n136.98\n13.16 \n0.18\n0.027\n10\n23\n<10")
+
+
+def test_an_interval_must_use_the_hole_of_its_own_row():
+    # IL-22-006's depths and grades, labelled with the hole of the row above.
+    v = {"hole": "IL-22-001", "from_m": "123.82", "to_m": "136.98", "width_m": "13.16",
+         "grades": {"Cu (%)": "0.18", "Ni (%)": "0.027"}}
+    r = check_claim("interval", v, 41327, 33, P33_ROWS)
+    assert not r["accepted"] and r["failure"] == "hole_not_with_row" and "IL-22-006" in r["reason"]
+    assert check_claim("interval", v | {"hole": "IL-22-006"}, 41327, 33, P33_ROWS)["accepted"]
+    # An "including" row has no hole of its own: it belongs to the hole above it.
+    inc = {"hole": "IL-23-25", "from_m": "318.25", "to_m": "342.29", "width_m": "24.04", "grades": {"Ni (%)": "0.100"}}
+    assert check_claim("interval", inc, 41800, 37, Q37_25)["accepted"]
+    assert check_claim("interval", V10_25, 41800, 10, Q10_25)["accepted"]  # hole before the numbers, in a sentence
+
+
+def test_a_unit_must_follow_its_number_in_the_quote():
+    q = "In 2023, Tech-X completed a total of 1,680 m of diamond drilling in 3 holes."
+    assert check_claim("value", "1,680", 41800, 38, q, "m")["accepted"]
+    r = check_claim("value", "1,680", 41800, 38, q, "km")
+    assert not r["accepted"] and r["failure"] == "unit_not_in_quote"
+
+
+def test_lengths_in_different_units_never_share_a_group():
+    g = group_numbers([claim("m", 41327, 33, "x", "5,001.30") | {"unit": "m"},
+                       claim("km", 41327, 33, "x", "5,001.30") | {"unit": "km"},
+                       claim("same", 41327, 33, "x", "5.0013 km")])
+    assert sorted(sorted(x["claims"]) for x in g["groups"]) == [["km"], ["m", "same"]]
+
+
+def test_a_bound_written_in_words_is_not_an_exact_value():
+    q = "Less than 10% of the core was \nsplit and assayed"
+    assert check_claim("value", "10%", 40980, 17, q)["failure"] == "value_not_in_quote"
+    assert check_claim("value", "<10%", 40980, 17, q)["accepted"]
+
+
+def test_an_element_name_belongs_to_its_own_number_in_a_sentence():
+    q = "Hole IL-23-024 intersected a 9.46 m interval grading 0.42% copper and 341 ppm \nnickel"
+    ok = {"hole": "IL-23-024", "width_m": "9.46", "grades": {"Cu (%)": "0.42", "Ni (ppm)": "341"}}
+    assert check_claim("interval", ok, 41800, 38, q)["accepted"]
+    swapped = ok | {"grades": {"Ni (%)": "0.42", "Cu (ppm)": "341"}}
+    assert check_claim("interval", swapped, 41800, 38, q)["failure"] == "grade_not_with_element"
+    # "copper" sits two words before 341, but it belongs to 0.42.
+    assert check_claim("interval", ok | {"grades": {"Cu (ppm)": "341"}}, 41800, 38, q)["failure"] == "grade_not_with_element"
+
+
+def test_a_claim_without_the_disputed_grade_takes_no_side():
+    no_cu = V10_25 | {"grades": {"Ni (ppm)": "1,002"}}
+    g = group_intervals([claim("table", 41800, 37, Q37_25, V37_25, "interval"),
+                         claim("text", 41800, 10, Q10_25, V10_25, "interval"),
+                         claim("no_cu", 41800, 10, Q10_25, no_cu, "interval")])
+    grp = g["groups"][0]
+    assert grp["disagree_on"] == ["Cu"]
+    assert sorted(s["claims"] for s in grp["sides"]) == [["table"], ["text"]]
+    assert grp["unsided"] == ["no_cu"]
+
+
+def test_a_censored_grade_disagrees_with_a_value_above_its_limit():
+    a = {"hole": "IL-22-007", "from_m": "121.00", "to_m": "123.00", "width_m": "2.00", "grades": {"Au (ppb)": "<10"}}
+    b = a | {"grades": {"Au (ppb)": "100"}}
+    c = a | {"grades": {"Au (ppb)": "6"}}
+    g = group_intervals([claim("a", 41327, 33, "x", a, "interval"), claim("b", 41327, 34, "y", b, "interval")])
+    grp = g["groups"][0]
+    assert grp["disagree_on"] == ["Au"]
+    assert "100 ppb is above the limit of <10 ppb" in grp["compared"][-1]["line"]
+    g = group_intervals([claim("a", 41327, 33, "x", a, "interval"), claim("c", 41327, 34, "y", c, "interval")])
+    assert not g["groups"][0]["disagree"]
+
+
+def test_answer_numbers_keep_their_bounds_and_report_numbers_used_as_grades():
+    c = [claim("a", 41327, 33, "IL-22-007\n121.00 \n123.00\n2.00 \n0.12\n<0.001\n<10\n27\n45",
+               {"hole": "IL-22-007", "grades": {"Au (ppb)": "<10"}})]
+    assert unbacked_numbers("IL-22-007 returned <10 ppb gold.", c) == []
+    assert unbacked_numbers("IL-22-007 returned 10 ppb gold.", c) == ["10"]
+    assert unbacked_numbers("IL-22-007 returned 41800 ppb gold.", c) == ["41800"]
+    assert unbacked_numbers("Reports 41327 and 41800 give <10 ppb (41800 p37).", c) == []
+
+
+def test_a_unit_heading_counts_only_right_before_its_number():
+    head = ("Table 3: Significant Intervals from the 2022 Drill Program \nHole \nFrom (m) \nTo (m) \nInterval \n(m) \n"
+            "Cu (%) \nNi (%) \nAu (ppb) \nPt (ppb) \nPd (ppb) \nIL-22-001\n123.48 \n125.87\n2.39 \n0.30")
+    assert check_claim("value", "0.30", 41327, 33, head, "m")["failure"] == "unit_not_in_quote"

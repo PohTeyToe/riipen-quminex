@@ -25,9 +25,9 @@ export function SummaryBlock() {
           The agent's summary
         </h2>
         <p className="small muted">
-          A separate session read only this card and wrote it. Code kept a sentence only if every number in it is in a claim it cites, and only if it cites every side
-          of any disagreement it touches. Code can't check the words between the numbers, so each sentence opens what it rests on. Claude then read every
-          sentence against its quotes; where the words go past them, a note says so.
+          A separate session read only this card and wrote it. Code kept a sentence only if every number in it is in a claim or code line it cites, and only if it
+          cites every side of any disagreement it touches. Code can't check the words between the numbers: click a chip to read the quote behind a sentence. Claude
+          read every sentence against its quotes after the run; where the words go past them, a note says so.
         </p>
       </div>
       <ol className="summary-list">

@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from 'react'
-import type { Claim, Field, FieldPart, Group, Src, State } from '../data/types'
+import type { Claim, Field, FieldPart, Group, LabSummary, Settled, Src, State } from '../data/types'
 import { claim, clean, gradeText, isInterval, sessionSteps, valueText } from '../data/run'
 import { Chip, ValueButton } from './Panel'
 import { ChevronIcon } from './Icons'
 import { TraceList } from './Trace'
+import { CodePages, SettledBlock, settledBy } from './Settled'
 
 const nf = new Intl.NumberFormat('en-CA')
 
@@ -87,6 +88,15 @@ export function StateLabel({ state, children }: { state: State; children?: React
   )
 }
 
+/** "Settled by the drill collars", or for intervals, how many of the disagreements the lab settles. */
+function settledNote(s: Settled | undefined, groups: Group[]): string | null {
+  if (s) return `Settled by ${settledBy(s)}`
+  const conflicts = groups.filter((g) => g.disagree)
+  const settled = conflicts.filter((g) => g.settled_by)
+  if (!settled.length) return null
+  return settled.length === conflicts.length ? 'Settled by the lab assays' : `${settled.length} of ${conflicts.length} settled by the lab assays`
+}
+
 function ScannedNote({ c }: { c: Claim }) {
   if (c.check.by !== 'page image' || !c.check.image_reads) return null
   return (
@@ -134,17 +144,29 @@ function GroupValues({ g, max = 3, mono = true }: { g: Group; max?: number; mono
   )
 }
 
-function Sides({ groups, render, label }: { groups: Group[]; render: (g: Group) => ReactNode; label?: (g: Group) => string }) {
+function Sides({
+  groups,
+  render,
+  label,
+  settled,
+}: {
+  groups: Group[]
+  render: (g: Group) => ReactNode
+  label?: (g: Group) => string
+  settled?: { side?: number; by: string }
+}) {
   return (
     <div className="sides" role="group" aria-label="The sides that disagree">
       {groups.map((g, i) => {
         const { pages, reports } = sourceCounts(claimsOf(g.claims))
         const name = label?.(g)
+        const backed = settled?.side === i
         return (
-          <div className="side" key={i}>
+          <div className={`side${backed ? ' is-backed' : ''}`} key={i}>
+            {backed && <p className="backed">Backed by {settled?.by}</p>}
             <p className="side-count">
               {name && <span className="mono">{name}: </span>}
-              {countLabel(pages, reports)}
+              {g.claims.length > 0 ? countLabel(pages, reports) : 'no claims'}
             </p>
             {render(g)}
           </div>
@@ -152,6 +174,10 @@ function Sides({ groups, render, label }: { groups: Group[]; render: (g: Group) 
       })}
     </div>
   )
+}
+
+function settledProp(s?: Settled) {
+  return s && s.side !== undefined ? { side: s.side, by: settledBy(s) } : undefined
 }
 
 function CodeLine({ lines, rule }: { lines: string[]; rule?: string }) {
@@ -219,6 +245,7 @@ function LocationBody({ f }: { f: Field }) {
       <div className={f.state === 'disagree' ? 'disagree-area' : ''}>
         <Sides
           groups={groups}
+          settled={settledProp(f.settled_by)}
           render={(g) => (
             <>
               <GroupValues g={g} max={2} />
@@ -232,6 +259,7 @@ function LocationBody({ f }: { f: Field }) {
           )}
         />
         {f.code_line && <CodeLine lines={[f.code_line]} rule={f.rule_text} />}
+        {f.settled_by && <SettledBlock s={f.settled_by} title={`Settled by ${settledBy(f.settled_by)}`} />}
       </div>
       <Unplaced ids={f.unplaced ?? []} what="where code couldn't read a point, so they sit on neither side" />
       <FromEval f={f} />
@@ -252,8 +280,20 @@ function GroupedBody({ f }: { f: Field | FieldPart }) {
     return (
       <>
         <div className="disagree-area">
-          <Sides groups={groups} label={f.rule === 'map_sheet' ? (g) => g.key ?? '' : undefined} render={(g) => <GroupValues g={g} max={2} />} />
+          <Sides
+            groups={groups}
+            settled={settledProp(f.settled_by)}
+            label={f.rule === 'map_sheet' ? (g) => g.key ?? '' : undefined}
+            render={(g) => (
+              <>
+                <GroupValues g={g} max={2} />
+                {g.code_pages && <CodePages pages={g.code_pages} />}
+              </>
+            )}
+          />
           <CodeLine lines={lines} rule={f.rule_text} />
+          {f.settled_by && <SettledBlock s={f.settled_by} title={`Settled by ${settledBy(f.settled_by)}`} />}
+          {'label_rule' in f && f.label_rule && <p className="rule small">Rule, in code: {f.label_rule}</p>}
         </div>
         {'eval_cross_check' in f && <FromEval f={f as Field} />}
       </>
@@ -268,6 +308,7 @@ function GroupedBody({ f }: { f: Field | FieldPart }) {
         </div>
       ))}
       {f.rule_text && <p className="rule small">Rule, in code: {f.rule_text}</p>}
+      {f.settled_by && <SettledBlock s={f.settled_by} title={`Checked against ${settledBy(f.settled_by)}`} />}
       {'eval_cross_check' in f && <FromEval f={f as Field} />}
     </>
   )
@@ -435,6 +476,7 @@ function IntervalsBody({ p }: { p: FieldPart }) {
           </p>
           <Sides
             groups={(g.sides ?? []).map((s) => ({ ...g, claims: s.claims }))}
+            settled={settledProp(g.settled_by)}
             render={(side) => (
               <ul className="values">
                 {claimsOf(side.claims).map((c) => (
@@ -461,6 +503,13 @@ function IntervalsBody({ p }: { p: FieldPart }) {
             ]}
             rule={p.rule_text}
           />
+          {g.unsided && g.unsided.length > 0 && (
+            <p className="small muted">
+              {g.unsided.length} more {g.unsided.length === 1 ? 'claim gives' : 'claims give'} this interval without the number in dispute, so{' '}
+              {g.unsided.length === 1 ? 'it takes' : 'they take'} no side: <SourceChips ids={g.unsided} siblings={g.claims} />
+            </p>
+          )}
+          {g.settled_by && <SettledBlock s={g.settled_by} title={`Settled by ${settledBy(g.settled_by)}`} />}
         </div>
       ))}
 
@@ -544,10 +593,55 @@ function IntervalsBody({ p }: { p: FieldPart }) {
               </p>
             ))}
           <p className="rule small">Code checks that to minus from equals the stated width, allowing for how precisely each number is written.</p>
+          {p.groups
+            .filter((g) => !g.disagree && g.lab)
+            .map((g) => (
+              <SettledBlock key={g.row} s={g.lab!} title={`${clean(g.hole ?? '')}: what the lab found at these depths`} />
+            ))}
         </div>
       )}
+      {p.lab_summary && <LabCheck s={p.lab_summary} />}
       <Caveats ids={p.caveat_claims} />
     </>
+  )
+}
+
+/** Every claimed interval the lab assays reach, checked against them, in one line; what differs one tap away. */
+function LabCheck({ s }: { s: LabSummary }) {
+  const [open, setOpen] = useState(false)
+  const rest = s.differ.filter((d) => !d.on_card)
+  return (
+    <div className="lab-check">
+      <p className="small">
+        <span className="lab-check-head">Checked against the lab assays.</span> Code averaged each interval's samples, weighted by length:{' '}
+        {s.match} of {s.checked} intervals match every number the report gives, allowing for how precisely it is written.
+        {s.differ.length > rest.length && ` ${s.differ.length - rest.length} that don't are above.`}
+      </p>
+      {rest.length > 0 && (
+        <>
+          <button type="button" className="disclosure small" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+            <ChevronIcon />
+            {rest.length} more where a number differs from the lab
+          </button>
+          {open && (
+            <ul className="lab-differ small">
+              {rest.map((d) => (
+                <li key={d.claim}>
+                  <span className="mono">
+                    {clean(d.hole)} {d.from_m} to {d.to_m} m
+                  </span>{' '}
+                  ({d.src}): {d.what.join('; ')}. <Chip id={d.claim} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+      <p className="rule small">
+        Rule, in code: a number matches when the lab average rounds to it, or is within 1% of it, since reports often round each sample before
+        averaging, or cut a figure off instead of rounding it.
+      </p>
+    </div>
   )
 }
 
@@ -560,7 +654,7 @@ function PartsBody({ f }: { f: Field }) {
         return (
           <div className="part" key={p.id}>
             <h4 className="part-name">{p.name}</h4>
-            <StateLabel state={p.state}>{p.state !== 'disagree' && countLabel(pages, reports)}</StateLabel>
+            <StateLabel state={p.state}>{p.state !== 'disagree' ? countLabel(pages, reports) : settledNote(p.settled_by, p.groups)}</StateLabel>
             {p.rule === 'interval' ? <IntervalsBody p={p} /> : <GroupedBody f={p} />}
           </div>
         )
@@ -624,7 +718,7 @@ export function FieldRow({ f }: { f: Field }) {
     const { pages, reports } = sourceCounts(placed)
     body = (
       <>
-        <StateLabel state={f.state}>{f.state !== 'disagree' && countLabel(pages, reports)}</StateLabel>
+        <StateLabel state={f.state}>{f.state !== 'disagree' ? countLabel(pages, reports) : settledNote(f.settled_by, f.groups ?? [])}</StateLabel>
         {f.rule === 'location' ? <LocationBody f={f} /> : <GroupedBody f={f} />}
       </>
     )
