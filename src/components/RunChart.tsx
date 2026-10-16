@@ -101,6 +101,91 @@ export interface ChartPick {
   call?: number
 }
 
+// The lanes, the session bars and the axis stay put while a replay plays, so they are memoized layers: a replay
+// frame redraws only the playhead, the clip on the ticks and the rings.
+const Lanes = memo(function Lanes({ g }: { g: Geo }) {
+  return (
+    <>
+      {(['field', 'eval'] as const).map((kind) =>
+        [0, 1, 2, 3].map((lane) => {
+          const y = g.laneY({ kind, lane })
+          return (
+            <g key={`${kind}${lane}`}>
+              <rect x={g.left} y={y} width={g.W - g.left - g.right} height={g.laneH} className="lane" rx={3} />
+              <text x={g.left - 8} y={y + g.laneH / 2} className="lane-label" textAnchor="end" dominantBaseline="central">
+                {g.compact ? `${kind === 'field' ? 'F' : 'E'}${lane + 1}` : `${kind === 'field' ? 'Field' : 'Eval'} ${lane + 1}`}
+              </text>
+            </g>
+          )
+        }),
+      )}
+    </>
+  )
+})
+
+const Bars = memo(function Bars({ g, selId, onPick }: { g: Geo; selId: string | undefined; onPick: (p: ChartPick) => void }) {
+  return (
+    <>
+      {sessions.map((s) => {
+        const x0 = g.x(s.start)
+        const w = Math.max(2, g.x(s.end) - x0)
+        const y = g.laneY(s)
+        const label = sessionLabel(s)
+        const fits = w > label.length * 5.8 + 10
+        return (
+          <g key={s.id}>
+            <rect
+              x={x0 + 0.5}
+              y={y + 0.5}
+              width={w - 1}
+              height={g.laneH - 1}
+              rx={3}
+              className={`bar${selId === s.id ? ' is-sel' : ''}`}
+              tabIndex={0}
+              role="button"
+              aria-label={`${s.kind === 'field' ? 'Field' : 'Eval'} session ${label}, ${clock(s.start)} to ${clock(s.end)}, ${s.calls.length} calls`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onPick({ session: s.id })
+                }
+              }}
+            />
+            {fits && !g.compact && (
+              <text x={x0 + 6} y={y + 7} className="bar-label">
+                {label}
+              </text>
+            )}
+          </g>
+        )
+      })}
+    </>
+  )
+})
+
+const MINUTES = Array.from({ length: Math.floor(WALL / 60) + 1 }, (_, i) => i * 60)
+
+const Axis = memo(function Axis({ g }: { g: Geo }) {
+  return (
+    <g className="axis">
+      <line x1={g.left} x2={g.W - g.right} y1={g.axisY} y2={g.axisY} />
+      {MINUTES.map((m) => (
+        <g key={m}>
+          <line x1={g.x(m)} x2={g.x(m)} y1={g.axisY} y2={g.axisY + 4} />
+          {(!g.compact || m % 120 === 0) && (
+            <text x={g.x(m)} y={g.axisY + 15} textAnchor={m === 0 ? 'start' : 'middle'}>
+              {clock(m)}
+            </text>
+          )}
+        </g>
+      ))}
+      <text x={g.x(WALL)} y={g.axisY + 15} textAnchor="end" className="axis-end">
+        {clock(WALL)}
+      </text>
+    </g>
+  )
+})
+
 export function RunChart({
   t,
   filter,
@@ -188,7 +273,6 @@ export function RunChart({
 
   const sel = selected ? sessions.find((s) => s.id === selected.session) : undefined
   const selCall = sel && selected?.call !== undefined ? sel.calls[selected.call] : undefined
-  const minutes = Array.from({ length: Math.floor(WALL / 60) + 1 }, (_, i) => i * 60)
 
   return (
     <div className="runchart" ref={ref}>
@@ -209,53 +293,8 @@ export function RunChart({
               <rect x={0} y={0} width={live ? px : g.W} height={g.H} />
             </clipPath>
           </defs>
-          {(['field', 'eval'] as const).map((kind) =>
-            [0, 1, 2, 3].map((lane) => {
-              const y = g.laneY({ kind, lane })
-              return (
-                <g key={`${kind}${lane}`}>
-                  <rect x={g.left} y={y} width={g.W - g.left - g.right} height={g.laneH} className="lane" rx={3} />
-                  <text x={g.left - 8} y={y + g.laneH / 2} className="lane-label" textAnchor="end" dominantBaseline="central">
-                    {g.compact ? `${kind === 'field' ? 'F' : 'E'}${lane + 1}` : `${kind === 'field' ? 'Field' : 'Eval'} ${lane + 1}`}
-                  </text>
-                </g>
-              )
-            }),
-          )}
-          {sessions.map((s) => {
-            const x0 = g.x(s.start)
-            const w = Math.max(2, g.x(s.end) - x0)
-            const y = g.laneY(s)
-            const label = sessionLabel(s)
-            const fits = w > label.length * 5.8 + 10
-            const isSel = sel?.id === s.id
-            return (
-              <g key={s.id}>
-                <rect
-                  x={x0 + 0.5}
-                  y={y + 0.5}
-                  width={w - 1}
-                  height={g.laneH - 1}
-                  rx={3}
-                  className={`bar${isSel ? ' is-sel' : ''}`}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`${s.kind === 'field' ? 'Field' : 'Eval'} session ${label}, ${clock(s.start)} to ${clock(s.end)}, ${s.calls.length} calls`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      onPick({ session: s.id })
-                    }
-                  }}
-                />
-                {fits && !g.compact && (
-                  <text x={x0 + 6} y={y + 7} className="bar-label">
-                    {label}
-                  </text>
-                )}
-              </g>
-            )
-          })}
+          <Lanes g={g} />
+          <Bars g={g} selId={sel?.id} onPick={onPick} />
           <g clipPath="url(#played)">
             <Ticks g={g} filter={filter} />
           </g>
@@ -278,22 +317,7 @@ export function RunChart({
           {selCall && (
             <circle cx={g.x(selCall[0])} cy={g.laneY(sel!) + g.laneH / 2} r={6} className="sel-call" />
           )}
-          <g className="axis">
-            <line x1={g.left} x2={g.W - g.right} y1={g.axisY} y2={g.axisY} />
-            {minutes.map((m) => (
-              <g key={m}>
-                <line x1={g.x(m)} x2={g.x(m)} y1={g.axisY} y2={g.axisY + 4} />
-                {(!g.compact || m % 120 === 0) && (
-                  <text x={g.x(m)} y={g.axisY + 15} textAnchor={m === 0 ? 'start' : 'middle'}>
-                    {clock(m)}
-                  </text>
-                )}
-              </g>
-            ))}
-            <text x={g.x(WALL)} y={g.axisY + 15} textAnchor="end" className="axis-end">
-              {clock(WALL)}
-            </text>
-          </g>
+          <Axis g={g} />
           {live && (
             <g className="playhead">
               <line x1={px} x2={px} y1={-2} y2={g.axisY} />

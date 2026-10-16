@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { fields } from '../data/core'
 import { claim, sessionSteps } from '../data/run'
 import { type Filter } from '../data/timeline'
@@ -43,12 +43,16 @@ export default function RunPage() {
   }, [top])
 
   // A tick in the chart opens its session with the call picked; a kept claim opens its page on top of that.
-  function pick(p: ChartPick) {
-    if (p.call === undefined) return show({ kind: 'session', id: p.session })
-    show({ kind: 'session', id: p.session, call: p.call })
-    const st = sessionSteps(p.session)[p.call]
-    if (st?.tool === 'propose_claim' && st.claim) open({ kind: 'claim', id: st.claim })
-  }
+  // Stable, so the chart's bars and the feed's rows skip the replay's frames.
+  const pick = useCallback(
+    (p: ChartPick) => {
+      if (p.call === undefined) return show({ kind: 'session', id: p.session })
+      show({ kind: 'session', id: p.session, call: p.call })
+      const st = sessionSteps(p.session)[p.call]
+      if (st?.tool === 'propose_claim' && st.claim) open({ kind: 'claim', id: st.claim })
+    },
+    [show, open],
+  )
 
   const selected: ChartPick | null = useMemo(() => {
     if (!top) return null

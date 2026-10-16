@@ -7,9 +7,13 @@ import { loadPageMaps, type PageMaps } from '../data/pageMaps'
 /** Small beside the quote; one click draws it across the inspector, a second puts it back. */
 export function PageMap({ claimId, page, big, onToggle }: { claimId: string; page: number; big: boolean; onToggle: () => void }) {
   const [maps, setMaps] = useState<PageMaps | null>(null)
+  const [failed, setFailed] = useState(false)
   useEffect(() => {
     let live = true
-    loadPageMaps().then((m) => live && setMaps(m))
+    loadPageMaps().then(
+      (m) => live && setMaps(m),
+      () => live && setFailed(true),
+    )
     return () => {
       live = false
     }
@@ -17,6 +21,8 @@ export function PageMap({ claimId, page, big, onToggle }: { claimId: string; pag
   const placed = maps?.claims[claimId]
   const pm = placed ? maps?.pages[placed.page] : undefined
   const W = 150
+  // the quote and the link to the page stand on their own, so a map that didn't load just isn't drawn
+  if (failed) return null
   if (!maps) return <span className="pagemap is-loading" style={{ width: W, height: W * 1.29 }} aria-hidden="true" />
   if (!placed || !pm) return null
   const k = W / pm.w

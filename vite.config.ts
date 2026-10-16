@@ -13,8 +13,8 @@ export default defineConfig({
   build: {
     rolldownOptions: {
       output: {
-        // The run's claims, traces and excerpts load with the /demo pages as one chunk of their own, so the
-        // app code stays small and the data's size shows up on its own line in the build output.
+        // The run's claims, traces and excerpts are one chunk of their own: index.html preloads it beside the
+        // app code, a code change leaves its cached copy valid, and its size shows on its own line in the build.
         codeSplitting: { groups: [{ name: 'run-data', test: /[\\/]data[\\/](claims|traces|excerpts|rejected)\.json$/ }] },
       },
     },

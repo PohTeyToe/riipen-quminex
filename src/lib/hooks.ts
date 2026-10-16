@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 
-/** A ref for an element and its current width, kept up to date as the layout changes. */
+/** A ref for an element and its current width, kept up to date as the layout changes. Measured before the
+ * browser paints, so a chart drawn to this width is there in the first frame instead of pushing the page down. */
 export function useElementWidth<T extends HTMLElement>(): [(el: T | null) => void, number] {
   const [el, setEl] = useState<T | null>(null)
   const [width, setWidth] = useState(0)
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!el) return
     setWidth(el.getBoundingClientRect().width)
     const ro = new ResizeObserver(([e]) => setWidth(e.contentRect.width))

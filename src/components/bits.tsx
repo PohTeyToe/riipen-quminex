@@ -28,8 +28,10 @@ export function PageChip({ aris, page, onClick, label }: { aris: number; page: n
   )
 }
 
-/** The page on ARIS, BC's assessment report archive. */
+/** The page on ARIS, BC's assessment report archive. ARIS sends the whole report before the browser can show
+ * any page of it (up to 51 MB), so the link says how big it is. */
 export function ArisLink({ aris, page, children }: { aris: number; page: number; children?: ReactNode }) {
+  const size = report(aris)?.pdf_size_label
   return (
     <a className="aris-link" href={pageLink(aris, page)} target="_blank" rel="noopener noreferrer">
       {children ?? (
@@ -38,6 +40,7 @@ export function ArisLink({ aris, page, children }: { aris: number; page: number;
         </>
       )}
       <ExternalIcon />
+      {size && <span className="aris-size">{size}</span>}
     </a>
   )
 }

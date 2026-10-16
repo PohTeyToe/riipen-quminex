@@ -1390,6 +1390,10 @@ button.chip-page:hover {
 .aris-link:hover {
   text-decoration: underline;
 }
+.aris-size {
+  font-weight: 400;
+  color: var(--ink-3);
+}
 
 /* claim: where it sits on its page, and the quote */
 .src {
@@ -2729,8 +2733,9 @@ button.chip-page:hover {
 .not-found h1 {
   font-size: var(--t-big);
 }
+/* a full screen, so the footer starts below the fold and doesn't jump when the page's code arrives */
 .loading {
-  min-height: 60vh;
+  min-height: 100vh;
 }
 .footer {
   padding: 16px var(--gutter) 28px;
