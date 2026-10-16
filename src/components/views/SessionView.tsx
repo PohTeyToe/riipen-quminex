@@ -6,7 +6,7 @@ import { clock, clockTenths, sessionById, type Session } from '../../data/timeli
 import { useInspect } from '../../inspect'
 import { useElementWidth } from '../../lib/hooks'
 import { Link } from '../../router'
-import { Who } from '../bits'
+import { ArisLink, Who } from '../bits'
 
 const nf = new Intl.NumberFormat('en-CA')
 
@@ -45,26 +45,39 @@ function Strip({ s, call, onPick }: { s: Session; call?: number; onPick: (i: num
   )
 }
 
+/** Centre el in each scrolling box between it and stop (inclusive) that clips it, and leave the window alone.
+ * For stop, only the part of it inside the viewport counts: on a wide screen the inspector runs below the fold. */
+function reveal(el: HTMLElement, stop: HTMLElement | null) {
+  for (let box = el.parentElement; box; box = box.parentElement) {
+    if (box.scrollHeight > box.clientHeight && /auto|scroll/.test(getComputedStyle(box).overflowY)) {
+      const r = el.getBoundingClientRect()
+      const b = box.getBoundingClientRect()
+      const top = box === stop ? Math.max(b.top, 0) : b.top
+      const bottom = box === stop ? Math.min(b.bottom, window.innerHeight) : b.bottom
+      if (r.top < top || r.bottom > bottom) box.scrollTop += r.top - top - (bottom - top - r.height) / 2
+    }
+    if (box === stop) return
+  }
+}
+
 export function SessionView({ id, call }: { id: string; call?: number }) {
   const s = sessionById(id)
   const { open, show, replace } = useInspect()
   const list = useRef<HTMLOListElement>(null)
   useEffect(() => {
     if (call === undefined) return
-    // Centre the picked call in the inspector's own scroll area. scrollIntoView would also scroll the window,
-    // which moves the chart under the cursor.
+    // Bring the picked call into view in the call list and the inspector, never the window: scrollIntoView
+    // would also scroll the page, which moves the chart under the cursor.
     const row = list.current?.querySelector<HTMLElement>(`[data-i="${call}"]`)
-    const body = row?.closest<HTMLElement>('.insp-body')
-    if (!row || !body) return
-    const top = row.getBoundingClientRect().top - body.getBoundingClientRect().top + body.scrollTop
-    if (top < body.scrollTop || top + row.offsetHeight > body.scrollTop + body.clientHeight)
-      body.scrollTop = Math.max(0, top - body.clientHeight / 2 + row.offsetHeight / 2)
+    if (row) reveal(row, row.closest<HTMLElement>('.insp-body'))
   }, [call, id])
   if (!s) return <p className="hint">No such session.</p>
   const steps = sessionSteps(id)
   const field = s.kind === 'field' ? fields.find((f) => f.id === s.ref) : undefined
   const answer = s.kind === 'eval' ? answers.find((a) => a.id === s.ref) : undefined
   const by = (k: string) => s.calls.filter(([, c]) => c === k).length
+  // the picked call sits under the title too, so it shows without scrolling the page
+  const picked = call !== undefined ? callLine(id, call) : null
   const pick = (i: number) => {
     const st = steps[i]
     if (st?.tool === 'propose_claim' && st.claim) open({ kind: 'claim', id: st.claim })
@@ -77,6 +90,27 @@ export function SessionView({ id, call }: { id: string; call?: number }) {
         {s.lane + 1}
       </p>
       <h3 className="view-title">{field ? field.name : answer ? answer.question : s.ref}</h3>
+      {picked && (
+        <div className="calls picked" role="group" aria-label="The picked call">
+          <div className={`call k-${picked.code} is-sel`}>
+            <div className="call-btn">
+              <span className="call-t mono">{clockTenths(picked.t)}</span>
+              <span className="call-tool mono">{picked.tool}</span>
+              <span className="call-text">
+                {picked.verdict ? <b>{picked.verdict}</b> : null} {picked.text}
+                {picked.step.report && picked.step.page ? (
+                  <>
+                    {' · '}
+                    <ArisLink aris={picked.step.report} page={picked.step.page}>
+                      Open the page
+                    </ArisLink>
+                  </>
+                ) : null}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
       <dl className="facts">
         <div>
           <dt>Ran</dt>

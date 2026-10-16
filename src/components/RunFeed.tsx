@@ -37,7 +37,7 @@ export function RunFeed({ t, playing, speed, onPick }: { t: number; playing: boo
     <div className="feed" role="group" aria-label="What the agent was doing at the playhead">
       <p className="feed-h">Checker</p>
       <ol className="feed-log" ref={log}>
-        {n === 0 && <li className="fl is-empty">Throw-outs and refusals show here as they happen</li>}
+        {n === 0 && <li className="fl is-empty">Throw-outs and refusals appear here</li>}
         {feedEvents.slice(0, n).map((e) => {
           const line = callLine(e.session.id, e.i)
           return (
